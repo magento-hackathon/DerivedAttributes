@@ -26,7 +26,8 @@ class Hackathon_DerivedAttributes_Model_Observer{
             
             /* @var $ruleCollection Hackathon_DerivedAttributes_Model_Resource_Rule_Collection */
             $ruleCollection = $ruleModel->getCollection();
-            
+
+            $serviceManager = new \Hackathon\DerivedAttributes\Service\Manager();
             foreach($modelResource->getAttributesByCode() as $code => $attribute){
                 /* @var $attribute Mage_Eav_Model_Entity_Attribute */
 
@@ -36,14 +37,12 @@ class Hackathon_DerivedAttributes_Model_Observer{
                     $ruleCollection->addFieldToFilter('attribute_id', $attribute->getId());
                     $ruleCollection->addFieldToFilter('active', "1");
 
-                    $currentValue = $modelObject->getData($code);
-
+                    $ruleSet = new \Hackathon\DerivedAttributes\RuleSet(
+                        new \Hackathon\DerivedAttributes\Attribute($attribute->getAttributeCode()));
                     foreach($ruleCollection->getIterator() as $ruleModel){
 
-                        # TODO: perform data-generation with these data:
-                        $ruleModel;
-                        $bridgeObject; 
-                        $currentValue;
+                        $ruleSet->addRule(new \Hackathon\DerivedAttributes\Rule($ruleModel, $serviceManager));
+                        $ruleSet->applyToEntity($bridgeObject);
 
                     }
 

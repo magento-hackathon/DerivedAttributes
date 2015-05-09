@@ -50,14 +50,14 @@ class RuleSet
     }
 
     /**
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return void
      */
-    public function applyToProduct(EntityInterface $product)
+    public function applyToEntity(EntityInterface $entity)
     {
         $this->sortRules();
         foreach ($this->rules as $rule) {
-            if ($rule->applyToProduct($product)) {
+            if ($rule->applyToEntity($entity)) {
                 break;
             }
         }

@@ -87,7 +87,7 @@ class Rule implements \SGH\Comparable\Comparable
      * @param EntityInterface $product
      * @return bool
      */
-    public function applyToProduct(EntityInterface $product)
+    public function applyToEntity(EntityInterface $product)
     {
         if ($this->condition->match($product, $this->ruleEntity)) {
             $value = $this->generator->generateAttributeValue($product, $this->ruleEntity);

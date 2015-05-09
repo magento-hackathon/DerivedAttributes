@@ -5,6 +5,15 @@ DerivedAttributes (e.g. for product feed export)
 
 (Product Attribute, Customer Attributes) 
 
+Installation Instructions
+-------------------------
+
+1. Install via composer: `composer require magento-hackathon/derived-attributes`
+2. Configure Magento-PSR-0-Autoloader to use the composer autoloader. Add this to the `global` node of your `app/etc/local.xml`:
+
+        `<composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>`
+
+
 Interfaces:
 -----------
 
@@ -82,3 +91,8 @@ Tasks
 ---
 Define Interfaces
 Create Magento Entities and implement Bridge Interfaces
+
+
+License
+-------
+[OSL - Open Software Licence 3.0](http://opensource.org/licenses/osl-3.0.php)

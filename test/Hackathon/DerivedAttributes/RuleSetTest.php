@@ -53,7 +53,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         {
             $ruleSet->addRule($rule);
         }
-        $ruleSet->applyToProduct($this->productMock);
+        $ruleSet->applyToEntity($this->productMock);
     }
 
     /**

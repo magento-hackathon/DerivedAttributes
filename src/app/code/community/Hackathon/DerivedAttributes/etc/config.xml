@@ -1,31 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <config>
     <modules>
         <Hackathon_DerivedAttributes>
             <version>0.1.0</version>
         </Hackathon_DerivedAttributes>
     </modules>
-	<global>
-		<models>
+    <global>
+        <blocks>
             <derivedattributes>
-				<class>Hackathon_DerivedAttributes_Model</class>
-				<resourceModel>derivedattributes_resource</resourceModel>
+                <class>Hackathon_DerivedAttributes_Block</class>
+            </derivedattributes>
+        </blocks>
+        <helpers>
+            <derivedattributes>
+                <class>Hackathon_DerivedAttributes_Helper</class>
+            </derivedattributes>
+        </helpers>
+        <models>
+            <derivedattributes>
+                <class>Hackathon_DerivedAttributes_Model</class>
+                <resourceModel>derivedattributes_resource</resourceModel>
             </derivedattributes>
             <derivedattributes_resource>
-				<class>Hackathon_DerivedAttributes_Model_Resource</class>
-			    <entities>
-				    <rule>
-					    <table>derivedattributes_rule</table>
-				    </rule>
-				    <rule_filter>
-					    <table>derivedattributes_rule_filter</table>
-				    </rule_filter>
-				    <rule_condition>
-					    <table>derivedattributes_rule_condition</table>
-				    </rule_condition>
-			    </entities>
+                <class>Hackathon_DerivedAttributes_Model_Resource</class>
+                <entities>
+                    <rule>
+                        <table>derivedattributes_rule</table>
+                    </rule>
+                    <rule_filter>
+                        <table>derivedattributes_rule_filter</table>
+                    </rule_filter>
+                    <rule_condition>
+                        <table>derivedattributes_rule_condition</table>
+                    </rule_condition>
+                </entities>
             </derivedattributes_resource>
-		</models>
+        </models>
         <resources>
             <derivedattributes_setup>
                 <setup>
@@ -33,19 +43,30 @@
                 </setup>
             </derivedattributes_setup>
         </resources>
-		<events>
+        <events>
             <model_save_before>
                 <observers>
                     <derivedattributes_observer>
-						<type>singleton</type>
-					    <class>Hackathon_DerivedAttributes_Model_Observer</class>
-						<method>beforeModelSave</method>
+                        <type>singleton</type>
+                        <class>Hackathon_DerivedAttributes_Model_Observer</class>
+                        <method>beforeModelSave</method>
                     </derivedattributes_observer>
                 </observers>
             </model_save_before>
-		</events>
+        </events>
         <psr0_namespaces>
             <Hackathon />
         </psr0_namespaces>
-	</global>
+    </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Hackathon_DerivedAttributes before="Mage_Adminhtml">Hackathon_DerivedAttributes_Adminhtml</Hackathon_DerivedAttributes>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 </config>

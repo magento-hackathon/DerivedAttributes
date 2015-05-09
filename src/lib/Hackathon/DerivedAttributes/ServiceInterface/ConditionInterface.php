@@ -14,7 +14,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 
 interface ConditionInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     /**
      * @param EntityInterface $product

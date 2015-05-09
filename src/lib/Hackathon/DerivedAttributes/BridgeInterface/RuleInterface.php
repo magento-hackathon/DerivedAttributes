@@ -5,7 +5,7 @@ use Hackathon\DerivedAttributes\Attribute;
 
 interface RuleInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     /**
      * Returns the Attribute instance

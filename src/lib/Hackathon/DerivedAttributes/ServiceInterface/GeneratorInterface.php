@@ -13,7 +13,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 
 interface GeneratorInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     /**
      * @param EntityInterface $product

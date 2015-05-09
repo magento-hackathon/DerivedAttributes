@@ -1,5 +1,5 @@
 <?php
-namespace Hackathon\DerivedAttributes\Service\Generator\Condition;
+namespace Hackathon\DerivedAttributes\Service\Condition;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;

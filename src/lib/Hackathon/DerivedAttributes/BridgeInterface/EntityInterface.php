@@ -9,7 +9,7 @@ use Hackathon\DerivedAttributes\Attribute;
  */
 interface EntityInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
     /**
      * @return boolean
      */

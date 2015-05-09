@@ -1,4 +1,6 @@
-Hackathon\DerivedAttributes\Service\Generator\Template
+<?php
+namespace Hackathon\DerivedAttributes\Service\Generator;
+
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;

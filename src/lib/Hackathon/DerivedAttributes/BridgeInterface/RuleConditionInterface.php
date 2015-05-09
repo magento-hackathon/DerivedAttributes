@@ -3,7 +3,7 @@ namespace Hackathon\DerivedAttributes\BridgeInterface;
 
 interface RuleConditionInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     /**
      * Return the Condition type

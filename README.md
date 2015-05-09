@@ -1,28 +1,33 @@
-WIP: DerivedAttributes
+Status: WIP
+
+DerivedAttributes (e.g. for product feed export)
+================================================
+
+(Product Attribute, Customer Attributes) 
 
 Interfaces:
----
+-----------
 
-GeneratorInterface
+### GeneratorInterface
  - mixed generate(Entity, RuleEntity)
  - string getTitle()
  - string getDescription()
 
-FilterInterface
+### FilterInterface
  - mixed filter(Entity, FilterEntity, mixed $current)
  - string getTitle()
  - string getDescription()
 
-ConditionInterface (ex. impl. BooleanAttributeCondition)
+### ConditionInterface (ex. impl. BooleanAttributeCondition)
  - bool match(Entity, RuleEntity)
  - string getTitle()
  - string getDescription()
 
 
 Database
----
+--------
 
-- derivedattribute_rule
+### derivedattribute_rule
   - id
   - title
   - description
@@ -34,8 +39,8 @@ Database
   - store_id
   - active
   - priority
-  - -date_from-
-  - -date_to´-
+  - -date_from -
+  - -date_to -
 - derivedattribute_filter
   - id
   - da_id
@@ -53,7 +58,7 @@ Database
 
 
 Magento Bridge
----
+--------------
 
 - EntityInterface
 - DerivedAttributeRuleInterface
@@ -64,10 +69,10 @@ Magento Bridge
 Ideas for later
 ---
 
-- einzelne daten pro store view ändern (generator_data, active, ...) mit EAV entity
-- conditions für einzelne filter
+- einzelne daten pro store view Ã¤ndern (generator_data, active, ...) mit EAV entity
+- conditions fÃ¼r einzelne filter
 - optimierung / vorberechnung der conditions
-- auch für kunden und andere entities
+- auch fÃ¼r kunden und andere entities
 - "test produkt x" oder "dry run"
 
 

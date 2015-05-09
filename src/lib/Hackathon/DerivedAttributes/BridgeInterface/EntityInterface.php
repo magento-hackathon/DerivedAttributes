@@ -1,11 +1,11 @@
 <?php
-namespace Hackathon\DerivedAttributes\Implementor;
+namespace Hackathon\DerivedAttributes\BridgeInterface;
 
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Interface EntityInterface
- * @package Hackathon\DerivedAttributes\Implementor
+ * @package Hackathon\DerivedAttributes\BridgeInterface
  */
 interface EntityInterface
 {

@@ -8,10 +8,10 @@
 
 namespace Hackathon\DerivedAttributes;
 
-
-use Hackathon\DerivedAttributes\Implementor\EntityInterface;
-use \Comparable;
-use Hackathon\DerivedAttributes\Implementor\RuleInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
 class Rule implements \SGH\Comparable\Comparable
 {

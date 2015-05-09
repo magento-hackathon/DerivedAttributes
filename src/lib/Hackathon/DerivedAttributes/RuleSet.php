@@ -9,7 +9,7 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use SGH\Comparable\SortFunctions;
 
 class RuleSet

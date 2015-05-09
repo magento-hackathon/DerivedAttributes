@@ -6,11 +6,10 @@
  * Time: 18:00
  */
 
-namespace Hackathon\DerivedAttributes;
+namespace Hackathon\DerivedAttributes\ServiceInterface;
 
-
-use Hackathon\DerivedAttributes\Implementor\EntityInterface;
-use Hackathon\DerivedAttributes\Implementor\RuleInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 
 interface GeneratorInterface
 {

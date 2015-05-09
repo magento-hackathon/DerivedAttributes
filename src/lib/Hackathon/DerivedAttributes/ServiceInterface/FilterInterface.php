@@ -1,8 +1,8 @@
 <?php
-namespace Hackathon\DerivedAttributes;
+namespace Hackathon\DerivedAttributes\ServiceInterface;
 
-use Hackathon\DerivedAttributes\Implementor\EntityInterface;
-use Hackathon\DerivedAttributes\Implementor\RuleFilterInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleFilterInterface;
 
 interface FilterInterface
 {

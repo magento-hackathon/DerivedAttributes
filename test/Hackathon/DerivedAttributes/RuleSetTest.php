@@ -9,8 +9,10 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\EntityInterface;
-use Hackathon\DerivedAttributes\Implementor\RuleInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
 class RuleSetTest extends \PHPUnit_Framework_TestCase
 {

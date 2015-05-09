@@ -1,5 +1,5 @@
 <?php
-namespace Hackathon\DerivedAttributes\Implementor;
+namespace Hackathon\DerivedAttributes\BridgeInterface;
 
 interface RuleConditionInterface
 {

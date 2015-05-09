@@ -6,7 +6,7 @@
  * Time: 16:09
  */
 
-namespace IntegerNet\AttributeRule;
+namespace Hackathon\DerivedAttributes;
 
 
 class Attribute

@@ -6,10 +6,10 @@
  * Time: 21:46
  */
 
-namespace IntegerNet\AttributeRule;
+namespace Hackathon\DerivedAttributes;
 
 
-use IntegerNet\AttributeRule\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\ProductInterface;
 
 class RuleSetTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +27,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->mockProduct   = $this->getMockForAbstractClass(ProductInterface::__CLASS,
             [], '', true, true, true, [ 'setAttributeValue' ]);
-        $this->mockAttribute = $this->getMock(Attribute::__CLASS);
+        $this->mockAttribute = $this->getMock(Attribute::__CLASS, [], ['dummy']);
     }
 
     /**

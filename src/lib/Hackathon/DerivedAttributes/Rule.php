@@ -6,13 +6,13 @@
  * Time: 16:08
  */
 
-namespace IntegerNet\AttributeRule;
+namespace Hackathon\DerivedAttributes;
 
 
-use IntegerNet\AttributeRule\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\ProductInterface;
 use \Comparable;
 
-class Rule implements Comparable
+class Rule implements \SGH\Comparable\Comparable
 {
     /**
      * @var int

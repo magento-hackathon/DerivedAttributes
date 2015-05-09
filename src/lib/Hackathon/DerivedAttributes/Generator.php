@@ -6,10 +6,10 @@
  * Time: 18:00
  */
 
-namespace IntegerNet\AttributeRule;
+namespace Hackathon\DerivedAttributes;
 
 
-use IntegerNet\AttributeRule\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\ProductInterface;
 
 interface Generator
 {

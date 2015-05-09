@@ -6,11 +6,11 @@
  * Time: 16:09
  */
 
-namespace IntegerNet\AttributeRule;
+namespace Hackathon\DerivedAttributes;
 
 
-use IntegerNet\AttributeRule\Implementor\ProductInterface;
-use \ObjectSorter;
+use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use SGH\Comparable\SortFunctions;
 
 class RuleSet
 {
@@ -46,9 +46,7 @@ class RuleSet
      */
     private function sortRules()
     {
-        //TODO polish and integrate comparator-tools
-        $sorter = new ObjectSorter();
-        $sorter->sort($this->rules);
+        SortFunctions::sort($this->rules);
     }
 
     /**

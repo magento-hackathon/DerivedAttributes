@@ -1,6 +1,6 @@
 <?php
 
-class IntegerNet_AttributeRule_Bridge_Product implements \IntegerNet\AttributeRule\Implementor\ProductInterface
+class Hackathon_DerivedAttributes_Bridge_Product implements \Hackathon\DerivedAttributes\Implementor\ProductInterface
 {
     /**
      * @var Mage_Catalog_Model_Product
@@ -21,29 +21,29 @@ class IntegerNet_AttributeRule_Bridge_Product implements \IntegerNet\AttributeRu
     }
 
     /**
-     * @param \IntegerNet\AttributeRule\Attribute $attribute
+     * @param \Hackathon\DerivedAttributes\Attribute $attribute
      * @return mixed
      */
-    function getAttributeValue(\IntegerNet\AttributeRule\Attribute $attribute)
+    function getAttributeValue(\Hackathon\DerivedAttributes\Attribute $attribute)
     {
         return $this->product->getData($attribute->getAttributeCode());
     }
 
     /**
-     * @param \IntegerNet\AttributeRule\Attribute $attribute
+     * @param \Hackathon\DerivedAttributes\Attribute $attribute
      * @return string
      */
-    function getLocalizedAttributeValue(\IntegerNet\AttributeRule\Attribute $attribute)
+    function getLocalizedAttributeValue(\Hackathon\DerivedAttributes\Attribute $attribute)
     {
         return $this->product->getAttributeText($attribute->getAttributeCode());
     }
 
     /**
-     * @param \IntegerNet\AttributeRule\Attribute $attribute
+     * @param \Hackathon\DerivedAttributes\Attribute $attribute
      * @param mixed $value
      * @return void
      */
-    function setAttributeValue(\IntegerNet\AttributeRule\Attribute $attribute, $value)
+    function setAttributeValue(\Hackathon\DerivedAttributes\Attribute $attribute, $value)
     {
         $this->product->setData($attribute->getAttributeCode(), $value);
     }

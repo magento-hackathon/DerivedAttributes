@@ -1,7 +1,6 @@
 <?php
 define('CLASS_DIR', realpath(__DIR__ . '/../src/lib/'));
 set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
-require_once CLASS_DIR . '/Comparator-Tools/ComparatorTools/comparatortools.lib.php';
 spl_autoload_register(function($className)
     {
         $fileName = str_replace('\\', DIRECTORY_SEPARATOR, $className) . '.php';
@@ -12,3 +11,4 @@ spl_autoload_register(function($className)
         return false;
     }
 );
+require_once 'vendor/composer/autoload.php';

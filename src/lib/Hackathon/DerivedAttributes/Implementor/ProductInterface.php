@@ -1,11 +1,11 @@
 <?php
-namespace IntegerNet\AttributeRule\Implementor;
+namespace Hackathon\DerivedAttributes\Implementor;
 
-use IntegerNet\AttributeRule\Attribute;
+use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Interface ProductInterface
- * @package IntegerNet\AttributeRule\Implementor
+ * @package Hackathon\DerivedAttributes\Implementor
  */
 interface ProductInterface
 {

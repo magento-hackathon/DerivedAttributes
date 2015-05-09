@@ -60,6 +60,27 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $conditionType
+     * @param $conditionData
+     * @test
+     * @dataProvider getInvalidConditionData
+     * @expectedException \InvalidArgumentException
+     */
+    public function shouldFailConditionInstantiation($conditionType, $conditionData)
+    {
+        //TODO deduplicate
+        $manager = new Manager();
+        $conditionStub = $this->getMock(RuleConditionInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
+        $conditionStub->expects($this->any())
+            ->method('getConditionType')
+            ->will($this->returnValue($conditionType));
+        $conditionStub->expects($this->any())
+            ->method('getConditionData')
+            ->will($this->returnValue($conditionData));
+        $manager->getConditionFromEntity($conditionStub);
+    }
+
+    /**
      * Data provider
      */
     public static function getConditionData()
@@ -70,8 +91,21 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Data provider
+     */
+    public static function getInvalidConditionData()
+    {
+        return array(
+            [ 'non-existent-id', 'arbitrary data' ]
+        );
+    }
+
+    /**
      * @test
      * @dataProvider getGeneratorData
+     * @param $generatorType
+     * @param $generatorData
+     * @param $expectedClass
      */
     public function shouldInstantiateConfiguredGenerator($generatorType, $generatorData, $expectedClass)
     {
@@ -89,12 +123,42 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param $generatorType
+     * @param $generatorData
+     * @test
+     * @dataProvider getInvalidGeneratorData
+     * @expectedException \InvalidArgumentException
+     */
+    public function shouldFailGeneratorInstantiation($generatorType, $generatorData)
+    {
+        $manager = new Manager();
+        $generatorStub = $this->getMock(RuleGeneratorInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
+        $generatorStub->expects($this->any())
+            ->method('getGeneratorType')
+            ->will($this->returnValue($generatorType));
+        $generatorStub->expects($this->any())
+            ->method('getGeneratorData')
+            ->will($this->returnValue($generatorData));
+        $manager->getGeneratorFromEntity($generatorStub);
+    }
+
+    /**
      * Data provider
      */
     public static function getGeneratorData()
     {
         return array(
             [ 'template', 'this is a template with #some-attribute#', TemplateGenerator::__CLASS ]
+        );
+    }
+
+    /**
+     * Data provider
+     */
+    public static function getInvalidGeneratorData()
+    {
+        return array(
+            [ 'non-existent-id', 'arbitrary data' ]
         );
     }
 }

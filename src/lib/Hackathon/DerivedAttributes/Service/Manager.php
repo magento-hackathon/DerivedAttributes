@@ -57,6 +57,9 @@ class Manager
     public function getConditionFromEntity(RuleConditionInterface $conditionEntity)
     {
         $type = $conditionEntity->getConditionType();
+        if (!isset($this->conditionTypes[$type])) {
+            throw new \InvalidArgumentException(sprintf('Unknown condition type "%s".', $type));
+        }
         /** @var ConditionInterface $condition */
         $condition = new $this->conditionTypes[$type];
         $condition->configure($conditionEntity->getConditionData());
@@ -65,6 +68,9 @@ class Manager
     public function getGeneratorFromEntity(RuleGeneratorInterface $generatorEntity)
     {
         $type = $generatorEntity->getGeneratorType();
+        if (!isset($this->generatorTypes[$type])) {
+            throw new \InvalidArgumentException(sprintf('Unknown generator type "%s".', $type));
+        }
         /** @var GeneratorInterface $generator */
         $generator = new $this->generatorTypes[$type];
         $generator->configure($generatorEntity->getGeneratorData());

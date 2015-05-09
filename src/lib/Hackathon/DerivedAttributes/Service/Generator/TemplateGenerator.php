@@ -11,6 +11,28 @@ class TemplateGenerator implements GeneratorInterface
     const TITLE = 'Template';
     const DESCRIPTION = 'Template that contains other product attributes';
 
+    private $data;
+
+    /**
+     * @param string $data
+     * @return $this
+     */
+    public function configure($data)
+    {
+        $this->data = $data;
+        // TODO: Implement configure() method.
+        return $this;
+    }
+
+    /**
+     * @internal used to test instantiation
+     * @return string
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
     /**
      * @param EntityInterface $product
      * @return mixed

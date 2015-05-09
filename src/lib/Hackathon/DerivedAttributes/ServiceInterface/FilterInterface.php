@@ -9,6 +9,12 @@ interface FilterInterface
     const __INTERFACE = __CLASS__;
 
     /**
+     * @param string $data
+     * @return $this
+     */
+    function configure($data);
+
+    /**
      * @param EntityInterface $entity
      * @param mixed $currentValue
      * @return mixed

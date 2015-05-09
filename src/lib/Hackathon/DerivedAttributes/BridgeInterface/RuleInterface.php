@@ -15,18 +15,11 @@ interface RuleInterface
     function getAttribute();
 
     /**
-     * Return the Generator type
+     * Return generator
      *
-     * @return string
+     * @return RuleGeneratorInterface
      */
-    function getGeneratorType();
-
-    /**
-     * Return information for instantiating the generator
-     *
-     * @return string
-     */
-    function getGeneratorData();
+    function getRuleGenerator();
 
     /**
      * Return condition

@@ -10,11 +10,22 @@ namespace Hackathon\DerivedAttributes\ServiceInterface;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 
 interface ConditionInterface
 {
     const __INTERFACE = __CLASS__;
+
+    /**
+     * @param string $data
+     * @return $this
+     */
+    function configure($data);
+
+    /**
+     * @internal used to test instantiation
+     * @return string
+     */
+    function getData();
 
     /**
      * @param EntityInterface $product

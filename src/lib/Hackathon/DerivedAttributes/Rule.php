@@ -10,6 +10,7 @@ namespace Hackathon\DerivedAttributes;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
@@ -40,13 +41,13 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $filters;
 
-    function __construct(RuleInterface $ruleEntity, ConditionInterface $condition, GeneratorInterface $generator)
+    function __construct(RuleInterface $ruleEntity, Manager $serviceManager)
     {
         $this->ruleEntity = $ruleEntity;
         //TODO add filters
         $this->attribute = $ruleEntity->getAttribute();
-        $this->condition = $condition;
-        $this->generator = $generator;
+        $this->condition = $serviceManager->getConditionFromEntity($ruleEntity->getRuleCondition());
+        $this->generator = $serviceManager->getGeneratorFromEntity($ruleEntity->getRuleGenerator());
         $this->priority = $ruleEntity->getPriority();
     }
 

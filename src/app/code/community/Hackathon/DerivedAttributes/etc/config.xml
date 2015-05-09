@@ -9,6 +9,7 @@
 		<models>
             <derivedattributes>
 				<class>Hackathon_DerivedAttributes_Model</class>
+				<resourceModel>derivedattributes_resource</resourceModel>
             </derivedattributes>
             <derivedattributes_resource>
 				<class>Hackathon_DerivedAttributes_Model_Resource</class>
@@ -33,6 +34,18 @@
             </derivedattributes_setup>
         </resources>
 		<events>
+            <model_save_before>
+                <observers>
+                    <derivedattributes_observer>
+						<type>singleton</type>
+					    <class>Hackathon_DerivedAttributes_Model_Observer</class>
+						<method>beforeModelSave</method>
+                    </derivedattributes_observer>
+                </observers>
+            </model_save_before>
 		</events>
+        <psr0_namespaces>
+            <Hackathon />
+        </psr0_namespaces>
 	</global>
 </config>

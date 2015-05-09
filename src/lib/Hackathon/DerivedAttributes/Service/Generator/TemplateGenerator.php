@@ -7,11 +7,15 @@ use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 class TemplateGenerator implements GeneratorInterface
 {
     const __CLASS = __CLASS__;
+
+    const TITLE = 'Template';
+    const DESCRIPTION = 'Template that contains other product attributes';
+
     /**
      * @param EntityInterface $product
      * @return mixed
      */
-    function generateAttributeValue(EntityInterface $product)
+    public function generateAttributeValue(EntityInterface $product)
     {
         // TODO: Implement generateAttributeValue() method.
     }
@@ -19,17 +23,17 @@ class TemplateGenerator implements GeneratorInterface
     /**
      * @return string
      */
-    function getTitle()
+    public function getTitle()
     {
-        // TODO: Implement getTitle() method.
+        return self::TITLE;
     }
 
     /**
      * @return string
      */
-    function getDescription()
+    public function getDescription()
     {
-        // TODO: Implement getDescription() method.
+        return self::DESCRIPTION;
     }
 
 }

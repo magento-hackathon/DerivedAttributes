@@ -3,6 +3,8 @@ namespace Hackathon\DerivedAttributes\Service;
 
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
+use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
 class Manager
 {
@@ -10,15 +12,40 @@ class Manager
         'template' => TemplateGenerator::__CLASS
     ];
     private $conditionTypes = [
-        'boolean-attribute' => BooleanAttributeCondition::__INTERFACE
+        'boolean-attribute' => BooleanAttributeCondition::__CLASS
     ];
+
+    /**
+     * Return meta information of available generators
+     *
+     * @return array as [ $identifier => [ "title" => $title, "description" => $description ]
+     */
     public function getAvailableGeneratorTypes()
     {
-        return \array_keys($this->generatorTypes);
-        //TODO implement
+        $result = array();
+        foreach ($this->generatorTypes as $id => $class) {
+            if (is_subclass_of($class, GeneratorInterface::__INTERFACE)) {
+                $generator = new $class;
+                $result[$id] = ['title' => $generator->getTitle(), 'description' => $generator->getDescription()];
+            }
+        }
+        return $result;
     }
+
+    /**
+     * Return meta information of available generators
+     *
+     * @return array as [ $identifier => [ "title" => $title, "description" => $description ]
+     */
     public function getAvailableConditionTypes()
     {
-        return \array_keys($this->conditionTypes);
+        $result = array();
+        foreach ($this->conditionTypes as $id => $class) {
+            if (is_subclass_of($class, ConditionInterface::__INTERFACE)) {
+                $condition = new $class;
+                $result[$id] = ['title' => $condition->getTitle(), 'description' => $condition->getDescription()];
+            }
+        }
+        return $result;
     }
 }

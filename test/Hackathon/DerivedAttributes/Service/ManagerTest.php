@@ -9,6 +9,9 @@
  */
 namespace Hackathon\DerivedAttributes\Service;
 
+use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
+use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
+
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -17,7 +20,10 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnAvailableGeneratorTypes()
     {
         $manager = new Manager();
-        $this->assertEquals(['template'], $manager->getAvailableGeneratorTypes(), '', 0.0, 10, true);
+        $actualTypes = $manager->getAvailableGeneratorTypes();
+        $this->assertEquals(
+            ['template' => ['title' => TemplateGenerator::TITLE, 'description' => TemplateGenerator::DESCRIPTION]],
+            $actualTypes, '', 0.0, 10, true);
     }
     /**
      * @test
@@ -25,6 +31,9 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldReturnAvailableConditionTypes()
     {
         $manager = new Manager();
-        $this->assertEquals(['boolean-attribute'], $manager->getAvailableConditionTypes(), '', 0.0, 10, true);
+        $actualTypes = $manager->getAvailableConditionTypes();
+        $this->assertEquals(
+            ['boolean-attribute' => ['title' => BooleanAttributeCondition::TITLE, 'description' => BooleanAttributeCondition::DESCRIPTION]],
+            $actualTypes, '', 0.0, 10, true);
     }
 }

@@ -6,11 +6,16 @@ use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 
 class BooleanAttributeCondition implements ConditionInterface
 {
+    const __CLASS = __CLASS__;
+
+    const TITLE = 'Boolean Attribute';
+    const DESCRIPTION = 'Match if a certain attribute is "1"';
+
     /**
      * @param EntityInterface $product
      * @return boolean
      */
-    function match(EntityInterface $product)
+    public function match(EntityInterface $product)
     {
         // TODO: Implement match() method.
     }
@@ -18,17 +23,17 @@ class BooleanAttributeCondition implements ConditionInterface
     /**
      * @return string
      */
-    function getTitle()
+    public function getTitle()
     {
-        // TODO: Implement getTitle() method.
+        return self::TITLE;
     }
 
     /**
      * @return string
      */
-    function getDescription()
+    public function getDescription()
     {
-        // TODO: Implement getDescription() method.
+        return self::DESCRIPTION;
     }
 
 }

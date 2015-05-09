@@ -98,12 +98,12 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $mockCondition = $this->getMock(Condition::__CLASS, [ 'match' ]);
+            $mockCondition = $this->getMock(ConditionInterface::__CLASS, [ 'match' ]);
             $mockCondition->expects($this->any())
                 ->method('match')
                 ->with($this->mockProduct)
                 ->willReturn($ruleData['matches']);
-            $mockGenerator = $this->getMock(Generator::__CLASS, [ 'generateAttributeValue' ]);
+            $mockGenerator = $this->getMock(GeneratorInterface::__CLASS, [ 'generateAttributeValue' ]);
             $mockGenerator->expects($this->any())
                 ->method('generateAttributeValue')
                 ->with($this->mockProduct, $this->mockAttribute)

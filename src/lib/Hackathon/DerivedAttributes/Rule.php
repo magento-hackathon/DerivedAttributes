@@ -23,16 +23,21 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $attribute;
     /**
-     * @var Condition
+     * @var ConditionInterface
      */
     private $condition;
     /**
-     * @var Generator
+     * @var GeneratorInterface
      */
     private $generator;
+    /**
+     * @var FilterInterface[]
+     */
+    private $filters;
 
-    function __construct(Attribute $attribute, Condition $condition, Generator $generator, $priority = 0)
+    function __construct(Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator, $priority = 0)
     {
+        //TODO add filters
         $this->attribute = $attribute;
         $this->condition = $condition;
         $this->generator = $generator;
@@ -66,8 +71,6 @@ class Rule implements \SGH\Comparable\Comparable
 
     public function compareTo($object)
     {
-        //TODO TypeSafeComparator that only takes objects of certain class
-        assert($object instanceof self);
         return $this->getPriority() - $object->getPriority();
     }
 

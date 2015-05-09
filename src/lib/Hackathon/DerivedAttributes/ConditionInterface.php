@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: fs
  * Date: 09.03.2015
- * Time: 18:00
+ * Time: 17:59
  */
 
 namespace Hackathon\DerivedAttributes;
@@ -11,9 +11,9 @@ namespace Hackathon\DerivedAttributes;
 
 use Hackathon\DerivedAttributes\Implementor\ProductInterface;
 
-interface Generator
+interface ConditionInterface
 {
     const __CLASS = __CLASS__;
 
-    function generateAttributeValue(ProductInterface $product, Attribute $attribute);
+    function match(ProductInterface $product);
 } 

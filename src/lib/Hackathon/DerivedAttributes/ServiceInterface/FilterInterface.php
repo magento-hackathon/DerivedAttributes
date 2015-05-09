@@ -6,7 +6,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleFilterInterface;
 
 interface FilterInterface
 {
-    const __CLASS = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     /**
      * @param EntityInterface $entity

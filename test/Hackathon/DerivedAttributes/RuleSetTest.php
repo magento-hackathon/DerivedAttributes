@@ -28,7 +28,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->mockProduct   = $this->getMockForAbstractClass(EntityInterface::__CLASS,
+        $this->mockProduct   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
             [], '', true, true, true, [ 'setAttributeValue' ]);
         $this->mockAttribute = $this->getMock(Attribute::__CLASS, [], ['dummy']);
     }
@@ -101,13 +101,13 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $ruleEntity = $this->getMock(RuleInterface::__CLASS);
-            $mockCondition = $this->getMock(ConditionInterface::__CLASS, [ 'match', 'getTitle', 'getDescription' ]);
+            $ruleEntity = $this->getMock(RuleInterface::__INTERFACE);
+            $mockCondition = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'getTitle', 'getDescription' ]);
             $mockCondition->expects($this->any())
                 ->method('match')
                 ->with($this->mockProduct, $ruleEntity)
                 ->willReturn($ruleData['matches']);
-            $mockGenerator = $this->getMock(GeneratorInterface::__CLASS, [ 'generateAttributeValue', 'getTitle', 'getDescription' ]);
+            $mockGenerator = $this->getMock(GeneratorInterface::__INTERFACE, [ 'generateAttributeValue', 'getTitle', 'getDescription' ]);
             $mockGenerator->expects($this->any())
                 ->method('generateAttributeValue')
                 ->with($this->mockProduct, $ruleEntity)

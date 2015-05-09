@@ -2,7 +2,7 @@
 namespace Hackathon\DerivedAttributes\Service;
 
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
-use Hackathon\DerivedAttributes\Service\Generator\Condition\BooleanAttributeCondition;
+use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 
 class Manager
 {
@@ -10,14 +10,15 @@ class Manager
         'template' => TemplateGenerator::__CLASS
     ];
     private $conditionTypes = [
-        'boolean_attribute' => BooleanAttributeCondition::__CLASS
+        'boolean-attribute' => BooleanAttributeCondition::__INTERFACE
     ];
     public function getAvailableGeneratorTypes()
     {
+        return \array_keys($this->generatorTypes);
         //TODO implement
     }
     public function getAvailableConditionTypes()
     {
-        //TODO implement
+        return \array_keys($this->conditionTypes);
     }
 }

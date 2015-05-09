@@ -39,22 +39,24 @@ Database
   - store_id
   - active
   - priority
-  - -date_from -
-  - -date_to -
-- derivedattribute_filter
+  - [date_from]
+  - [date_to]
+  
+### [derivedattribute_filter]
   - id
   - da_id
   - filter_type
   - filter_data
   - sort_order
   - active
-- -derived_attribute_condition-
+
+### [derived_attribute_condition]
   - id
   - da_id
   - active
   - condition_type
   - condition_data
- - parent_id (?)
+  - parent_id (?)
 
 
 Magento Bridge
@@ -63,7 +65,7 @@ Magento Bridge
 - EntityInterface
 - DerivedAttributeRuleInterface
 - DerivedAttributeFilterInterface
-- -DerivedAttributeConditionInterface-
+- [DerivedAttributeConditionInterface]
 
 
 Ideas for later

@@ -8,7 +8,11 @@
 
 namespace Hackathon\DerivedAttributes;
 
-
+/**
+ * Attribute: Value object, representing a Magento attribute code
+ *
+ * @package Hackathon\DerivedAttributes
+ */
 class Attribute
 {
     const __CLASS = __CLASS__;

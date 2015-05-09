@@ -2,17 +2,15 @@
 namespace Hackathon\DerivedAttributes\Service\Condition;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 
 class BooleanAttributeCondition implements ConditionInterface
 {
     /**
      * @param EntityInterface $product
-     * @param RuleInterface $ruleInstance
      * @return boolean
      */
-    function match(EntityInterface $product, RuleInterface $ruleInstance)
+    function match(EntityInterface $product)
     {
         // TODO: Implement match() method.
     }

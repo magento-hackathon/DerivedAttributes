@@ -18,10 +18,9 @@ interface ConditionInterface
 
     /**
      * @param EntityInterface $product
-     * @param RuleInterface $ruleInstance
      * @return boolean
      */
-    function match(EntityInterface $product, RuleInterface $ruleInstance);
+    function match(EntityInterface $product);
 
     /**
      * @return string

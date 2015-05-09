@@ -10,11 +10,10 @@ interface FilterInterface
 
     /**
      * @param EntityInterface $entity
-     * @param RuleFilterInterface $filterEntity
      * @param mixed $currentValue
      * @return mixed
      */
-    function filter(EntityInterface $entity, RuleFilterInterface $filterEntity, $currentValue);
+    function filter(EntityInterface $entity, $currentValue);
 
     /**
      * @return string

@@ -17,10 +17,9 @@ interface GeneratorInterface
 
     /**
      * @param EntityInterface $product
-     * @param RuleInterface $ruleEntity
      * @return mixed
      */
-    function generateAttributeValue(EntityInterface $product, RuleInterface $ruleEntity);
+    function generateAttributeValue(EntityInterface $product);
 
     /**
      * @return string

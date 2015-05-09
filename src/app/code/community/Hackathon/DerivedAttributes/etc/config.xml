@@ -7,8 +7,31 @@
     </modules>
 	<global>
 		<models>
+            <derivedattributes>
 				<class>Hackathon_DerivedAttributes_Model</class>
+            </derivedattributes>
+            <derivedattributes_resource>
+				<class>Hackathon_DerivedAttributes_Model_Resource</class>
+			    <entities>
+				    <rule>
+					    <table>derivedattributes_rule</table>
+				    </rule>
+				    <rule_filter>
+					    <table>derivedattributes_rule_filter</table>
+				    </rule_filter>
+				    <rule_condition>
+					    <table>derivedattributes_rule_condition</table>
+				    </rule_condition>
+			    </entities>
+            </derivedattributes_resource>
 		</models>
+        <resources>
+            <derivedattributes_setup>
+                <setup>
+                    <module>Hackathon_DerivedAttributes</module>
+                </setup>
+            </derivedattributes_setup>
+        </resources>
 		<events>
 		</events>
 	</global>

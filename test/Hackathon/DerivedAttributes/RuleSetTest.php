@@ -19,18 +19,18 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Attribute
      */
-    private $mockAttribute;
+    private $attributeStub;
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface
      */
-    private $mockProduct;
+    private $productMock;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->mockProduct   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
+        $this->productMock   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
             [], '', true, true, true, [ 'setAttributeValue' ]);
-        $this->mockAttribute = $this->getMock(Attribute::__CLASS, [], ['dummy']);
+        $this->attributeStub = $this->getMock(Attribute::__CLASS, [], ['dummy']);
     }
 
     /**
@@ -41,16 +41,16 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function rulesShouldBeAppliedAccordingToConditionsAndPriority($rulesData, $expectedAttributeValue)
     {
-        $this->mockProduct->expects($this->atLeastOnce())
+        $this->productMock->expects($this->atLeastOnce())
             ->method('setAttributeValue')
-            ->with($this->mockAttribute, $expectedAttributeValue);
-        $ruleSet = new RuleSet($this->mockAttribute);
+            ->with($this->attributeStub, $expectedAttributeValue);
+        $ruleSet = new RuleSet($this->attributeStub);
         $rules = $this->createRulesFromRulesData($rulesData);
         foreach ($rules as $rule)
         {
             $ruleSet->addRule($rule);
         }
-        $ruleSet->applyToProduct($this->mockProduct);
+        $ruleSet->applyToProduct($this->productMock);
     }
 
     /**
@@ -101,19 +101,28 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $ruleEntity = $this->getMock(RuleInterface::__INTERFACE);
-            $mockCondition = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'getTitle', 'getDescription' ]);
-            $mockCondition->expects($this->any())
+            $ruleEntityStub = $this->getMock(RuleInterface::__INTERFACE);
+            $ruleEntityStub->expects($this->any())
+                ->method('getPriority')
+                ->will($this->returnValue($ruleData['priority']));
+            $ruleEntityStub->expects($this->any())
+                ->method('getAttribute')
+                ->will($this->returnValue($this->attributeStub));
+
+            $conditionStub = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'getTitle', 'getDescription' ]);
+            $conditionStub->expects($this->any())
                 ->method('match')
-                ->with($this->mockProduct, $ruleEntity)
+                ->with($this->productMock, $ruleEntityStub)
                 ->willReturn($ruleData['matches']);
-            $mockGenerator = $this->getMock(GeneratorInterface::__INTERFACE, [ 'generateAttributeValue', 'getTitle', 'getDescription' ]);
-            $mockGenerator->expects($this->any())
+
+            $generatorStub = $this->getMock(GeneratorInterface::__INTERFACE, [ 'generateAttributeValue', 'getTitle', 'getDescription' ]);
+            $generatorStub->expects($this->any())
                 ->method('generateAttributeValue')
-                ->with($this->mockProduct, $ruleEntity)
+                ->with($this->productMock, $ruleEntityStub)
                 ->willReturn($ruleData['value']);
+
             $rules[] = new Rule(
-                $ruleEntity, $this->mockAttribute, $mockCondition, $mockGenerator, $ruleData['priority']);
+                $ruleEntityStub, $conditionStub, $generatorStub);
         }
         return $rules;
     }

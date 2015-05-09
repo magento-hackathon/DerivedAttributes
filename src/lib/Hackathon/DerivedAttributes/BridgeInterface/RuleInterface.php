@@ -41,4 +41,11 @@ interface RuleInterface
      * @return RuleFilterInterface[]
      */
     function getRuleFilters();
+
+    /**
+     * Return rule priority (higher number = more priority)
+     *
+     * @return int
+     */
+    function getPriority();
 }

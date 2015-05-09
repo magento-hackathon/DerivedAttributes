@@ -40,14 +40,14 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $filters;
 
-    function __construct(RuleInterface $ruleEntity, Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator, $priority = 0)
+    function __construct(RuleInterface $ruleEntity, ConditionInterface $condition, GeneratorInterface $generator)
     {
         $this->ruleEntity = $ruleEntity;
         //TODO add filters
-        $this->attribute = $attribute;
+        $this->attribute = $ruleEntity->getAttribute();
         $this->condition = $condition;
         $this->generator = $generator;
-        $this->priority = $priority;
+        $this->priority = $ruleEntity->getPriority();
     }
 
     /**

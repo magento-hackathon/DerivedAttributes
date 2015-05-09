@@ -4,10 +4,10 @@ namespace Hackathon\DerivedAttributes\Implementor;
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
- * Interface ProductInterface
+ * Interface EntityInterface
  * @package Hackathon\DerivedAttributes\Implementor
  */
-interface ProductInterface
+interface EntityInterface
 {
     const __CLASS = __CLASS__;
     /**

@@ -9,11 +9,27 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\EntityInterface;
+use Hackathon\DerivedAttributes\Implementor\RuleInterface;
 
 interface GeneratorInterface
 {
     const __CLASS = __CLASS__;
 
-    function generateAttributeValue(ProductInterface $product, Attribute $attribute);
-} 
+    /**
+     * @param EntityInterface $product
+     * @param RuleInterface $ruleEntity
+     * @return mixed
+     */
+    function generateAttributeValue(EntityInterface $product, RuleInterface $ruleEntity);
+
+    /**
+     * @return string
+     */
+    function getTitle();
+
+    /**
+     * @return string
+     */
+    function getDescription();
+}

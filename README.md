@@ -4,15 +4,17 @@ Interfaces:
 ---
 
 GeneratorInterface
- - mixed generate(Entity, DerivedAttributeEntity)
+ - mixed generate(Entity, RuleEntity)
  - string getTitle()
  - string getDescription()
+
 FilterInterface
  - mixed filter(Entity, FilterEntity, mixed $current)
  - string getTitle()
  - string getDescription()
+
 ConditionInterface (ex. impl. BooleanAttributeCondition)
- - bool match(Entity, ConditionEntity)
+ - bool match(Entity, RuleEntity)
  - string getTitle()
  - string getDescription()
 
@@ -32,8 +34,8 @@ Database
   - store_id
   - active
   - priority
-//  - date_from
-//  - date_to
+  - -date_from-
+  - -date_to´-
 - derivedattribute_filter
   - id
   - da_id
@@ -41,13 +43,13 @@ Database
   - filter_data
   - sort_order
   - active
-- derived_attribute_condition
+- -derived_attribute_condition-
   - id
   - da_id
   - active
   - condition_type
   - condition_data
-// - parent_id ?
+ - parent_id (?)
 
 
 Magento Bridge
@@ -56,7 +58,7 @@ Magento Bridge
 - EntityInterface
 - DerivedAttributeRuleInterface
 - DerivedAttributeFilterInterface
-- DerivedAttributeConditionInterface
+- -DerivedAttributeConditionInterface-
 
 
 Ideas for later

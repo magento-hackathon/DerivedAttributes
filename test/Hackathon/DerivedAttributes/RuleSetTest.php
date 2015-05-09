@@ -9,7 +9,8 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\EntityInterface;
+use Hackathon\DerivedAttributes\Implementor\RuleInterface;
 
 class RuleSetTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,14 +19,14 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     private $mockAttribute;
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|ProductInterface
+     * @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface
      */
     private $mockProduct;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->mockProduct   = $this->getMockForAbstractClass(ProductInterface::__CLASS,
+        $this->mockProduct   = $this->getMockForAbstractClass(EntityInterface::__CLASS,
             [], '', true, true, true, [ 'setAttributeValue' ]);
         $this->mockAttribute = $this->getMock(Attribute::__CLASS, [], ['dummy']);
     }
@@ -98,18 +99,19 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $mockCondition = $this->getMock(ConditionInterface::__CLASS, [ 'match' ]);
+            $ruleEntity = $this->getMock(RuleInterface::__CLASS);
+            $mockCondition = $this->getMock(ConditionInterface::__CLASS, [ 'match', 'getTitle', 'getDescription' ]);
             $mockCondition->expects($this->any())
                 ->method('match')
-                ->with($this->mockProduct)
+                ->with($this->mockProduct, $ruleEntity)
                 ->willReturn($ruleData['matches']);
-            $mockGenerator = $this->getMock(GeneratorInterface::__CLASS, [ 'generateAttributeValue' ]);
+            $mockGenerator = $this->getMock(GeneratorInterface::__CLASS, [ 'generateAttributeValue', 'getTitle', 'getDescription' ]);
             $mockGenerator->expects($this->any())
                 ->method('generateAttributeValue')
-                ->with($this->mockProduct, $this->mockAttribute)
+                ->with($this->mockProduct, $ruleEntity)
                 ->willReturn($ruleData['value']);
             $rules[] = new Rule(
-                $this->mockAttribute, $mockCondition, $mockGenerator, $ruleData['priority']);
+                $ruleEntity, $this->mockAttribute, $mockCondition, $mockGenerator, $ruleData['priority']);
         }
         return $rules;
     }

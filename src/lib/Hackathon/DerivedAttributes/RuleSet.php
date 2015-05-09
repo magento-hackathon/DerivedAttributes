@@ -9,7 +9,7 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\EntityInterface;
 use SGH\Comparable\SortFunctions;
 
 class RuleSet
@@ -50,11 +50,10 @@ class RuleSet
     }
 
     /**
-     * @param ProductInterface $product
-     * @internal param Attribute $attribute
+     * @param EntityInterface $product
      * @return void
      */
-    public function applyToProduct(ProductInterface $product)
+    public function applyToProduct(EntityInterface $product)
     {
         $this->sortRules();
         foreach ($this->rules as $rule) {

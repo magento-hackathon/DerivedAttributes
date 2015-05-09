@@ -9,8 +9,9 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\EntityInterface;
 use \Comparable;
+use Hackathon\DerivedAttributes\Implementor\RuleInterface;
 
 class Rule implements \SGH\Comparable\Comparable
 {
@@ -31,12 +32,17 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $generator;
     /**
+     * @var RuleInterface
+     */
+    private $ruleEntity;
+    /**
      * @var FilterInterface[]
      */
     private $filters;
 
-    function __construct(Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator, $priority = 0)
+    function __construct(RuleInterface $ruleEntity, Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator, $priority = 0)
     {
+        $this->ruleEntity = $ruleEntity;
         //TODO add filters
         $this->attribute = $attribute;
         $this->condition = $condition;
@@ -77,13 +83,13 @@ class Rule implements \SGH\Comparable\Comparable
     /**
      * Applies attribute rule to product. Returns true if rule was applicable
      *
-     * @param ProductInterface $product
+     * @param EntityInterface $product
      * @return bool
      */
-    public function applyToProduct(ProductInterface $product)
+    public function applyToProduct(EntityInterface $product)
     {
-        if ($this->condition->match($product)) {
-            $value = $this->generator->generateAttributeValue($product, $this->getAttribute());
+        if ($this->condition->match($product, $this->ruleEntity)) {
+            $value = $this->generator->generateAttributeValue($product, $this->ruleEntity);
             $product->setAttributeValue($this->getAttribute(), $value);
             return true;
         }

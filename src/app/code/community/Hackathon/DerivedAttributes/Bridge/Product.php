@@ -1,6 +1,6 @@
 <?php
 
-class Hackathon_DerivedAttributes_Bridge_Product implements \Hackathon\DerivedAttributes\Implementor\ProductInterface
+class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAttributes\Implementor\EntityInterface
 {
     /**
      * @var Mage_Catalog_Model_Product

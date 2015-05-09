@@ -9,11 +9,27 @@
 namespace Hackathon\DerivedAttributes;
 
 
-use Hackathon\DerivedAttributes\Implementor\ProductInterface;
+use Hackathon\DerivedAttributes\Implementor\EntityInterface;
+use Hackathon\DerivedAttributes\Implementor\RuleInterface;
 
 interface ConditionInterface
 {
     const __CLASS = __CLASS__;
 
-    function match(ProductInterface $product);
-} 
+    /**
+     * @param EntityInterface $product
+     * @param RuleInterface $ruleInstance
+     * @return boolean
+     */
+    function match(EntityInterface $product, RuleInterface $ruleInstance);
+
+    /**
+     * @return string
+     */
+    function getTitle();
+
+    /**
+     * @return string
+     */
+    function getDescription();
+}

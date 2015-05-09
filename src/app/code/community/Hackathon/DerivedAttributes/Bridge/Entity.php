@@ -7,23 +7,26 @@ use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
- * Customer-entity implementation of entity-bridge-interface.
+ * Entity implementation of entity-bridge-interface.
  */
-class Hackathon_DerivedAttributes_Bridge_Entity_Customer implements EntityInterface
+class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAttributes\BridgeInterface\EntityInterface
 {
-    
-    private $customer;
+    /**
+     * @var Mage_Core_Model_Abstract
+     */
+    private $entity;
 
-    public function __construct(Mage_Customer_Model_Customer $customer){
-        $this->customer = $customer;
+    function __construct(Mage_Core_Model_Abstract $entity)
+    {
+        $this->entity = $entity;
     }
-    
+
     /**
      * @return boolean
      */
     function isChanged()
     {
-        return $this->customer->hasDataChanges();
+        return $this->entity->hasDataChanges();
     }
 
     /**
@@ -32,7 +35,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity_Customer implements EntityInterf
      */
     function getAttributeValue(Attribute $attribute)
     {
-        return $this->customer->getData($attribute->getAttributeCode());
+        return $this->entity->getData($attribute->getAttributeCode());
     }
 
     /**
@@ -41,7 +44,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity_Customer implements EntityInterf
      */
     function getLocalizedAttributeValue(Attribute $attribute)
     {
-        return $this->customer->getAttributeText($attribute->getAttributeCode());
+        return $this->entity->getAttributeText($attribute->getAttributeCode());
     }
 
     /**
@@ -51,7 +54,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity_Customer implements EntityInterf
      */
     function setAttributeValue(Attribute $attribute, $value)
     {
-        $this->customer->setData($attribute->getAttributeCode(), $value);
+        $this->entity->setData($attribute->getAttributeCode(), $value);
     }
-    
+
 }

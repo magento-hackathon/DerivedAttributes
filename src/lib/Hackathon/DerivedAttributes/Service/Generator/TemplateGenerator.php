@@ -34,10 +34,10 @@ class TemplateGenerator implements GeneratorInterface
     }
 
     /**
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return mixed
      */
-    public function generateAttributeValue(EntityInterface $product)
+    public function generateAttributeValue(EntityInterface $entity)
     {
         // TODO: Implement generateAttributeValue() method.
     }

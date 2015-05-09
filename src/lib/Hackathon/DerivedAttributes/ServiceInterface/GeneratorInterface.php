@@ -27,10 +27,10 @@ interface GeneratorInterface
     function getData();
 
     /**
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return mixed
      */
-    function generateAttributeValue(EntityInterface $product);
+    function generateAttributeValue(EntityInterface $entity);
 
     /**
      * @return string

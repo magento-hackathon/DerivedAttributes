@@ -28,10 +28,10 @@ interface ConditionInterface
     function getData();
 
     /**
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return boolean
      */
-    function match(EntityInterface $product);
+    function match(EntityInterface $entity);
 
     /**
      * @return string

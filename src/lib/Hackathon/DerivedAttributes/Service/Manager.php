@@ -54,6 +54,12 @@ class Manager
         return $result;
     }
 
+    /**
+     * Factory method: instantiate condition based on bridge interface
+     *
+     * @param RuleConditionInterface $conditionEntity
+     * @return ConditionInterface
+     */
     public function getConditionFromEntity(RuleConditionInterface $conditionEntity)
     {
         $type = $conditionEntity->getConditionType();
@@ -65,6 +71,13 @@ class Manager
         $condition->configure($conditionEntity->getConditionData());
         return $condition;
     }
+
+    /**
+     * Factory method: instantiate generator based on bridge interface
+     *
+     * @param RuleGeneratorInterface $generatorEntity
+     * @return GeneratorInterface
+     */
     public function getGeneratorFromEntity(RuleGeneratorInterface $generatorEntity)
     {
         $type = $generatorEntity->getGeneratorType();

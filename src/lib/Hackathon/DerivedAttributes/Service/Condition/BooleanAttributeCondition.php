@@ -10,18 +10,17 @@ class BooleanAttributeCondition implements ConditionInterface
     const __CLASS = __CLASS__;
 
     const TITLE = 'Boolean Attribute';
-    const DESCRIPTION = 'Match if a certain attribute is "1"';
+    const DESCRIPTION = 'Match attribute with given attribute code is "1".';
 
     private $data;
 
     /**
-     * @param string $data
+     * @param string $data Attribute Code
      * @return $this
      */
     public function configure($data)
     {
         $this->data = $data;
-        // TODO: Implement configure() method.
         return $this;
     }
 
@@ -34,12 +33,12 @@ class BooleanAttributeCondition implements ConditionInterface
         return $this->data;
     }
     /**
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return boolean
      */
-    public function match(EntityInterface $product)
+    public function match(EntityInterface $entity)
     {
-        // TODO: Implement match() method.
+        return (bool) $entity->getAttributeValue(new Attribute($this->data));
     }
 
     /**

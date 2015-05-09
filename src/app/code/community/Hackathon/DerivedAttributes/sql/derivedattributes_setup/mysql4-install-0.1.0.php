@@ -1,6 +1,5 @@
 <?php
 
-/* @var $installer Brille24_FriendsForFriends_Model_Mysql4_Resource_Setup */
 $installer = $this;
 
 $installer->startSetup();

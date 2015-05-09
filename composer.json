@@ -1,0 +1,26 @@
+{
+  "name": "magento-hackathon/derived-attributes",
+  "license": "OSL-3.0",
+  "type": "magento-module",
+  "description": "Generate attribute values based on rules",
+  "require": {
+    "magento-hackathon/magento-composer-installer": "*",
+    "sgh/comparable": "~1.1.1",
+    "firegento/psr0autoloader": "*"
+  },
+  "require-dev": {
+    "ecomdev/ecomdev_phpunit": "~0.3.7"
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "http://packages.firegento.com"
+    }
+  ],
+  "authors":[
+    {
+      "name":"Fabian Schmengler",
+      "email":"fs@integer-net.de"
+    }
+  ]
+}

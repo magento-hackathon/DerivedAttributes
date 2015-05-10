@@ -42,6 +42,12 @@ class Hackathon_DerivedAttributes_Model_Observer{
                     $ruleCollection->addFieldToFilter('attribute_id', $attribute->getId());
                     $ruleCollection->addFieldToFilter('active', "1");
 
+                    # ... WHERE store_id IS NULL OR FIND_IN_SET(:storeId, store_id)
+                    $ruleCollection->addFieldToFilter('store_id', [
+                        ['null'   => null],
+                        ['finset' => [$modelObject->getStoreId()]]
+                    ]);
+
                     $ruleSet = new RuleSet(new Attribute($attribute->getAttributeCode()));
                     foreach($ruleCollection->getIterator() as $ruleModel){
                         $ruleSet->addRule(new Rule($ruleModel, $serviceManager));

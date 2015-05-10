@@ -33,7 +33,7 @@ class Hackathon_DerivedAttributes_Model_Observer{
             $ruleCollection = $ruleModel->getCollection();
 
             /* @var $serviceManager Manager */
-            $serviceManager = Mage::getSingletion("derivedattributes/manager")->getRuleManager();
+            $serviceManager = Mage::getSingleton("derivedattributes/manager")->getRuleManager();
 
             foreach($modelResource->getAttributesByCode() as $code => $attribute){
                 /* @var $attribute Mage_Eav_Model_Entity_Attribute */

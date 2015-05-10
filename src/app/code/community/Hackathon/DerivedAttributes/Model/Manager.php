@@ -10,7 +10,7 @@ use Hackathon\DerivedAttributes\Attribute;
 /**
  * Singleton model containing rule-manager.
  */
-class Hackathon_DerivedAttributes_Model_Rule 
+class Hackathon_DerivedAttributes_Model_Manager 
     extends Mage_Core_Model_Abstract{
     
     /**

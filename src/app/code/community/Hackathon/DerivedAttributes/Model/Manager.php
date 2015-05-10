@@ -27,7 +27,12 @@ class Hackathon_DerivedAttributes_Model_Manager
      */
     public function getRuleManager(){
         if(is_null($this->manager)){
-            $this->setRuleManager(new Manager());
+            $ruleManager = new Manager();
+            $this->setRuleManager($ruleManager);
+            Mage::dispatchEvent("derivedattribute_new_rulemanager", [
+                'manager_model' => $this,
+                'rule_manager'  => $ruleManager
+            ]);
         }
         return $this->manager;
     }

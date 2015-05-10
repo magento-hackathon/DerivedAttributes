@@ -30,7 +30,7 @@ class Hackathon_DerivedAttributes_Model_Rule
     function getRuleGenerator(){
 
         /* @var $manager Manager */
-        $manager = Mage::getSingletion("derivedattributes/manager")->getRuleManager();
+        $manager = Mage::getSingleton("derivedattributes/manager")->getRuleManager();
 
         $generatorEntity = new Hackathon_DerivedAttributes_Bridge_Generator(
             $this->getGeneratorType(),

@@ -17,7 +17,7 @@ class RuleSet
     /**
      * @var Rule[]
      */
-    private $rules;
+    private $rules = array();
     /**
      * @var Attribute
      */

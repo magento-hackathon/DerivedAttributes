@@ -6,6 +6,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
+use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
@@ -29,7 +30,8 @@ class Manager
 
     public function resetConditionTypes(){
         $this->conditionTypes = [
-            'boolean-attribute' => BooleanAttributeCondition::__CLASS
+            'boolean-attribute' => BooleanAttributeCondition::__CLASS,
+            'always' => AlwaysCondition::__CLASS
         ];
     }
 

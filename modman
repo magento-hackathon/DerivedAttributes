@@ -1,3 +1,4 @@
 src/app/code/community/Hackathon/DerivedAttributes app/code/community/Hackathon/DerivedAttributes
 src/app/etc/modules/Hackathon_DerivedAttributes.xml app/etc/modules/Hackathon_DerivedAttributes.xml
 src/lib/Hackathon/DerivedAttributes lib/Hackathon/DerivedAttributes
+src/app/design/adminhtml/base/default/layout/hackathon_derivedattributes.xml app/design/adminhtml/base/default/layout/hackathon_derivedattributes.xml

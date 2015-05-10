@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <attributes>
+                    <children>
+                        <derived_attributes>
+                            <title>Derived Attributes</title>
+                            <sort_order>100</sort_order>
+                            <action>adminhtml/derivedAttributes_rule/index</action>
+                        </derived_attributes>
+                    </children>
+                </attributes>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <attributes>
+                                <children>
+                                    <derived_attributes>
+                                        <title>Derived Attributes</title>
+                                        <sort_order>100</sort_order>
+                                    </derived_attributes>
+                                </children>
+                            </attributes>
+                        </children>
+                    </catalog>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

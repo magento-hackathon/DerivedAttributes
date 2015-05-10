@@ -16,7 +16,7 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Rule_Grid extends Mage_Adminht
 
     /**
      * Get collection object
-     * @return Hackathon_DerivedAttributes_Model_Resource_Derivedattributes/rule_Collection
+     * @return Hackathon_DerivedAttributes_Model_Resource_Derivedattributes_Rule_Collection
      */
     public function getCollection()
     {
@@ -34,6 +34,49 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Rule_Grid extends Mage_Adminht
      */
     protected function _prepareColumns()
     {
+        $this->addColumn('rule_id', array(
+            'header'    => $this->__('ID'),
+            'align'     =>'right',
+            'width'     => '50px',
+            'index'     => 'rule_id',
+        ));
+
+        $this->addColumn('name', array(
+            'header'    => $this->__('Rule Name'),
+            'align'     =>'left',
+            'index'     => 'name',
+        ));
+
+        $this->addColumn('is_active', array(
+            'header'    => $this->__('Status'),
+            'align'     => 'left',
+            'width'     => '80px',
+            'index'     => 'is_active',
+            'type'      => 'options',
+            'options'   => array(
+                1 => 'Active',
+                0 => 'Inactive',
+            ),
+        ));
+
+        if (!Mage::app()->isSingleStoreMode()) {
+            $this->addColumn('rule_store_id', array(
+                'header'    => $this->__('Store'),
+                'align'     =>'left',
+                'index'     => 'store_id',
+                'type'      => 'options',
+                'sortable'  => false,
+                'options'   => Mage::getSingleton('adminhtml/system_store')->getStoreOptionHash(),
+                'width'     => 200,
+            ));
+        }
+
+        $this->addColumn('priority', array(
+            'header'    => $this->__('Priority'),
+            'align'     => 'right',
+            'index'     => 'priority',
+            'width'     => 100,
+        ));
         return parent::_prepareColumns();
     }
 

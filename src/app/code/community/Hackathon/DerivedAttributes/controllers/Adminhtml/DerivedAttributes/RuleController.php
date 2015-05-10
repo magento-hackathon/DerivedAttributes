@@ -21,7 +21,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     protected function _initAction()
     {
         $this->loadLayout()
-            ->_setActiveMenu('catalog/attribute/rules')
+            ->_setActiveMenu('catalog/attributes/derived_attributes')
             ->_addBreadcrumb($this->__('Derived Attributes'),$this->__('Rules'))
         ;
         return $this;
@@ -63,10 +63,9 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
             $model->addData($data);
         }
 
-        Mage::register('current_derived_attributes_rule', $model);
+        Mage::register('current_derived_attribute_rule', $model);
 
-        //TODO layout xml
-        $this->_initAction()->getLayout()->getBlock('derived_attribute_rule_edit')
+        $this->_initAction()->getLayout()->getBlock('derivedattributes_rule_edit')
             ->setData('action', $this->getUrl('*/*/save'));
 
         $this
@@ -183,7 +182,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
      */
     protected function _isAllowed()
     {
-        return Mage::getSingleton('admin/session')->isAllowed('catalog/attribute/rules');
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/derived_attributes');
     }
 
 }

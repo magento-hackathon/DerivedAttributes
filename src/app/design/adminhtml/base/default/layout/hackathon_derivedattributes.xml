@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout>
+    <adminhtml_derivedattributes_rule_index>
+        <reference name="content">
+            <block type="derivedattributes/adminhtml_rule" name="derivedattributes_rule"></block>
+        </reference>
+    </adminhtml_derivedattributes_rule_index>
+    <adminhtml_derivedattributes_rule_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs"><flag>1</flag></action>
+            <action method="setCanLoadRulesJs"><flag>1</flag></action>
+        </reference>
+        <reference name="content">
+            <block type="derivedattributes/adminhtml_rule_edit" name="derivedattributes_rule_edit"></block>
+        </reference>
+    </adminhtml_derivedattributes_rule_edit>
+</layout>

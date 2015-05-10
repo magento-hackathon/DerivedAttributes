@@ -55,7 +55,7 @@
             </model_save_before>
         </events>
         <psr0_namespaces>
-            <Hackathon />
+            <Hackathon/>
         </psr0_namespaces>
     </global>
     <admin>
@@ -69,4 +69,20 @@
             </adminhtml>
         </routers>
     </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <hackathon_derivedattributes>
+                    <file>hackathon_derivedattributes.xml</file>
+                </hackathon_derivedattributes>
+            </updates>
+        </layout>
+    </adminhtml>
+    <phpunit>
+        <suite>
+            <modules>
+                <Hackathon_DerivedAttributes />
+            </modules>
+        </suite>
+    </phpunit>
 </config>

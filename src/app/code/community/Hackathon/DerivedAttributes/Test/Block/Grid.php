@@ -64,5 +64,6 @@ class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_C
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
         $this->assertResponseBodyContains('value="Test Rule 1"', 'Name input should be filled');
         $this->assertResponseBodyContains('<option value="1" selected="selected">Active</option>', 'Status input should be set to active');
+        $this->assertResponseBodyContains('This is a template generator rule for the product description');
     }
 }

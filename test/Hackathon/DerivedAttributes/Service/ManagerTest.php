@@ -12,6 +12,7 @@ namespace Hackathon\DerivedAttributes\Service;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
 
@@ -36,8 +37,11 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new Manager();
         $actualTypes = $manager->getAvailableConditionTypes();
         $this->assertEquals(
-            ['boolean-attribute' => ['title' => BooleanAttributeCondition::TITLE, 'description' => BooleanAttributeCondition::DESCRIPTION]],
-            $actualTypes, '', 0.0, 10, true);
+            [
+                'boolean-attribute' => ['title' => BooleanAttributeCondition::TITLE, 'description' => BooleanAttributeCondition::DESCRIPTION],
+                'always' => ['title' => AlwaysCondition::TITLE, 'description' => AlwaysCondition::DESCRIPTION],
+            ],
+            $actualTypes, '', 0.0, 10);
     }
 
     /**

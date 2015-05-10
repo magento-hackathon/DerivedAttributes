@@ -32,7 +32,8 @@ class Hackathon_DerivedAttributes_Model_Observer{
             /* @var $ruleCollection Hackathon_DerivedAttributes_Model_Resource_Rule_Collection */
             $ruleCollection = $ruleModel->getCollection();
 
-            $serviceManager = new Manager();
+            /* @var $serviceManager Manager */
+            $serviceManager = Mage::getSingletion("derivedattributes/manager")->getRuleManager();
 
             foreach($modelResource->getAttributesByCode() as $code => $attribute){
                 /* @var $attribute Mage_Eav_Model_Entity_Attribute */
@@ -45,8 +46,6 @@ class Hackathon_DerivedAttributes_Model_Observer{
 
                     $ruleSet = new RuleSet(new Attribute($attribute->getAttributeCode()));
                     foreach($ruleCollection->getIterator() as $ruleModel){
-
-                        $ruleModel->setRuleManager($serviceManager);
 
                         $ruleSet->addRule(new Rule($ruleModel, $serviceManager));
                         $ruleSet->applyToEntity($bridgeObject);

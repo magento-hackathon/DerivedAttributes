@@ -23,22 +23,6 @@ class Hackathon_DerivedAttributes_Model_Rule
     }
 
     /**
-     * @var Manager
-     */
-    protected $ruleManager;
-
-    public function setRuleManager(Manager $manager){
-        $this->manager = $manager;
-    }
-
-    /**
-     * @return Manager
-     */
-    public function getRuleManager(){
-        return $this->manager;
-    }
-
-    /**
      * Return generator
      *
      * @return RuleGeneratorInterface
@@ -46,7 +30,7 @@ class Hackathon_DerivedAttributes_Model_Rule
     function getRuleGenerator(){
 
         /* @var $manager Manager */
-        $manager = $this->getRuleManager();
+        $manager = Mage::getSingletion("derivedattributes/manager")->getRuleManager();
 
         $generatorEntity = new Hackathon_DerivedAttributes_Bridge_Generator(
             $this->getGeneratorType(),

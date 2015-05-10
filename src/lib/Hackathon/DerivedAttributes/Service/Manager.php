@@ -13,12 +13,49 @@ class Manager
 {
     const __CLASS = __CLASS__;
 
-    private $generatorTypes = [
-        'template' => TemplateGenerator::__CLASS
-    ];
-    private $conditionTypes = [
-        'boolean-attribute' => BooleanAttributeCondition::__CLASS
-    ];
+    private $generatorTypes = [];
+    private $conditionTypes = [];
+
+    public function __construct(){
+        $this->resetGeneratorTypes();
+        $this->resetConditionTypes();
+    }
+
+    public function resetGeneratorTypes(){
+        $this->generatorTypes = [
+            'template' => TemplateGenerator::__CLASS
+        ];
+    }
+
+    public function resetConditionTypes(){
+        $this->conditionTypes = [
+            'boolean-attribute' => BooleanAttributeCondition::__CLASS
+        ];
+    }
+
+    public function getGeneratorTypes(){
+        return $this->generatorTypes;
+    }
+
+    public function addGeneratorType($id, $class){
+        if(is_object($class)){
+            $class = get_class($class);
+        }
+        assert(is_subclass_of($class, RuleGeneratorInterface::__CLASS));
+        $this->generatorTypes[(string)$id] = $class;
+    }
+
+    public function getConditionTypes(){
+        return $this->conditionTypes;
+    }
+
+    public function addConditionType($id, $class){
+        if(is_object($class)){
+            $class = get_class($class);
+        }
+        assert(is_subclass_of($class, ConditionInterface::__CLASS));
+        $this->generatorTypes[(string)$id] = $class;
+    }
 
     /**
      * Return meta information of available generators
@@ -33,8 +70,7 @@ class Manager
                 $generator = new $class;
                 $result[$id] = [
                     'title' => $generator->getTitle(), 
-                    'description' => $generator->getDescription(),
-                    'generator' => $generator
+                    'description' => $generator->getDescription()
                 ];
             }
         }

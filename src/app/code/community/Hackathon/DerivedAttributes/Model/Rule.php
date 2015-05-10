@@ -4,6 +4,8 @@
  */
 
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\Service\Manager;
+use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Event-observer for derived attributes.
@@ -21,12 +23,39 @@ class Hackathon_DerivedAttributes_Model_Rule
     }
 
     /**
+     * @var Manager
+     */
+    protected $ruleManager;
+
+    public function setRuleManager(Manager $manager){
+        $this->manager = $manager;
+    }
+
+    /**
+     * @return Manager
+     */
+    public function getRuleManager(){
+        return $this->manager;
+    }
+
+    /**
      * Return generator
      *
      * @return RuleGeneratorInterface
      */
     function getRuleGenerator(){
 
+        /* @var $manager Manager */
+        $manager = $this->getRuleManager();
+
+        $generatorEntity = new Hackathon_DerivedAttributes_Bridge_Generator(
+            $this->getGeneratorType(),
+            $this->getGeneratorData()
+        );
+        
+        $generator = $manager->getGeneratorFromEntity($generatorEntity);
+
+        return $generator;
     }
 
     /**
@@ -36,6 +65,14 @@ class Hackathon_DerivedAttributes_Model_Rule
      */
     function getAttribute(){
 
+        $attributeId = $this->getData("attribute_id");
+    
+        /* @var $magentoAttribute Mage_Eav_Model_Entity_Attribute */
+        $magentoAttribute = Mage::getModel("eav/entity_attribute")->load($attributeId);
+
+        $attribute = new Attribute($attributeCode);
+
+        return $attribute;
     }
 
     /**
@@ -44,7 +81,7 @@ class Hackathon_DerivedAttributes_Model_Rule
      * @return string
      */
     function getGeneratorType(){
-
+        return $this->getData("generator_type");
     }
 
     /**
@@ -53,7 +90,7 @@ class Hackathon_DerivedAttributes_Model_Rule
      * @return string
      */
     function getGeneratorData(){
-
+        return $this->getData("generator_data");
     }
 
     /**
@@ -63,6 +100,12 @@ class Hackathon_DerivedAttributes_Model_Rule
      */
     function getRuleCondition(){
 
+        $conditionId = $this->getData("condition_id");
+
+        /* @var $condition Hackathon_DerivedAttributes_Model_RuleCondition */
+        $condition = Mage::getModel("derivedattributes/rule_condition")->load($conditionId);
+
+        return $condition;
     }
 
     /**
@@ -72,6 +115,19 @@ class Hackathon_DerivedAttributes_Model_Rule
      */
     function getRuleFilters(){
 
+        $filters = array();
+
+        /* @var $filterModel Hackathon_DerivedAttributes_Model_RuleFilter */
+        $filterModel = Mage::getModel("derivedattributes/rule_filter");
+
+        /* @var $filterCollection Hackathon_DerivedAttributes_Model_Resource_RuleFilter_Collection */
+        $filterCollection = $filterModel->getCollection();
+    
+        foreach($filterCollection->getIterator() as $filterModel){
+            $filters[] = $filterModel;
+        }
+
+        return $filters;
     }
 
     /**
@@ -80,7 +136,7 @@ class Hackathon_DerivedAttributes_Model_Rule
      * @return int
      */
     function getPriority(){
-
+        return (int)$this->getData("priority");
     }
 
 }

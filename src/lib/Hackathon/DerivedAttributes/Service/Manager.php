@@ -31,7 +31,11 @@ class Manager
         foreach ($this->generatorTypes as $id => $class) {
             if (is_subclass_of($class, GeneratorInterface::__INTERFACE)) {
                 $generator = new $class;
-                $result[$id] = ['title' => $generator->getTitle(), 'description' => $generator->getDescription()];
+                $result[$id] = [
+                    'title' => $generator->getTitle(), 
+                    'description' => $generator->getDescription(),
+                    'generator' => $generator
+                ];
             }
         }
         return $result;

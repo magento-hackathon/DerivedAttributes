@@ -3,6 +3,11 @@
  * @author Gerrit Addiks <gerrit.addiks@brille24.de>
  */
 
+use Hackathon\DerivedAttributes\Service\Manager;
+use Hackathon\DerivedAttributes\RuleSet;
+use Hackathon\DerivedAttributes\Attribute;
+use Hackathon\DerivedAttributes\Rule;
+
 /**
  * Event-observer for derived attributes.
  */
@@ -27,7 +32,8 @@ class Hackathon_DerivedAttributes_Model_Observer{
             /* @var $ruleCollection Hackathon_DerivedAttributes_Model_Resource_Rule_Collection */
             $ruleCollection = $ruleModel->getCollection();
 
-            $serviceManager = new \Hackathon\DerivedAttributes\Service\Manager();
+            $serviceManager = new Manager();
+
             foreach($modelResource->getAttributesByCode() as $code => $attribute){
                 /* @var $attribute Mage_Eav_Model_Entity_Attribute */
 
@@ -37,11 +43,12 @@ class Hackathon_DerivedAttributes_Model_Observer{
                     $ruleCollection->addFieldToFilter('attribute_id', $attribute->getId());
                     $ruleCollection->addFieldToFilter('active', "1");
 
-                    $ruleSet = new \Hackathon\DerivedAttributes\RuleSet(
-                        new \Hackathon\DerivedAttributes\Attribute($attribute->getAttributeCode()));
+                    $ruleSet = new RuleSet(new Attribute($attribute->getAttributeCode()));
                     foreach($ruleCollection->getIterator() as $ruleModel){
 
-                        $ruleSet->addRule(new \Hackathon\DerivedAttributes\Rule($ruleModel, $serviceManager));
+                        $ruleModel->setRuleManager($serviceManager);
+
+                        $ruleSet->addRule(new Rule($ruleModel, $serviceManager));
                         $ruleSet->applyToEntity($bridgeObject);
 
                     }

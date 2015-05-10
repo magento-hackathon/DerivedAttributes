@@ -1,4 +1,8 @@
 <?php
+ini_set('error_reporting', E_ALL); // or error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
 define('CLASS_DIR', realpath(__DIR__ . '/../src/lib/'));
 set_include_path(get_include_path().PATH_SEPARATOR.CLASS_DIR);
 spl_autoload_register(function($className)
@@ -11,4 +15,4 @@ spl_autoload_register(function($className)
         return false;
     }
 );
-require_once 'vendor/composer/autoload.php';
+require_once 'vendor/autoload.php';

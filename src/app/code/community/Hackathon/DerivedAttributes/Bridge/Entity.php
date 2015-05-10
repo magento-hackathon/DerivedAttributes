@@ -44,7 +44,8 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      */
     function getLocalizedAttributeValue(Attribute $attribute)
     {
-        return $this->entity->getAttributeText($attribute->getAttributeCode());
+        if ($value = $this->entity->getAttributeText($attribute->getAttributeCode()) !== false ) return $value;
+        else return $this->entity->getData($attribute->getAttributeCode());
     }
 
     /**

@@ -76,11 +76,11 @@ class TemplateGenerator implements GeneratorInterface
              * the frontend model work:
              */
             $attr = new Attribute($matches[1]);
-            if (is_array($this->entity->getAttributeValue($attr))) {
-                $this->entity->setAttributeValue($attr,
-                    join(',', $this->entity->getAttributeValue($attr)));
+            if (is_array($this->entity->getLocalizedAttributeValue($attr))) {
+                $this->entity->getLocalizedAttributeValue($attr,
+                    join(',', $this->entity->getLocalizedAttributeValue($attr)));
             }
-            $_value = $this->entity->getAttributeValue($attr);
+            $_value = $this->entity->getLocalizedAttributeValue($attr);
             return $_value;
         }, $valueTemplate);
         return $value;

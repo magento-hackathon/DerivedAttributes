@@ -20,7 +20,7 @@ class TemplateGeneratorTest extends \PHPUnit_Framework_TestCase
         $entityStub = $this->getMock(EntityInterface::__INTERFACE);
 
         $entityStub->expects($this->any())
-            ->method('getAttributeValue')
+            ->method('getLocalizedAttributeValue')
             ->willReturnCallback(
                 function ($attributeCode) use ($value, $value2) {
                     switch ($attributeCode->getAttributeCode()) {

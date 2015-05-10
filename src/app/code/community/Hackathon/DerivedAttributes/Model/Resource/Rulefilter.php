@@ -17,7 +17,7 @@ class Hackathon_DerivedAttributes_Model_Resource_RuleFilter
 	 * @see Varien_Object::_construct()
 	 */
     protected function _construct(){
-        $this->_init("derivedattributes/rule_filter", "rule_filter_id");
+        $this->_init("derivedattributes/rulefilter", "rule_filter_id");
     }
 
     /**

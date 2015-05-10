@@ -8,7 +8,7 @@ use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
- * Event-observer for derived attributes.
+ * Bridge-entity for rule(s).
  */
 class Hackathon_DerivedAttributes_Model_Rule 
     extends Mage_Core_Model_Abstract 
@@ -29,17 +29,12 @@ class Hackathon_DerivedAttributes_Model_Rule
      */
     function getRuleGenerator(){
 
-        /* @var $manager Manager */
-        $manager = Mage::getSingleton("derivedattributes/manager")->getRuleManager();
-
         $generatorEntity = new Hackathon_DerivedAttributes_Bridge_Generator(
             $this->getGeneratorType(),
             $this->getGeneratorData()
         );
         
-        $generator = $manager->getGeneratorFromEntity($generatorEntity);
-
-        return $generator;
+        return $generatorEntity;
     }
 
     /**
@@ -53,6 +48,8 @@ class Hackathon_DerivedAttributes_Model_Rule
     
         /* @var $magentoAttribute Mage_Eav_Model_Entity_Attribute */
         $magentoAttribute = Mage::getModel("eav/entity_attribute")->load($attributeId);
+
+        $attributeCode = $magentoAttribute->getAttributeCode();
 
         $attribute = new Attribute($attributeCode);
 
@@ -84,10 +81,13 @@ class Hackathon_DerivedAttributes_Model_Rule
      */
     function getRuleCondition(){
 
-        $conditionId = $this->getData("condition_id");
+        $conditionType = $this->getData("condition_type");
+        $conditionData = $this->getData("condition_data");
 
-        /* @var $condition Hackathon_DerivedAttributes_Model_RuleCondition */
-        $condition = Mage::getModel("derivedattributes/rule_condition")->load($conditionId);
+        /* @var $condition Hackathon_DerivedAttributes_Model_Rulecondition */
+        $condition = Mage::getModel("derivedattributes/rulecondition");
+        $condition->setConditionType($conditionType);
+        $condition->setConditionData($conditionData);
 
         return $condition;
     }
@@ -101,10 +101,10 @@ class Hackathon_DerivedAttributes_Model_Rule
 
         $filters = array();
 
-        /* @var $filterModel Hackathon_DerivedAttributes_Model_RuleFilter */
-        $filterModel = Mage::getModel("derivedattributes/rule_filter");
+        /* @var $filterModel Hackathon_DerivedAttributes_Model_Rulefilter */
+        $filterModel = Mage::getModel("derivedattributes/rulefilter");
 
-        /* @var $filterCollection Hackathon_DerivedAttributes_Model_Resource_RuleFilter_Collection */
+        /* @var $filterCollection Hackathon_DerivedAttributes_Model_Resource_Rulefilter_Collection */
         $filterCollection = $filterModel->getCollection();
     
         foreach($filterCollection->getIterator() as $filterModel){

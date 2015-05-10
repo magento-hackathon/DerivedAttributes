@@ -4,12 +4,12 @@
  */
 
 use Hackathon\DerivedAttributes\Attribute;
-use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 
 /**
  * Entity implementation of entity-bridge-interface.
  */
-class Hackathon_DerivedAttributes_Bridge_Generator implements GeneratorInterface
+class Hackathon_DerivedAttributes_Bridge_Generator implements RuleGeneratorInterface
 {
     /**
      * @var string

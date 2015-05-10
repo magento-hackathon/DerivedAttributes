@@ -6,9 +6,9 @@
 use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 
 /**
- * Event-observer for derived attributes.
+ * Bridge-entity for rule-condition(s).
  */
-class Hackathon_DerivedAttributes_Model_RuleCondition
+class Hackathon_DerivedAttributes_Model_Rulecondition
     extends Mage_Core_Model_Abstract
     implements RuleConditionInterface{
     
@@ -17,7 +17,7 @@ class Hackathon_DerivedAttributes_Model_RuleCondition
 	 * @see Varien_Object::_construct()
 	 */
     protected function _construct(){
-        $this->_init("derivedattributes/rule_condition");
+        $this->_init("derivedattributes/rulecondition");
     }
 
     /**

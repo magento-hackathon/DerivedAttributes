@@ -6,9 +6,9 @@
 use Hackathon\DerivedAttributes\BridgeInterface\RuleFilterInterface;
 
 /**
- * Event-observer for derived attributes.
+ * Bridge-entity for rule-filter(s).
  */
-class Hackathon_DerivedAttributes_Model_RuleFilter
+class Hackathon_DerivedAttributes_Model_Rulefilter
     extends Mage_Core_Model_Abstract
     implements RuleFilterInterface{
     
@@ -17,7 +17,7 @@ class Hackathon_DerivedAttributes_Model_RuleFilter
 	 * @see Varien_Object::_construct()
 	 */
     protected function _construct(){
-        $this->_init("derivedattributes/rule_filter");
+        $this->_init("derivedattributes/rulefilter");
     }
 
 }

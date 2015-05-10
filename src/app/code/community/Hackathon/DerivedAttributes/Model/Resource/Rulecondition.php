@@ -8,7 +8,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 /**
  * Event-observer for derived attributes.
  */
-class Hackathon_DerivedAttributes_Model_Resource_RuleCondition
+class Hackathon_DerivedAttributes_Model_Resource_Rulecondition
     extends Mage_Core_Model_Mysql4_Abstract{
     
 	/**
@@ -16,7 +16,7 @@ class Hackathon_DerivedAttributes_Model_Resource_RuleCondition
 	 * @see Varien_Object::_construct()
 	 */
     protected function _construct(){
-        $this->_init("derivedattributes/rule_condition", "rule_condition_id");
+        $this->_init("derivedattributes/rulecondition", "rule_condition_id");
     }
 
 }

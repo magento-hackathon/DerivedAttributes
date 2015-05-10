@@ -27,12 +27,12 @@
                     <rule>
                         <table>derivedattributes_rule</table>
                     </rule>
-                    <rule_filter>
+                    <rulefilter>
                         <table>derivedattributes_rule_filter</table>
-                    </rule_filter>
-                    <rule_condition>
+                    </rulefilter>
+                    <rulecondition>
                         <table>derivedattributes_rule_condition</table>
-                    </rule_condition>
+                    </rulecondition>
                 </entities>
             </derivedattributes_resource>
         </models>

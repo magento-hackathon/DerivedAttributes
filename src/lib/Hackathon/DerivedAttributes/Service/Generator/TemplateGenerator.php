@@ -1,6 +1,7 @@
 <?php
 namespace Hackathon\DerivedAttributes\Service\Generator;
 
+use Hackathon\DerivedAttributes\Attribute;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
@@ -12,6 +13,7 @@ class TemplateGenerator implements GeneratorInterface
     const DESCRIPTION = 'Template that contains other product attributes';
 
     private $data;
+    protected $entity;
 
     /**
      * @param string $data
@@ -39,7 +41,7 @@ class TemplateGenerator implements GeneratorInterface
      */
     public function generateAttributeValue(EntityInterface $entity)
     {
-        // TODO: Implement generateAttributeValue() method.
+       return $this->_parseData($entity);
     }
 
     /**
@@ -56,6 +58,32 @@ class TemplateGenerator implements GeneratorInterface
     public function getDescription()
     {
         return self::DESCRIPTION;
+    }
+
+    /**
+     * Return default value based on configured template
+     *
+     * @return string
+     */
+    private function _parseData(EntityInterface $entity)
+    {
+        $this->entity = $entity;
+        $valueTemplate = $this->data;
+        $value = preg_replace_callback('~#([\w\-]+)#~', function ($matches) {
+            /*
+             * getData() for multiselect attribute should be a comma separated string,
+             * but something converts it to an array and we need to revert that to make
+             * the frontend model work:
+             */
+            $attr = new Attribute($matches[1]);
+            if (is_array($this->entity->getAttributeValue($attr))) {
+                $this->entity->setAttributeValue($attr,
+                    join(',', $this->entity->getAttributeValue($attr)));
+            }
+            $_value = $this->entity->getAttributeValue($attr);
+            return $_value;
+        }, $valueTemplate);
+        return $value;
     }
 
 }

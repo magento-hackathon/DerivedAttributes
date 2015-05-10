@@ -1,0 +1,12 @@
+tables:
+  derivedattributes/rule:
+    - rule_id: 1
+      name: Test Rule 1
+      description: This is a template generator rule for the product description
+      attribute_id: 72 #product description
+      generator_type: template
+      generator_data: "The description contains the #short_description#"
+      condition_type: ""
+      condition_data: ""
+      active: 1
+      priority: 1

@@ -123,4 +123,16 @@ class Hackathon_DerivedAttributes_Model_Rule
         return (int)$this->getData("priority");
     }
 
+    protected function _beforeSave()
+    {
+        $this->setStoreId(join(',', (array)$this->getStoreId()));
+        return parent::_beforeSave();
+    }
+
+    protected function _afterLoad()
+    {
+        $this->setStoreId(explode(',', $this->getStoreId()));
+        return parent::_afterLoad();
+    }
+
 }

@@ -1,0 +1,19 @@
+scope:
+  website: # Initialize websites
+    - website_id: 2
+      code: second_website
+      name: Second Website
+      default_group_id: 2
+  group: # Initializes store groups
+    - group_id: 2
+      website_id: 2
+      name: Second Store Group
+      default_store_id: 2
+      root_category_id: 2 # Default Category
+  store: # Initializes store views
+    - store_id: 2
+      website_id: 2
+      group_id: 2
+      code: second
+      name: Second Store
+      is_active: 1

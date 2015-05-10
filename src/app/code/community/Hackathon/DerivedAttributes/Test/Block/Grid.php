@@ -2,7 +2,8 @@
 
 /**
  * @group Hackathon_DerivedAttributes
- * @loadFixture rules.yaml
+ * @loadSharedFixture stores.yaml
+ * @loadSharedFixture rules.yaml
  */
 class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_Case_Controller
 {
@@ -39,6 +40,7 @@ class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_C
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
         $this->assertResponseBodyContains('value="template"', 'Dropdown with generator types should be present');
         $this->assertResponseBodyContains('value="boolean-attribute"', 'Dropdown with condition types should be present');
+        $this->assertResponseBodyContains('<option value="0">All', 'Select box for store views should contain "All Store Views"');
 
         $this->assertResponseBodyContains('<optgroup label="Customer"', 'Dropdown with attribute ids should contain customer optgroup');
         $this->assertResponseBodyContains('<optgroup label="Product"', 'Dropdown with attribute ids should contain product optgroup');

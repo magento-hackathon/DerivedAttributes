@@ -54,17 +54,17 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Rule_Edit_Form extends Mage_Ad
         if (Mage::app()->isSingleStoreMode()) {
             $storeId = Mage::app()->getStore(true)->getId();
             $fieldset->addField('store_id', 'hidden', array(
-                'name'     => 'store_id',
+                'name'     => 'store_id[]',
                 'value'    => $storeId
             ));
             $model->setStoreId($storeId);
         } else {
-            $field = $fieldset->addField('store_id', 'select', array(
-                'name'     => 'store_id',
+            $field = $fieldset->addField('store_id', 'multiselect', array(
+                'name'     => 'store_id[]',
                 'label'    => $this->__('Store'),
                 'title'    => $this->__('Store'),
                 'required' => true,
-                'values'   => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm()
+                'values'   => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true)
             ));
             $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');
             $field->setRenderer($renderer);

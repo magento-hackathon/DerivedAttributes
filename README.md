@@ -77,6 +77,11 @@ Magento Bridge
 - [DerivedAttributeConditionInterface]
 
 
+Transitivity of DerivedAttributes
+---
+There is NO magic for "derived of derivedAttributes". Just rule priority.
+
+
 Ideas for later
 ---
 

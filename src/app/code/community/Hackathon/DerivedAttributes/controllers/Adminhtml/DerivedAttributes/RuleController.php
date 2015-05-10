@@ -109,8 +109,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
 //                    return;
 //                }
 
-                //TODO implement loadPost()
-                $model->loadPost($data);
+                $model->addData($data);
 
                 $session->setPageData($model->getData());
 

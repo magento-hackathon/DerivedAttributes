@@ -37,6 +37,15 @@ class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_C
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
+        $this->assertResponseBodyContains('value="template"', 'Dropdown with generator types should be present');
+        $this->assertResponseBodyContains('value="boolean-attribute"', 'Dropdown with condition types should be present');
+
+        $this->assertResponseBodyContains('<optgroup label="Customer"', 'Dropdown with attribute ids should contain customer optgroup');
+        $this->assertResponseBodyContains('<optgroup label="Product"', 'Dropdown with attribute ids should contain product optgroup');
+        $this->assertResponseBodyContains('value="72"', 'Dropdown with attribute ids should contain product description attribute id');
+        $this->assertResponseBodyNotContains('value="111"', 'Dropdown with attribute ids should not contain product has_options attribute id (invisible)');
+        $this->assertResponseBodyContains('value="5"', 'Dropdown with attribute ids should contain customer first name attribute id');
+        $this->assertResponseBodyNotContains('value="16"', 'Dropdown with attribute ids should not contain customer confirmation attribute id (invisible)');
     }
     /**
      * @test
@@ -49,10 +58,11 @@ class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_C
     {
         $ruleId = 1;
         $this->adminSession();
-        $this->dispatch('adminhtml/derivedAttributes_rule/edit', [ 'id' => $ruleId ]);
+        $this->dispatch('adminhtml/derivedAttributes_rule/edit', ['id' => $ruleId]);
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
-        $this->assertResponseBodyContains('Test Rule 1');
+        $this->assertResponseBodyContains('value="Test Rule 1"', 'Name input should be filled');
+        $this->assertResponseBodyContains('<option value="1" selected="selected">Active</option>', 'Status input should be set to active');
     }
 }

@@ -13,6 +13,10 @@
  */
 class Hackathon_DerivedAttributes_Block_Adminhtml_Rule_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+    public function getRowUrl($item)
+    {
+        return $this->getUrl('*/*/edit', array('id' => $item->getId()));
+    }
 
     /**
      * Get collection object

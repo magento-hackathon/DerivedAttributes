@@ -1,5 +1,7 @@
 Status: WIP
 
+[![Build Status](https://travis-ci.org/magento-hackathon/DerivedAttributes.svg)](https://travis-ci.org/magento-hackathon/DerivedAttributes)
+
 DerivedAttributes (e.g. for product feed export)
 ================================================
 

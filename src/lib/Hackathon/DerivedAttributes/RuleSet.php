@@ -25,29 +25,10 @@ class RuleSet
      * @var Rule[]
      */
     private $rules = array();
-    /**
-     * @var Attribute
-     * @deprecated
-     */
-    private $attribute;
-
-    function __construct(Attribute $attribute = null)
-    {
-        $this->attribute = $attribute;
-    }
 
     public function addRule(Rule $rule)
     {
         $this->rules[] = $rule;
-    }
-
-    /**
-     * @return Attribute
-     * @deprecated
-     */
-    public function getAttribute()
-    {
-        return $this->attribute;
     }
 
     /**

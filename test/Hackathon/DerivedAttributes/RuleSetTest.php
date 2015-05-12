@@ -48,7 +48,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $this->productMock->expects($this->atLeastOnce())
             ->method('setAttributeValue')
             ->with($this->attributeStubs['dummy-1'], $expectedAttributeValue);
-        $ruleSet = new RuleSet($this->attributeStubs['dummy-1']);
+        $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
         foreach ($rules as $rule)
         {

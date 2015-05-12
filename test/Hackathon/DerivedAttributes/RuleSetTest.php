@@ -20,7 +20,7 @@ use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 class RuleSetTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject|Attribute
+     * @var \PHPUnit_Framework_MockObject_MockObject|Attribute[]
      */
     private $attributeStubs;
     /**

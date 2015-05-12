@@ -3,10 +3,22 @@ tables:
     - rule_id: 1
       name: Test Rule 1
       description: This is a template generator rule for the product description
+      store_id: 0
       attribute_id: 72 #product description
       generator_type: template
       generator_data: "The description contains the #short_description#"
-      condition_type: ""
+      condition_type: always
+      condition_data: ""
+      active: 1
+      priority: 1
+    - rule_id: 2
+      name: Test Rule 2
+      meta_description: This is a template generator rule for the meta product description (store view based)
+      store_id: 2
+      attribute_id: 84 #product meta description
+      generator_type: template
+      generator_data: "The meta description contains the #short_description#"
+      condition_type: always
       condition_data: ""
       active: 1
       priority: 1

@@ -44,7 +44,7 @@ class Hackathon_DerivedAttributes_Model_Observer{
 
                     # ... WHERE store_id IS NULL OR FIND_IN_SET(:storeId, store_id)
                     $ruleCollection->addFieldToFilter('store_id', [
-                        ['null'   => null],
+                        ['eq'   => '0'],
                         ['finset' => [$modelObject->getStoreId()]]
                     ]);
 

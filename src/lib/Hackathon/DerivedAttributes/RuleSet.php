@@ -10,8 +10,15 @@ namespace Hackathon\DerivedAttributes;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use SGH\Comparable\Comparable;
+use SGH\Comparable\ComparatorException;
 use SGH\Comparable\SortFunctions;
 
+/**
+ * A set of priorized rules
+ *
+ * @package Hackathon\DerivedAttributes
+ */
 class RuleSet
 {
     /**
@@ -20,10 +27,11 @@ class RuleSet
     private $rules = array();
     /**
      * @var Attribute
+     * @deprecated
      */
     private $attribute;
 
-    function __construct(Attribute $attribute)
+    function __construct(Attribute $attribute = null)
     {
         $this->attribute = $attribute;
     }
@@ -35,6 +43,7 @@ class RuleSet
 
     /**
      * @return Attribute
+     * @deprecated
      */
     public function getAttribute()
     {
@@ -55,10 +64,15 @@ class RuleSet
      */
     public function applyToEntity(EntityInterface $entity)
     {
+        $affectedAttributes = array();
         $this->sortRules();
         foreach ($this->rules as $rule) {
-            if ($rule->applyToEntity($entity)) {
+            $code = $rule->getAttribute()->getAttributeCode();
+            if (isset($affectedAttributes[$code])) {
                 break;
+            }
+            if ($rule->applyToEntity($entity)) {
+                $affectedAttributes[$code] = true;
             }
         }
     }

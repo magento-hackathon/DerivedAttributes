@@ -25,7 +25,7 @@ $createTableStatements = "
       CONSTRAINT `fk_derivedattributes_rule_1` FOREIGN KEY (`attribute_id`) REFERENCES `eav_attribute` (`attribute_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-    CREATE TABLE `{$installer->getTable('derivedattributes/rule_condition')}` (
+    CREATE TABLE `{$installer->getTable('derivedattributes/rulecondition')}` (
       `rule_condition_id` int(11) NOT NULL AUTO_INCREMENT,
       `rule_id` int(11) DEFAULT NULL,
       `condition_type` varchar(64) DEFAULT NULL,
@@ -36,7 +36,7 @@ $createTableStatements = "
       CONSTRAINT `fk_derivedattributes_rule_condition_1` FOREIGN KEY (`rule_id`) REFERENCES `derivedattributes_rule` (`rule_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
     ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-    CREATE TABLE `{$installer->getTable('derivedattributes/rule_filter')}` (
+    CREATE TABLE `{$installer->getTable('derivedattributes/rulefilter')}` (
       `rule_filter_id` int(11) NOT NULL AUTO_INCREMENT,
       `rule_id` int(11) DEFAULT NULL,
       `filter_type` varchar(64) DEFAULT NULL,

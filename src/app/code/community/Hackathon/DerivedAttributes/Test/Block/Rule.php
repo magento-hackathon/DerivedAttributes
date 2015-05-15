@@ -5,7 +5,7 @@
  * @loadSharedFixture stores.yaml
  * @loadSharedFixture rules.yaml
  */
-class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_Case_Controller
+class Hackathon_DerivedAttributes_Test_Block_Rule extends EcomDev_PHPUnit_Test_Case_Controller
 {
     /**
      * @test
@@ -22,6 +22,7 @@ class Hackathon_DerivedAttributes_Test_Block_Grid extends EcomDev_PHPUnit_Test_C
         $this->assertLayoutBlockCreated('derivedattributes_rule', 'Grid container should be instantiated');
         $this->assertResponseBodyNotContains('empty-text', 'Grid content should not be empty');
         $this->assertResponseBodyContains('Test Rule 1');
+        $this->assertResponseBodyContains('/derivedAttributes_entity/index', '"Apply rules" link should be present');
     }
 
     /**

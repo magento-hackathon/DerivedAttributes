@@ -14,4 +14,15 @@
             <block type="derivedattributes/adminhtml_rule_edit" name="derivedattributes_rule_edit"></block>
         </reference>
     </adminhtml_derivedattributes_rule_edit>
+    <adminhtml_derivedattributes_entity_index>
+        <reference name="content">
+            <block type="derivedattributes/adminhtml_entity" name="derivedattributes_entity">
+                <block type="derivedattributes/adminhtml_entity_form" name="derivedattributes_entity_form" as="form"></block>
+            </block>
+        </reference>
+        <reference name="left">
+            <block type="derivedattributes/adminhtml_entity_tabs" name="derivedattributes_entity_tabs">
+            </block>
+        </reference>
+    </adminhtml_derivedattributes_entity_index>
 </layout>

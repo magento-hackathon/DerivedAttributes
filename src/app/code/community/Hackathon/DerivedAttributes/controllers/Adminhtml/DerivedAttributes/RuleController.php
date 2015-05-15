@@ -55,7 +55,6 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
             }
         }
 
-        //TODO add "name" column
         $this->_title($model->getId() ? $model->getName() : $this->__('New Rule'));
 
         $data = Mage::getSingleton('adminhtml/session')->getPageData(true);

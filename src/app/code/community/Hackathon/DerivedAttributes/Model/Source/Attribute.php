@@ -1,9 +1,14 @@
 <?php
 class Hackathon_DerivedAttributes_Model_Source_Attribute
 {
+    /**
+     * @todo extract attribute collection instantiation to one class per entity type
+     * @return array
+     */
     public function toOptionArray()
     {
         $options = array();
+
         /** @var Mage_Catalog_Model_Resource_Product_Attribute_Collection $attributeCollection */
         $attributeCollection = Mage::getResourceModel('catalog/product_attribute_collection');
         $attributeCollection->addVisibleFilter();

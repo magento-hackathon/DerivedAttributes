@@ -13,8 +13,10 @@ Installation Instructions
 1. Install via composer: `composer require magento-hackathon/derived-attributes`
 2. Configure Magento-PSR-0-Autoloader to use the composer autoloader. Add this to the `global` node of your `app/etc/local.xml`:
 
-        `<composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>`
+        `<composer_vendor_path><![CDATA[/path/to/vendor]]></composer_vendor_path>`
 
+    The module sets the vendor path to `{{root_dir}}/vendor`, so if your vendor directory is in the Magento root, you do not need
+    to add this line to local.xml.
 
 Interfaces:
 -----------
@@ -82,22 +84,6 @@ Magento Bridge
 Transitivity of DerivedAttributes
 ---
 There is NO magic for "derived of derivedAttributes". Just rule priority.
-
-
-Ideas for later
----
-
-- einzelne daten pro store view ändern (generator_data, active, ...) mit EAV entity
-- conditions für einzelne filter
-- optimierung / vorberechnung der conditions
-- auch für kunden und andere entities
-- "test produkt x" oder "dry run"
-
-
-Tasks
----
-Define Interfaces
-Create Magento Entities and implement Bridge Interfaces
 
 
 License

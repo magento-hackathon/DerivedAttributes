@@ -16,7 +16,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      */
     private $entity;
 
-    function __construct(Mage_Core_Model_Abstract $entity)
+    public function __construct(Mage_Core_Model_Abstract $entity)
     {
         $this->entity = $entity;
     }
@@ -24,7 +24,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
     /**
      * @return boolean
      */
-    function isChanged()
+    public function isChanged()
     {
         return $this->entity->hasDataChanges();
     }
@@ -33,7 +33,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      * @param Attribute $attribute
      * @return mixed
      */
-    function getAttributeValue(Attribute $attribute)
+    public function getAttributeValue(Attribute $attribute)
     {
         return $this->entity->getData($attribute->getAttributeCode());
     }
@@ -42,7 +42,7 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      * @param Attribute $attribute
      * @return string
      */
-    function getLocalizedAttributeValue(Attribute $attribute)
+    public function getLocalizedAttributeValue(Attribute $attribute)
     {
         if ($value = $this->entity->getAttributeText($attribute->getAttributeCode()) !== false ) return $value;
         else return $this->entity->getData($attribute->getAttributeCode());
@@ -53,9 +53,56 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      * @param mixed $value
      * @return void
      */
-    function setAttributeValue(Attribute $attribute, $value)
+    public function setAttributeValue(Attribute $attribute, $value)
     {
+        //TODO log to custom table
+        //TODO if dry run, only log
         $this->entity->setData($attribute->getAttributeCode(), $value);
+    }
+
+    /**
+     * Sets raw data from database
+     *
+     * @param string[] $data
+     * @return void
+     */
+    public function setRawData($data)
+    {
+        $this->entity->addData($data);
+    }
+
+    /**
+     * Save changed attribute values in database
+     *
+     * @return void
+     */
+    public function saveAttributes()
+    {
+        $resource = $this->entity->getResource();
+        $resource->isPartialSave(true);
+        $resource->save($this->entity);
+    }
+
+    /**
+     * Reset to empty instance
+     *
+     * @return void
+     */
+    public function clearInstance()
+    {
+        $this->entity->clearInstance();
+    }
+
+    /**
+     * Returns collection iterator
+     *
+     * @return Hackathon_DerivedAttributes_Bridge_EntityIterator
+     */
+    public function getCollectionIterator()
+    {
+        $collection = $this->entity->getCollection();
+        $iterator = new Hackathon_DerivedAttributes_Bridge_EntityIterator($collection);
+        return $iterator;
     }
 
 }

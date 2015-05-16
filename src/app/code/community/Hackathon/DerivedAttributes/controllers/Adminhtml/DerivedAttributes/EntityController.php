@@ -57,7 +57,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
 
             $gridMassActionPager->next();
         } else {
-            //TODO generate results page, trigger redirect
+            //TODO (optionally) generate results page, trigger redirect
             // - log generated attributes to new table (entity_type, attribute_id, applied_rule_id, value)
             // - override IntegerNet_GridMassActionPager.prototype.process(transport)
             // - if (transport.final), redirect

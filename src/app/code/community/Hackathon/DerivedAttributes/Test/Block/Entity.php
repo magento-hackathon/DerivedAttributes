@@ -5,7 +5,7 @@
  * @loadSharedFixture stores.yaml
  * @loadSharedFixture rules.yaml
  */
-class Hackathon_DerivedAttributes_Test_Block_Entity extends EcomDev_PHPUnit_Test_Case_Controller
+class Hackathon_DerivedAttributes_Test_Block_Entity extends Hackathon_DerivedAttributes_Test_Case_Controller_Dom
 {
     /**
      * @test
@@ -22,8 +22,21 @@ class Hackathon_DerivedAttributes_Test_Block_Entity extends EcomDev_PHPUnit_Test
         $this->assertLayoutBlockRendered('derivedattributes_entity', 'Container should be instantiated');
         $this->assertLayoutBlockRendered('derivedattributes_entity_form', 'Form should be instantiated');
         $this->assertLayoutBlockRendered('derivedattributes_entity_tabs', 'Tabs should be instantiated');
-        $this->assertResponseBodyContains('<option value="apply">', 'Grid should contain mass action "apply".');
-        $this->assertResponseBodyContains('<option value="dryrun">', 'Grid should contain mass action "dryrun".');
+
+        $this->assertResponseBodyXpath(
+            '//select[@id="customerGrid_massaction-select"]/option[@value="apply"]',
+            'Customer grid should contain mass action "apply".');
+        $this->assertResponseBodyXpath(
+            '//select[@id="customerGrid_massaction-select"]/option[@value="dryrun"]',
+            'Customer grid should contain mass action "dryrun".');
+
+        $this->assertResponseBodyXpath(
+            '//select[@id="productGrid_massaction-select"]/option[@value="apply"]',
+            'Product grid should contain mass action "apply".');
+        $this->assertResponseBodyXpath(
+            '//select[@id="productGrid_massaction-select"]/option[@value="dryrun"]',
+            'Product grid should contain mass action "dryrun".');
+
         $this->assertResponseBodyContains('name="entity_type"', 'Mass action block should contain hidden input with entity type');
         // assertLayoutBlockRendered does not work with blocks created from code (i.e. the grids)
     }

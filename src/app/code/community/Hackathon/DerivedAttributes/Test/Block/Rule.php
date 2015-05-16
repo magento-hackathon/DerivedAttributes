@@ -5,7 +5,7 @@
  * @loadSharedFixture stores.yaml
  * @loadSharedFixture rules.yaml
  */
-class Hackathon_DerivedAttributes_Test_Block_Rule extends EcomDev_PHPUnit_Test_Case_Controller
+class Hackathon_DerivedAttributes_Test_Block_Rule extends Hackathon_DerivedAttributes_Test_Case_Controller_Dom
 {
     /**
      * @test
@@ -39,16 +39,34 @@ class Hackathon_DerivedAttributes_Test_Block_Rule extends EcomDev_PHPUnit_Test_C
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
-        $this->assertResponseBodyContains('value="template"', 'Dropdown with generator types should be present');
-        $this->assertResponseBodyContains('value="boolean-attribute"', 'Dropdown with condition types should be present');
-        $this->assertResponseBodyContains('<option value="0">All', 'Select box for store views should contain "All Store Views"');
+        $this->assertResponseBodyXpath(
+            '//select[@name="generator_type"]/option[@value="template"]',
+            'Dropdown with generator types should be present');
+        $this->assertResponseBodyXpath(
+            '//select[@name="condition_type"]/option[@value="boolean-attribute"]',
+            'Dropdown with condition types should be present');
+        $this->assertResponseBodyXpathContains(
+            '//select[@name="store_id[]"]//option[@value="0"]', 'All Store Views',
+            'Select box for store views should contain "All Store Views"');
 
-        $this->assertResponseBodyContains('<optgroup label="Customer"', 'Dropdown with attribute ids should contain customer optgroup');
-        $this->assertResponseBodyContains('<optgroup label="Product"', 'Dropdown with attribute ids should contain product optgroup');
-        $this->assertResponseBodyContains('value="72"', 'Dropdown with attribute ids should contain product description attribute id');
-        $this->assertResponseBodyNotContains('value="111"', 'Dropdown with attribute ids should not contain product has_options attribute id (invisible)');
-        $this->assertResponseBodyContains('value="5"', 'Dropdown with attribute ids should contain customer first name attribute id');
-        $this->assertResponseBodyNotContains('value="16"', 'Dropdown with attribute ids should not contain customer confirmation attribute id (invisible)');
+        $this->assertResponseBodyXpath(
+            '//select[@name="attribute_id"]/optgroup[@label="Customer"]',
+            'Dropdown with attribute ids should contain customer optgroup');
+        $this->assertResponseBodyXpath(
+            '//select[@name="attribute_id"]/optgroup[@label="Product"]',
+            'Dropdown with attribute ids should contain product optgroup');
+        $this->assertResponseBodyXpath(
+            '//select[@name="attribute_id"]//option[@value="72"]',
+            'Dropdown with attribute ids should contain product description attribute id');
+        $this->assertResponseBodyNotXpath(
+            '//select[@name="attribute_id"]//option[@value="111"]',
+            'Dropdown with attribute ids should not contain product has_options attribute id (invisible)');
+        $this->assertResponseBodyXpath(
+            '//select[@name="attribute_id"]//option[@value="5"]',
+            'Dropdown with attribute ids should contain customer first name attribute id');
+        $this->assertResponseBodyNotXpath(
+            '//select[@name="attribute_id"]//option[@value="16"]',
+            'Dropdown with attribute ids should not contain customer confirmation attribute id (invisible)');
     }
     /**
      * @test
@@ -65,8 +83,13 @@ class Hackathon_DerivedAttributes_Test_Block_Rule extends EcomDev_PHPUnit_Test_C
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
-        $this->assertResponseBodyContains('value="Test Rule 1"', 'Name input should be filled');
-        $this->assertResponseBodyContains('<option value="1" selected="selected">Active</option>', 'Status input should be set to active');
-        $this->assertResponseBodyContains('This is a template generator rule for the product description');
+        $this->assertResponseBodyXpath(
+            '//input[@name="name"][@value="Test Rule 1"]', 'Name input should be filled');
+        $this->assertResponseBodyXpathContains(
+            '//select[@name="active"]/option[@value="1"][@selected="selected"]', 'Active',
+            'Status input should be set to active');
+        $this->assertResponseBodyXpathContains(
+            '//textarea[@name="description"]', 'This is a template generator rule for the product description',
+            'Description input should be filled');
     }
 }

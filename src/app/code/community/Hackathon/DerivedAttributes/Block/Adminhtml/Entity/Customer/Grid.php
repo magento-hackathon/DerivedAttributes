@@ -11,34 +11,56 @@
 /**
  * @package Hackathon_DerivedAttributes
  */
-class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Customer_Grid extends Mage_Adminhtml_Block_Widget_Grid
+class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Customer_Grid extends Mage_Adminhtml_Block_Customer_Grid
 {
-    /**
-     * Get collection object
-     * @return Mage_Customer_Model_Entity_Customer_Collection
-     */
-    public function getCollection()
+    protected function _prepareMassaction()
     {
-        if (!parent::getCollection()) {
-            $collection = Mage::getResourceModel('customer/customer_collection');
-            $this->setCollection($collection);
-        }
+        $this->setMassactionIdField('entity_id');
+        $this->getMassactionBlock()->setFormFieldName('entity_ids');
+        $this->getMassactionBlock()->setUseAjax(true);
+        $this->setNoFilterMassactionColumn(true);
 
-        return parent::getCollection();
+        $this->getMassactionBlock()->addItem('apply', array(
+            'label'=> Mage::helper('catalog')->__('Apply Rules'),
+            'url'  => $this->getUrl('*/*/applyRules'),
+            'confirm' => Mage::helper('catalog')->__('Are you sure?'),
+            'complete' => 'integerNetGridMassActionPager',
+            'additional' => $this->_getAdditionalMassactionBlock(),
+        ));
+
+        $this->getMassactionBlock()->addItem('dryrun', array(
+            'label'=> Mage::helper('catalog')->__('Apply Rules (dry run)'),
+            'url'  => $this->getUrl('*/*/dryRun'),
+            'complete' => 'integerNetGridMassActionPager',
+            'additional' => $this->_getAdditionalMassactionBlock()->setDryRun(true),
+        ));
+
+        return $this;
     }
 
-    /**
-     * Prepare columns
-     * @return $this
-     */
+    protected function _getAdditionalMassactionBlock()
+    {
+        /** @var Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Massaction $block */
+        $block = $this->getLayout()->createBlock('derivedattributes/adminhtml_entity_massaction');
+        $block->setEntityType('product');
+        return $block;
+    }
+
     protected function _prepareColumns()
     {
-        $this->addColumn('entity_id', array(
-            'header'    => $this->__('ID'),
-            'align'     =>'right',
-            'width'     => '50px',
-            'index'     => 'entity_id',
-        ));
-        return parent::_prepareColumns();
+        parent::_prepareColumns();
+        $this->removeColumn('action');
+        return $this;
     }
+
+    public function getGridUrl()
+    {
+        return $this->getUrl('*/*/customerGrid', array('_current'=>true));
+    }
+
+    public function getRowUrl($row)
+    {
+        return '#';
+    }
+
 }

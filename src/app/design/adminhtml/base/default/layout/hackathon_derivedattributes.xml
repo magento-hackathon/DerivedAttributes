@@ -25,4 +25,14 @@
             </block>
         </reference>
     </adminhtml_derivedattributes_entity_index>
+    <adminhtml_derivedattributes_entity_productgrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="derivedattributes/adminhtml_entity_product_grid" name="derivedattributes_entity_product_grid" />
+        </block>
+    </adminhtml_derivedattributes_entity_productgrid>
+    <adminhtml_derivedattributes_entity_customergrid>
+        <block type="core/text_list" name="root" output="toHtml">
+            <block type="derivedattributes/adminhtml_entity_customer_grid" name="derivedattributes_entity_customer_grid" />
+        </block>
+    </adminhtml_derivedattributes_entity_customergrid>
 </layout>

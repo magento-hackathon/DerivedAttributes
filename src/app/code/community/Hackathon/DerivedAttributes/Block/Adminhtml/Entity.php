@@ -8,5 +8,16 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Entity extends Mage_Adminhtml_
         $this->_headerText = $this->__('Apply Rules');
 
         parent::__construct();
+
+        $this->removeButton('reset')
+            ->removeButton('delete')
+            ->removeButton('save');
     }
+
+    public function getBackUrl()
+    {
+        return $this->getUrl('*/derivedAttributes_rule/index');
+    }
+
+
 }

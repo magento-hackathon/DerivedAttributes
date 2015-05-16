@@ -6,7 +6,8 @@
   "require": {
     "magento-hackathon/magento-composer-installer": "*",
     "sgh/comparable": "~1.1.1",
-    "firegento/psr0autoloader": "*"
+    "firegento/psr0autoloader": "*",
+    "integer-net/IntegerNet_GridMassActionPager": "~1.0.0"
   },
   "require-dev": {
     "ecomdev/ecomdev_phpunit": "~0.3.7"
@@ -15,6 +16,10 @@
     {
       "type": "composer",
       "url": "http://packages.firegento.com"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/integer-net/IntegerNet_GridMassActionPager"
     }
   ],
   "authors":[

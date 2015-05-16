@@ -11,14 +11,22 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Tabs extends Mage_Admin
 
     protected function _beforeToHtml()
     {
+        $productGridBlock = $this->getLayout()->createBlock(
+            'derivedattributes/adminhtml_entity_product_grid',
+            'derivedattributes_entity_product_grid'
+        );
         $this->addTab('product', array(
             'label'     => $this->__('Products'),
-            'content'   => $this->getLayout()->createBlock('derivedattributes/adminhtml_entity_product_grid')->toHtml(),
+            'content'   => $productGridBlock->toHtml(),
         ));
 
+        $customerGridBlock = $this->getLayout()->createBlock(
+            'derivedattributes/adminhtml_entity_customer_grid',
+            'derivedattributes_entity_customer_grid'
+        );
         $this->addTab('customers', array(
             'label'     => Mage::helper('customer')->__('Customers'),
-            'content'   => $this->getLayout()->createBlock('derivedattributes/adminhtml_entity_customer_grid')->toHtml(),
+            'content'   => $customerGridBlock->toHtml(),
         ));
 
         $this->_updateActiveTab();

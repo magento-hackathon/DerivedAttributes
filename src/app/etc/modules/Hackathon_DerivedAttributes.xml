@@ -4,6 +4,10 @@
 		<Hackathon_DerivedAttributes>
 			<active>true</active>
 			<codePool>community</codePool>
+			<depends>
+				<Hackathon_PSR0Autoloader />
+				<IntegerNet_GridMassActionPager />
+			</depends>
 		</Hackathon_DerivedAttributes>
 	</modules>
 </config>

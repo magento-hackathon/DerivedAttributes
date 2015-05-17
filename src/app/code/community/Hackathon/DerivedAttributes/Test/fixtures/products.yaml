@@ -13,3 +13,29 @@ eav:
           description: description in store view
           meta_description: meta description in store view
           short_description: short description in store view
+    - entity_id: 2
+      type_id: simple
+      attribute_set_id: 4
+      name: Test Product 2
+      sku: test-2
+      description: description.
+      meta_description: meta description.
+      short_description: short description.
+      /stores:
+        second:
+          description: description in store view
+          meta_description: meta description in store view
+          short_description: short description in store view
+    - entity_id: 3
+      type_id: simple
+      attribute_set_id: 4
+      name: Test Product 3
+      sku: test-3
+      description: description.
+      meta_description: meta description.
+      short_description: short description.
+      /stores:
+        second:
+          description: description in store view
+          meta_description: meta description in store view
+          short_description: short description in store view

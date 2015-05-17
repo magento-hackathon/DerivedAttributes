@@ -42,7 +42,7 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Customer_Grid extends M
     {
         /** @var Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Massaction $block */
         $block = $this->getLayout()->createBlock('derivedattributes/adminhtml_entity_massaction');
-        $block->setEntityType('product');
+        $block->setEntityType('customer');
         return $block;
     }
 

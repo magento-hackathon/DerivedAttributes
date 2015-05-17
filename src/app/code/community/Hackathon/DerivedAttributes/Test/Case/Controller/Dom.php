@@ -132,4 +132,5 @@ abstract class Hackathon_DerivedAttributes_Test_Case_Controller_Dom extends Ecom
             ), $message
         );
     }
+
 }

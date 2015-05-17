@@ -39,7 +39,7 @@ class Hackathon_DerivedAttributes_Bridge_EntityIterator implements EntityIterato
     function walk(callable $callable)
     {
         $this->_iterator->walk($this->_collection->getSelect(), array(
-            function($args) use ($callable, $this) {
+            function($args) use ($callable) {
                 $this->_setIteration($args['idx']);
                 $this->_setRawData($args['row']);
                 $callable($this);

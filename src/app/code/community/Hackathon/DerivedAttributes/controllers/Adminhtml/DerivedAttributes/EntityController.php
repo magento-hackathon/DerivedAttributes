@@ -38,38 +38,47 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
 
     public function applyRulesAction()
     {
-        //TODO apply rules
         /** @var IntegerNet_GridMassActionPager_Model_GridMassActionPager $gridMassActionPager */
         $gridMassActionPager = Mage::getModel('integernet_gridmassactionpager/gridMassActionPager');
 
-        if ($entityIds = (array)$this->getRequest()->getParam('entity_ids')) {
+        $error = false;
+        try {
+            if ($entityIds = (array)$this->getRequest()->getParam('entity_ids')) {
 
-            $gridMassActionPager->init($entityIds, 100);
-            $gridMassActionPager->getPager()
-                ->setEntityType($this->getRequest()->getParam('entity_type'))
-                ->setDryRun((bool) $this->getRequest()->getParam('dry_run'));
+                $gridMassActionPager->init($entityIds, 100);
+                $gridMassActionPager->getPager()
+                    ->setEntityType($this->getRequest()->getParam('entity_type'))
+                    ->setDryRun((bool) $this->getRequest()->getParam('dry_run'));
 
-        } elseif ($pageIds = $gridMassActionPager->getPageIds()) {
+            } elseif ($pageIds = $gridMassActionPager->getPageIds()) {
 
-            $entityType = $gridMassActionPager->getPager()->getEntityType();
-            $isDryRun = $gridMassActionPager->getPager()->getDryRun();
-            $this->_process($pageIds, $entityType, $isDryRun);
+                $entityType = $gridMassActionPager->getPager()->getEntityType();
+                $isDryRun = $gridMassActionPager->getPager()->getDryRun();
+                $this->_process($pageIds, $entityType, $isDryRun);
 
-            $gridMassActionPager->next();
-        } else {
-            //TODO (optionally) generate results page, trigger redirect
-            // - log generated attributes to new table (entity_type, attribute_id, applied_rule_id, value)
-            // - override IntegerNet_GridMassActionPager.prototype.process(transport)
-            // - if (transport.final), redirect
+                $gridMassActionPager->next();
+            } else {
+                //TODO (optionally) generate results page, trigger redirect
+                // - log generated attributes to new table with RuleLogger (entity_type, attribute_id, applied_rule_id, value)
+                // - override IntegerNet_GridMassActionPager.prototype.process(transport)
+                // - if (transport.final), redirect
+            }
+        } catch (Exception $e) {
+            $error = $e->getMessage();
         }
 
         $message = $this->__('Process Entities...<br />{{from}} to {{to}} of {{of}}');
 
         $this->getResponse()->setHeader('Content-Type', 'application/json');
-        $this->getResponse()->setBody($gridMassActionPager->getStatus(true, $message));
+        $status = $gridMassActionPager->getStatus(false, $message);
+        if ($error) {
+            $status['error'] = $error;
+        }
+        //TODO show error in frontend
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($status));
     }
     protected function _process($pageIds, $entityType, $isDryRun)
     {
-        //TODO process entities
+        Mage::getModel('derivedattributes/massupdater')->update($pageIds, $entityType, $isDryRun);
     }
 }

@@ -8,6 +8,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 
 class Updater
 {
+    const __CLASS = __CLASS__;
     /**
      * @var RuleLoaderInterface
      */

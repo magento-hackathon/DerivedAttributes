@@ -55,8 +55,6 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
      */
     public function setAttributeValue(Attribute $attribute, $value)
     {
-        //TODO log to custom table
-        //TODO if dry run, only log
         $this->entity->setData($attribute->getAttributeCode(), $value);
     }
 

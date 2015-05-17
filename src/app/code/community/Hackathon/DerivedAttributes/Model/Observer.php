@@ -22,8 +22,9 @@ class Hackathon_DerivedAttributes_Model_Observer{
 
             $ruleLoader = new Hackathon_DerivedAttributes_Bridge_RuleLoader();
             $ruleLoader->setStoreFilter($modelObject->getStoreId());
+            $ruleLogger = new Hackathon_DerivedAttributes_Bridge_RuleLogger();
 
-            $updater = new Updater($ruleLoader);
+            $updater = new Updater($ruleLoader, $ruleLogger);
             $updater->update($bridgeObject);
         }
 

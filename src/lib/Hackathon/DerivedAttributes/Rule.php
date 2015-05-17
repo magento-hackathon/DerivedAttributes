@@ -52,6 +52,14 @@ class Rule implements \SGH\Comparable\Comparable
     }
 
     /**
+     * @return RuleInterface
+     */
+    public function getRuleEntity()
+    {
+        return $this->ruleEntity;
+    }
+
+    /**
      * @return int
      */
     public function getPriority()

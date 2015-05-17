@@ -10,6 +10,7 @@ namespace Hackathon\DerivedAttributes;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 use SGH\Comparable\Comparable;
 use SGH\Comparable\ComparatorException;
 use SGH\Comparable\SortFunctions;
@@ -21,6 +22,7 @@ use SGH\Comparable\SortFunctions;
  */
 class RuleSet
 {
+    const __CLASS = __CLASS__;
     /**
      * @var Rule[]
      */
@@ -43,7 +45,7 @@ class RuleSet
      * @param EntityInterface $entity
      * @return void
      */
-    public function applyToEntity(EntityInterface $entity)
+    public function applyToEntity(EntityInterface $entity, RuleLoggerInterface $logger)
     {
         $affectedAttributes = array();
         $this->sortRules();
@@ -53,6 +55,7 @@ class RuleSet
                 break;
             }
             if ($rule->applyToEntity($entity)) {
+                $logger->logAppliedRule($rule->getRuleEntity(), $entity->getAttributeValue($rule->getAttribute()));
                 $affectedAttributes[$code] = true;
             }
         }

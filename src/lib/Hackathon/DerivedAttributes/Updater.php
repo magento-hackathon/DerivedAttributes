@@ -4,6 +4,7 @@ namespace Hackathon\DerivedAttributes;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 
 class Updater
 {
@@ -11,15 +12,34 @@ class Updater
      * @var RuleLoaderInterface
      */
     private $ruleLoader;
+    /**
+     * @var RuleLoggerInterface
+     */
+    private $ruleLogger;
+    /**
+     * @var bool
+     */
+    private $isDryRun = false;
 
     /**
      * @var EntityInterface
      */
     private $entityModel;
 
-    public function __construct(RuleLoaderInterface $ruleLoader)
+    public function __construct(RuleLoaderInterface $ruleLoader, RuleLoggerInterface $ruleLogger)
     {
         $this->ruleLoader = $ruleLoader;
+        $this->ruleLogger = $ruleLogger;
+    }
+
+    /**
+     * Define if massUpdate() should run without actually saving data
+     *
+     * @param bool $isDryRun
+     */
+    public function setDryRun($isDryRun)
+    {
+        $this->isDryRun = $isDryRun;
     }
 
     /**
@@ -30,7 +50,7 @@ class Updater
     public function update(EntityInterface $entity)
     {
         $ruleSet = $this->ruleLoader->getRuleset();
-        $ruleSet->applyToEntity($entity);
+        $ruleSet->applyToEntity($entity, $this->ruleLogger);
     }
 
     /**
@@ -57,7 +77,7 @@ class Updater
     {
         $this->entityModel->setRawData($iterator->getRawData());
         $this->update($this->entityModel);
-        if ($this->entityModel->isChanged()) {
+        if ($this->entityModel->isChanged() && ! $this->isDryRun) {
             $this->entityModel->saveAttributes();
         }
         $this->entityModel->clearInstance();

@@ -13,6 +13,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
@@ -27,6 +28,10 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface
      */
     private $productMock;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|RuleLoggerInterface
+     */
+    private $ruleLoggerMock;
 
     protected function setUp()
     {
@@ -35,6 +40,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
             [], '', true, true, true, [ 'setAttributeValue' ]);
         $this->attributeStubs['dummy-1'] = $this->getMock(Attribute::__CLASS, null, ['dummy-1']);
         $this->attributeStubs['dummy-2'] = $this->getMock(Attribute::__CLASS, null, ['dummy-2']);
+        $this->ruleLoggerMock = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
     }
 
     /**
@@ -54,7 +60,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         {
             $ruleSet->addRule($rule);
         }
-        $ruleSet->applyToEntity($this->productMock);
+        $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
     }
 
     /**
@@ -63,13 +69,26 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      * @param $rulesData
      * @param $expectedAttributeValues
      */
-    public function ruleSetShouldBeAttributeIndependent($rulesData, $expectedAttributeValues)
+    public function ruleSetShouldBeAttributeIndependentAndLogged($rulesData, $expectedAttributeValues)
     {
         $actualAttributeValues = array();
+        $actualLoggedRules = array();
         $this->productMock->expects($this->any())
             ->method('setAttributeValue')
             ->willReturnCallback(function(Attribute $attribute, $value) use (&$actualAttributeValues) {
                 $actualAttributeValues[$attribute->getAttributeCode()] = $value;
+            });
+        $this->productMock->expects($this->any())
+            ->method('getAttributeValue')
+            ->willReturnCallback(function(Attribute $attribute) use (&$actualAttributeValues) {
+                if (isset($actualAttributeValues[$attribute->getAttributeCode()])) {
+                    return $actualAttributeValues[$attribute->getAttributeCode()];
+                }
+            });
+        $this->ruleLoggerMock->expects($this->any())
+            ->method('logAppliedRule')
+            ->willReturnCallback(function(RuleInterface $rule, $value) use (&$actualLoggedRules) {
+                $actualLoggedRules[$rule->getAttribute()->getAttributeCode()] = $value;
             });
         $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
@@ -77,8 +96,9 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         {
             $ruleSet->addRule($rule);
         }
-        $ruleSet->applyToEntity($this->productMock);
+        $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
         $this->assertEquals($expectedAttributeValues, $actualAttributeValues);
+        $this->assertEquals($expectedAttributeValues, $actualLoggedRules);
     }
 
     /**
@@ -119,17 +139,22 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         return $testCases;
     }
 
+    /**
+     * Data provider.
+     *
+     * @return array
+     */
     public static function getRulesForMultipleAttributesData()
     {
         $testCases = array();
         $testCases[] = [
             'rules_data' => [
-                [ 'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2' ],
-                [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
+                'rule-1' => [ 'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2' ],
+                'rule-2' => [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
+                'rule-3' => [ 'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1' ],
+                'rule-4' => [ 'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
             ],
-            'expected_attribute_values' => [ 'dummy-1' => 'baz', 'dummy-2' => 'narf']
+            'expected_attribute_values' => [ 'dummy-1' => 'baz', 'dummy-2' => 'narf'],
         ];
         return $testCases;
     }

@@ -4,7 +4,6 @@
   "type": "magento-module",
   "description": "Generate attribute values based on rules",
   "require": {
-    "magento-hackathon/magento-composer-installer": "*",
     "sgh/comparable": "~1.1.1",
     "firegento/psr0autoloader": "*",
     "integer-net/IntegerNet_GridMassActionPager": "~1.0.0"

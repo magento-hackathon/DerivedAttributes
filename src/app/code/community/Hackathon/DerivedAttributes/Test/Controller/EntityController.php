@@ -11,23 +11,21 @@ class Hackathon_DerivedAttributes_Test_Controller_EntityController
 {
     /**
      * @test
+     * @dataProvider dataMassUpdateForm
      * @loadFixture products.yaml
      * @singleton adminhtml/session
      * @singleton admin/session
      */
-    public function massUpdateShouldBeTriggered()
+    public function massUpdateShouldBeTriggered($postData, $expectedStoreIds)
     {
         $updaterMock = $this->getModelMock('derivedattributes/massupdater', ['update']);
         $updaterMock->expects($this->once())->method('update')
-            ->with([1, 2, 3], 'catalog_product', false);
+            ->with($postData['entity_ids'], $postData['entity_type'], $expectedStoreIds, false);
         $this->replaceByMock('model', 'derivedattributes/massupdater', $updaterMock);
 
         $this->adminSession();
         $this->getRequest()->setMethod('POST');
-        $this->getRequest()->setPost(array(
-            'entity_ids'  => [1, 2, 3],
-            'entity_type' => 'catalog_product'
-        ));
+        $this->getRequest()->setPost($postData);
         $this->dispatch('adminhtml/derivedAttributes_entity/applyRules');
         $this->assertRequestRoute('adminhtml/derivedAttributes_entity/applyRules');
         $this->assertResponseHttpCode(200);
@@ -40,8 +38,37 @@ class Hackathon_DerivedAttributes_Test_Controller_EntityController
         $this->assertResponseHttpCode(200);
         $this->assertResponseHeaderContains('content-type', 'application/json');
         $this->assertResponseBodyJsonMatch(array('final' => true));
-   }
+    }
 
+    public static function dataMassUpdateForm()
+    {
+        return [
+            [
+                'postData' => [
+                    'store_id'    => ['1'],
+                    'entity_ids'  => ['1', '2', '3'],
+                    'entity_type' => 'catalog_product'
+                ],
+                'expectedStoreIds' => ['1']
+            ],
+            [
+                'postData' => [
+                    'store_id'    => ['1', '2'],
+                    'entity_ids'  => ['1', '2', '3'],
+                    'entity_type' => 'catalog_product'
+                ],
+                'expectedStoreIds' => ['1', '2']
+            ],
+            [
+                'postData' => [
+                    'store_id'    => ['0'],
+                    'entity_ids'  => ['1', '2', '3'],
+                    'entity_type' => 'catalog_product'
+                ],
+                'expectedStoreIds' => ['0', '1', '2']
+            ],
+        ];
+    }
     /**
      * @test
      * @loadFixture products.yaml

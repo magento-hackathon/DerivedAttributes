@@ -48,13 +48,15 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
                 $gridMassActionPager->init($entityIds, 100);
                 $gridMassActionPager->getPager()
                     ->setEntityType($this->getRequest()->getParam('entity_type'))
+                    ->setStoreId($this->getRequest()->getParam('store_id'))
                     ->setDryRun((bool) $this->getRequest()->getParam('dry_run'));
 
             } elseif ($pageIds = $gridMassActionPager->getPageIds()) {
 
                 $entityType = $gridMassActionPager->getPager()->getEntityType();
                 $isDryRun = $gridMassActionPager->getPager()->getDryRun();
-                $this->_process($pageIds, $entityType, $isDryRun);
+                $storeIds = $gridMassActionPager->getPager()->getStoreId();
+                $this->_process($pageIds, $entityType, $storeIds, $isDryRun);
 
                 $gridMassActionPager->next();
             } else {
@@ -77,8 +79,11 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
         //TODO show error in frontend
         $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($status));
     }
-    protected function _process($pageIds, $entityType, $isDryRun)
+    protected function _process($pageIds, $entityType, $storeIds, $isDryRun)
     {
-        Mage::getModel('derivedattributes/massupdater')->update($pageIds, $entityType, $isDryRun);
+        if ($storeIds == ['0']) {
+            $storeIds = array_keys(Mage::app()->getStores(true));
+        }
+        Mage::getModel('derivedattributes/massupdater')->update($pageIds, $entityType, $storeIds, $isDryRun);
     }
 }

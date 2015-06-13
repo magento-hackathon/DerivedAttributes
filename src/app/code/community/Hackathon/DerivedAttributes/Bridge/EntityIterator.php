@@ -19,13 +19,18 @@ class Hackathon_DerivedAttributes_Bridge_EntityIterator implements EntityIterato
      */
     protected $_iteration;
     /**
+     * @var int
+     */
+    protected $_storeId;
+    /**
      * @var int Iteration counter offset for chunking
      */
     protected $_iterationOffset = 0;
 
-    public function __construct(Varien_Data_Collection_Db $collection)
+    public function __construct(Varien_Data_Collection_Db $collection, $storeId)
     {
         $this->_collection = $collection;
+        $this->_storeId = $storeId;
         $this->_iterator = Mage::getResourceModel('core/iterator');
     }
     public function getCollection()
@@ -36,20 +41,23 @@ class Hackathon_DerivedAttributes_Bridge_EntityIterator implements EntityIterato
      * @param callable $callable
      * @return mixed
      */
-    function walk(callable $callable)
+    public function walk(callable $callable)
     {
-        $this->_iterator->walk($this->_collection->getSelect(), array(
-            function($args) use ($callable) {
-                $this->_setIteration($args['idx']);
-                $this->_setRawData($args['row']);
-                $callable($this);
-            }
-        ));
+        $this->_collection->load();
+        //TODO: load all ids, then chunk
+        $this->_iteration = 0;
+        foreach ($this->_collection as $entity) {
+            ++$this->_iteration;
+            $this->_setRawData($entity->getData());
+            unset($entity);
+            $callable($this);
+        }
     }
 
     protected function _setRawData($data)
     {
         $this->_data = $data;
+        $this->_data['store_id'] = $this->_storeId;
     }
     protected function _setIteration($iteration)
     {

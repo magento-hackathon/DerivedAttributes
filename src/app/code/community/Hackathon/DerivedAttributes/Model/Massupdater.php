@@ -9,9 +9,25 @@ class Hackathon_DerivedAttributes_Model_Massupdater
      * @param $isDryRun
      * @throws Mage_Core_Exception
      */
-    public function update($entityIds, $entityType, $isDryRun)
+    public function update($entityIds, $entityType, $storeIds, $isDryRun)
     {
-        $updater = Mage::helper('derivedattributes')->getUpdater();
+        foreach ($storeIds as $storeId) {
+            $this->_updateStore($entityIds, $entityType, $storeId, $isDryRun);
+        }
+    }
+
+    /**
+     * Trigger updater for single scope (storeId=0 for default scope)
+     *
+     * @param $entityIds
+     * @param $entityType
+     * @param $storeId
+     * @param $isDryRun
+     * @throws Mage_Core_Exception
+     */
+    protected function _updateStore($entityIds, $entityType, $storeId, $isDryRun)
+    {
+        $updater = Mage::helper('derivedattributes')->getUpdater($storeId);
         $updater->setDryRun($isDryRun);
         $entityTypeInstance = Mage::getModel('eav/entity_type')->loadByCode($entityType);
         if (! $entityTypeInstance->getId()) {
@@ -21,9 +37,18 @@ class Hackathon_DerivedAttributes_Model_Massupdater
         $entity = Mage::getModel($entityTypeInstance->getEntityModel());
         /** @var Mage_Eav_Model_Entity_Collection_Abstract $collection */
         $collection = $entity->getCollection();
+        $collection->setStoreId($storeId);
         $collection->addFieldToFilter('entity_id', ['in' => $entityIds]);
+
+        /*
+         * I tried using the flat catalog if available but using it from admin area is not intended
+         * and there are too many restrictions and special cases
+         */
+        $collection->addAttributeToSelect('*');
+
         $entityModel = new Hackathon_DerivedAttributes_Bridge_Entity($entity);
-        $iterator = new Hackathon_DerivedAttributes_Bridge_EntityIterator($collection);
+        $iterator = new Hackathon_DerivedAttributes_Bridge_EntityIterator($collection, $storeId);
+
         $updater->massUpdate($iterator, $entityModel);
     }
 }

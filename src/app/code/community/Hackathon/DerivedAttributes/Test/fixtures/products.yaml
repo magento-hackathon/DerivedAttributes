@@ -1,3 +1,5 @@
+config:
+  default/catalog/frontend/flat_catalog_product: 1
 eav:
   catalog_product:
     - entity_id: 1

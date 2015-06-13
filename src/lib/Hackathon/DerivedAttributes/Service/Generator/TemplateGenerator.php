@@ -22,7 +22,6 @@ class TemplateGenerator implements GeneratorInterface
     public function configure($data)
     {
         $this->data = $data;
-        // TODO: Implement configure() method.
         return $this;
     }
 

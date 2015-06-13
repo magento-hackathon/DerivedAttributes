@@ -30,8 +30,8 @@ git clone https://github.com/schmengler/MageTestStand.git "${BUILDENV}"
 cp -rf "${WORKSPACE}" "${BUILDENV}/.modman/"
 cp -rf ${WORKSPACE}/.modman/* "${BUILDENV}/.modman/"
 cp -f ${WORKSPACE}/composer.lock "${BUILDENV}/"
-cp -rf ${WORKSPACE}/vendor "${BUILDENV}/htdocs/"
 ${BUILDENV}/install.sh
+cp -rf ${WORKSPACE}/vendor "${BUILDENV}/htdocs/"
 
 cd ${BUILDENV}/htdocs
 ${BUILDENV}/bin/phpunit --colors -d display_errors=1

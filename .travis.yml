@@ -23,6 +23,7 @@ env:
   - MAGENTO_VERSION=magento-ce-1.8.0.0
   - MAGENTO_VERSION=magento-ce-1.7.0.2
 script:
+  - composer require aoepeople/composer-installers:*
   - composer install --dev
   - phpunit --bootstrap=test/bootstrap.php test
   - curl -sSL https://raw.githubusercontent.com/schmengler/MageTestStand/master/setup.sh | bash

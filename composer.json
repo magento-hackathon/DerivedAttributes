@@ -9,7 +9,8 @@
     "integer-net/IntegerNet_GridMassActionPager": "~1.0.0"
   },
   "require-dev": {
-    "ecomdev/ecomdev_phpunit": "~0.3.7"
+    "ecomdev/ecomdev_phpunit": "~0.3.7",
+    "magento-hackathon/magento-composer-installer": "<3.0"
   },
   "repositories": [
     {

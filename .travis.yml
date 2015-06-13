@@ -27,7 +27,7 @@ script:
   - composer install --dev
   - phpunit --bootstrap=test/bootstrap.php test
   - .travis/setup.sh
-  - .travis/build.sh
+  - .travis/bundle.sh
 deploy:
   provider: releases
   api_key:

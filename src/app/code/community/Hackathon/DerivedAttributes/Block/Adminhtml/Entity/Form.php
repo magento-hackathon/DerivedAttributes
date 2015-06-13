@@ -34,7 +34,8 @@ class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Form extends Mage_Admin
                 'label'    => $this->__('Store'),
                 'title'    => $this->__('Store'),
                 'required' => true,
-                'values'   => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true)
+                'values'   => Mage::getSingleton('adminhtml/system_store')->getStoreValuesForForm(false, true),
+                'onchange' => '$(\'massaction_store_id\').setValue(this.getValue())',
             ));
             $field->setValue('0');
             $renderer = $this->getLayout()->createBlock('adminhtml/store_switcher_form_renderer_fieldset_element');

@@ -26,7 +26,8 @@ script:
   - composer require aoepeople/composer-installers:*
   - composer install --dev
   - phpunit --bootstrap=test/bootstrap.php test
-  - curl -sSL https://raw.githubusercontent.com/schmengler/MageTestStand/master/setup.sh | bash
+  - .travis/setup.sh
+  - .travis/build.sh
 deploy:
   provider: releases
   api_key:

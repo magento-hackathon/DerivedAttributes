@@ -7,6 +7,9 @@
 ################################################################################
 
 set -e
+if [ "$TRAVIS_TAG" == "" ]; then
+  exit 0
+fi
 cd $WORKSPACE
 RELEASE_DIR=hackathon-derivedattributes-${TRAVIS_TAG}
 mkdir -p ${RELEASE_DIR}

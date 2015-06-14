@@ -11,7 +11,7 @@ set -x
 if [ "$TRAVIS_TAG" == "" ]; then
   exit 0
 fi
-cd $WORKSPACE
+cd $TRAVIS_BUILD_DIR
 RELEASE_DIR=hackathon-derivedattributes-${TRAVIS_TAG}
 mkdir -p ${RELEASE_DIR}
 cp -rf src/* ${RELEASE_DIR}/

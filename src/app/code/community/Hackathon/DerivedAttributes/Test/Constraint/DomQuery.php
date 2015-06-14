@@ -1,4 +1,7 @@
 <?php
+// turn off strict notices while loading to maintain compatibility with old ZF version in Magento < 1.9.1 and PHPUnit > 3.5
+$__old_error_reporting = error_reporting(error_reporting() & ~ E_STRICT);
+
 /**
  * Extension of DomQuery constraint with configuration in constructor instead
  * of in evaluate() - so that it can be used in EcomDev PHPUnit Controller
@@ -57,3 +60,7 @@ class Hackathon_DerivedAttributes_Test_Constraint_DomQuery extends Zend_Test_PHP
     }
 
 }
+
+// restore error reporting
+error_reporting($__old_error_reporting);
+unset($__old_error_reporting);

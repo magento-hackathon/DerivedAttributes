@@ -36,5 +36,5 @@ echo "vendor vendor" > "${BUILDENV}/.modman/composer/modman"
 ${BUILDENV}/install.sh
 
 cd ${BUILDENV}/htdocs
-${BUILDENV}/bin/phpunit --colors -d display_errors=1
+${BUILDENV}/htdocs/vendor/bin/phpunit --colors -d display_errors=1
 

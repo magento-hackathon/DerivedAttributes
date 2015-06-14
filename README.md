@@ -1,6 +1,6 @@
 Status: WIP
 
-[![Build Status](https://travis-ci.org/magento-hackathon/DerivedAttributes.svg)](https://travis-ci.org/magento-hackathon/DerivedAttributes)
+Build status (master): [![Build Status](https://travis-ci.org/magento-hackathon/DerivedAttributes.svg?branch=master)](https://travis-ci.org/magento-hackathon/DerivedAttributes)
 
 DerivedAttributes (e.g. for product feed export)
 ================================================
@@ -10,6 +10,7 @@ DerivedAttributes (e.g. for product feed export)
 Installation Instructions
 -------------------------
 
+### Option 1: Via Composer
 1. Install via composer: `composer require magento-hackathon/derived-attributes`
 2. Configure Magento-PSR-0-Autoloader to use the composer autoloader. Add this to the `global` node of your `app/etc/local.xml`:
 
@@ -17,6 +18,10 @@ Installation Instructions
 
     The module sets the vendor path to `{{root_dir}}/vendor`, so if your vendor directory is in the Magento root, you do not need
     to add this line to local.xml.
+
+### Option 2: Manually
+1. Download hackathon-derivedattributes.tar.gz or hackathon-derivedattributes.zip from the [Releases page](https://github.com/magento-hackathon/DerivedAttributes/releases)
+2. Extract contained directory into your Magento installation. It contains all dependencies, no additional downloads necessary.
 
 Interfaces:
 -----------

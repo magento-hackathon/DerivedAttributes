@@ -4,7 +4,6 @@
  */
 
 use Hackathon\DerivedAttributes\BridgeInterface\RuleRepositoryInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\RuleSet;
 use Hackathon\DerivedAttributes\RuleBuilder;
@@ -14,28 +13,15 @@ use Hackathon\DerivedAttributes\RuleBuilder;
  */
 class Hackathon_DerivedAttributes_Model_Resource_Rule 
     extends Mage_Core_Model_Resource_Db_Abstract
-    implements RuleRepositoryInterface, RuleLoaderInterface
+    implements RuleRepositoryInterface
 {
     /**
      * @var Hackathon_DerivedAttributes_Model_Resource_Rule_Collection
      */
     protected $_ruleCollection;
 
-	/**
-     * @SuppressWarnings(PHPMD)
-	 * @see Varien_Object::_construct()
-	 */
     protected function _construct(){
         $this->_init("derivedattributes/rule", "rule_id");
-    }
-
-    /**
-     * @deprecated
-     * @return \Hackathon\DerivedAttributes\RuleSet
-     */
-    function getRuleset()
-    {
-        return $this->findActive();
     }
 
     function findActive()
@@ -55,7 +41,6 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
         return $ruleSet;
     }
 
-    //TODO make private
     public function setStoreFilter($storeId)
     {
         # ... WHERE store_id IS NULL OR FIND_IN_SET(:storeId, store_id)

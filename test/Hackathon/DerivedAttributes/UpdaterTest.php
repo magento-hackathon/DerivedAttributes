@@ -4,6 +4,7 @@ namespace Hackathon\DerivedAttributes;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleRepositoryInterface;
 use Hackathon\DerivedAttributes\Mock\CollectionMock;
 
 class UpdaterTest extends \PHPUnit_Framework_TestCase
@@ -20,8 +21,8 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
         $entityModel = $this->getMockForAbstractClass(EntityInterface::__INTERFACE);
         $ruleSet = $this->getMock(RuleSet::__CLASS, array('applyToEntity'));
         $ruleSet->expects($this->exactly($entityCount))->method('applyToEntity')->with($entityModel, $ruleLogger);
-        $ruleLoader = $this->getMockForAbstractClass(RuleLoaderInterface::__INTERFACE);
-        $ruleLoader->expects($this->atLeastOnce())->method('getRuleSet')->willReturn($ruleSet);
+        $ruleRepository = $this->getMockForAbstractClass(RuleRepositoryInterface::__INTERFACE);
+        $ruleRepository->expects($this->atLeastOnce())->method('findActive')->willReturn($ruleSet);
 
         foreach ($collectionData as $i => $entityData) {
             $entityModel->expects($this->at($i * 4))->method('setRawData')->with($entityData);
@@ -36,7 +37,7 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
 
         $collectionIterator = new CollectionMock($collectionData);
 
-        $updater = new Updater($ruleLoader, $ruleLogger);
+        $updater = new Updater($ruleRepository, $ruleLogger);
         $updater->massUpdate($collectionIterator, $entityModel);
     }
 
@@ -52,8 +53,8 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
         $entityModel = $this->getMockForAbstractClass(EntityInterface::__INTERFACE);
         $ruleSet = $this->getMock(RuleSet::__CLASS, array('applyToEntity'));
         $ruleSet->expects($this->exactly($entityCount))->method('applyToEntity')->with($entityModel, $ruleLogger);
-        $ruleLoader = $this->getMockForAbstractClass(RuleLoaderInterface::__INTERFACE);
-        $ruleLoader->expects($this->atLeastOnce())->method('getRuleSet')->willReturn($ruleSet);
+        $ruleRepository = $this->getMockForAbstractClass(RuleRepositoryInterface::__INTERFACE);
+        $ruleRepository->expects($this->atLeastOnce())->method('findActive')->willReturn($ruleSet);
 
         foreach ($collectionData as $i => $entityData) {
             $entityModel->expects($this->at($i * 3))->method('setRawData')->with($entityData);
@@ -67,7 +68,7 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
 
         $collectionIterator = new CollectionMock($collectionData);
 
-        $updater = new Updater($ruleLoader, $ruleLogger);
+        $updater = new Updater($ruleRepository, $ruleLogger);
         $updater->setDryRun(true);
         $updater->massUpdate($collectionIterator, $entityModel);
     }

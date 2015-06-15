@@ -7,7 +7,7 @@ namespace Hackathon\DerivedAttributes\BridgeInterface;
  */
 interface RuleRepositoryInterface
 {
-    //const __INTERFACE = __CLASS__;
+    const __INTERFACE = __CLASS__;
 
     function findActive();
 }

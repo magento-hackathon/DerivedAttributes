@@ -3,16 +3,16 @@ namespace Hackathon\DerivedAttributes;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleRepositoryInterface;
 
 class Updater
 {
     const __CLASS = __CLASS__;
     /**
-     * @var RuleLoaderInterface
+     * @var RuleRepositoryInterface
      */
-    private $ruleLoader;
+    private $ruleRepository;
     /**
      * @var RuleLoggerInterface
      */
@@ -27,9 +27,9 @@ class Updater
      */
     private $entityModel;
 
-    public function __construct(RuleLoaderInterface $ruleLoader, RuleLoggerInterface $ruleLogger)
+    public function __construct(RuleRepositoryInterface $ruleRepository, RuleLoggerInterface $ruleLogger)
     {
-        $this->ruleLoader = $ruleLoader;
+        $this->ruleRepository = $ruleRepository;
         $this->ruleLogger = $ruleLogger;
     }
 
@@ -50,7 +50,7 @@ class Updater
      */
     public function update(EntityInterface $entity)
     {
-        $ruleSet = $this->ruleLoader->getRuleset();
+        $ruleSet = $this->ruleRepository->findActive();
         $ruleSet->applyToEntity($entity, $this->ruleLogger);
     }
 

@@ -9,16 +9,8 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
  * Bridge-entity for rule-condition(s).
  */
 class Hackathon_DerivedAttributes_Model_Rulecondition
-    extends Mage_Core_Model_Abstract
+    extends Varien_Object
     implements RuleConditionInterface{
-    
-	/**
-     * @SuppressWarnings(PHPMD)
-	 * @see Varien_Object::_construct()
-	 */
-    protected function _construct(){
-        $this->_init("derivedattributes/rulecondition");
-    }
 
     /**
      * Return the Condition type

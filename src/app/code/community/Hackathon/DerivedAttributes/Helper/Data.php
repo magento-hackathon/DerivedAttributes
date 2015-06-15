@@ -24,12 +24,12 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getUpdater($storeId = null)
     {
-        $ruleLoader = new Hackathon_DerivedAttributes_Bridge_RuleLoader();
+        $ruleRepository = Mage::getResourceModel('derivedattributes/rule');
         if ($storeId !== null) {
-            $ruleLoader->setStoreFilter($storeId);
+            $ruleRepository->setStoreFilter($storeId);
         }
         $ruleLogger = new Hackathon_DerivedAttributes_Bridge_RuleLogger();
 
-        return new Updater($ruleLoader, $ruleLogger);
+        return new Updater($ruleRepository, $ruleLogger);
     }
 }

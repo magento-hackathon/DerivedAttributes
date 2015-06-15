@@ -3,9 +3,7 @@
  * @author Gerrit Addiks <gerrit.addiks@brille24.de>
  */
 
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
-use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Singleton model containing rule-manager.

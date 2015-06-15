@@ -51,7 +51,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldInstantiateConfiguredCondition($conditionType, $conditionData, $expectedClass)
     {
         $manager = new Manager();
-        $conditionStub = $this->getMock(RuleConditionInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
+        $conditionStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
         $conditionStub->expects($this->any())
             ->method('getConditionType')
             ->will($this->returnValue($conditionType));
@@ -74,7 +74,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     {
         //TODO deduplicate
         $manager = new Manager();
-        $conditionStub = $this->getMock(RuleConditionInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
+        $conditionStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
         $conditionStub->expects($this->any())
             ->method('getConditionType')
             ->will($this->returnValue($conditionType));
@@ -114,7 +114,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldInstantiateConfiguredGenerator($generatorType, $generatorData, $expectedClass)
     {
         $manager = new Manager();
-        $generatorStub = $this->getMock(RuleGeneratorInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
+        $generatorStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
         $generatorStub->expects($this->any())
             ->method('getGeneratorType')
             ->will($this->returnValue($generatorType));
@@ -136,7 +136,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldFailGeneratorInstantiation($generatorType, $generatorData)
     {
         $manager = new Manager();
-        $generatorStub = $this->getMock(RuleGeneratorInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
+        $generatorStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
         $generatorStub->expects($this->any())
             ->method('getGeneratorType')
             ->will($this->returnValue($generatorType));

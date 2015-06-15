@@ -10,8 +10,6 @@ namespace Hackathon\DerivedAttributes;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
@@ -87,7 +85,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
             });
         $this->ruleLoggerMock->expects($this->any())
             ->method('logAppliedRule')
-            ->willReturnCallback(function(RuleInterface $rule, $value) use (&$actualLoggedRules) {
+            ->willReturnCallback(function(Rule $rule, $value) use (&$actualLoggedRules) {
                 $actualLoggedRules[$rule->getAttribute()->getAttributeCode()] = $value;
             });
         $ruleSet = new RuleSet();
@@ -170,43 +168,39 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $rules = array();
         foreach ($rulesData as $ruleData) {
             $ruleEntityStub = $this->getMock(RuleInterface::__INTERFACE);
-            $ruleConditionStub = $this->getMock(RuleConditionInterface::__INTERFACE);
-            $ruleGeneratorStub = $this->getMock(RuleGeneratorInterface::__INTERFACE);
             $ruleEntityStub->expects($this->any())
                 ->method('getPriority')
                 ->will($this->returnValue($ruleData['priority']));
             $ruleEntityStub->expects($this->any())
                 ->method('getAttribute')
                 ->will($this->returnValue($this->attributeStubs[$ruleData['attribute_index']]));
-            $ruleEntityStub->expects($this->any())
-                ->method('getRuleCondition')
-                ->will($this->returnValue($ruleConditionStub));
-            $ruleEntityStub->expects($this->any())
-                ->method('getRuleGenerator')
-                ->will($this->returnValue($ruleGeneratorStub));
 
             $conditionStub = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'configure', 'getData', 'getTitle', 'getDescription' ]);
             $conditionStub->expects($this->any())
                 ->method('match')
-                ->with($this->productMock, $ruleEntityStub)
+                ->with($this->productMock)
                 ->willReturn($ruleData['matches']);
 
             $generatorStub = $this->getMock(GeneratorInterface::__INTERFACE, [ 'generateAttributeValue', 'configure', 'getData', 'getTitle', 'getDescription' ]);
             $generatorStub->expects($this->any())
                 ->method('generateAttributeValue')
-                ->with($this->productMock, $ruleEntityStub)
+                ->with($this->productMock)
                 ->willReturn($ruleData['value']);
 
             $managerStub = $this->getMock(Manager::__CLASS, [ 'getConditionFromEntity', 'getGeneratorFromEntity']);
             $managerStub->expects($this->any())
                 ->method('getConditionFromEntity')
-                ->with($ruleConditionStub)
+                ->with($ruleEntityStub)
                 ->will($this->returnValue($conditionStub));
             $managerStub->expects($this->any())
                 ->method('getGeneratorFromEntity')
-                ->with($ruleGeneratorStub)
+                ->with($ruleEntityStub)
                 ->will($this->returnValue($generatorStub));
-            $builder = new RuleBuilder($ruleEntityStub, $managerStub);
+            $builder = new RuleBuilder($managerStub);
+            $builder->setPriority($ruleData['priority'])
+                ->setAttribute($this->attributeStubs[$ruleData['attribute_index']])
+                ->setConditionFromEntity($ruleEntityStub)
+                ->setGeneratorFromEntity($ruleEntityStub);
             $rules[] = $builder->build(
                 $ruleEntityStub, $managerStub);
         }

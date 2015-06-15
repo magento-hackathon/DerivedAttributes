@@ -1,10 +1,10 @@
 <?php
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
+use \Hackathon\DerivedAttributes\Rule;
 
 class Hackathon_DerivedAttributes_Bridge_RuleLogger implements RuleLoggerInterface
 {
-    function logAppliedRule(RuleInterface $rule, $value)
+    function logAppliedRule(Rule $rule, $value)
     {
         // TODO: Implement logAppliedRule() method.
     }

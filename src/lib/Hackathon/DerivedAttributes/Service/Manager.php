@@ -99,10 +99,10 @@ class Manager
     /**
      * Factory method: instantiate condition based on bridge interface
      *
-     * @param RuleConditionInterface $conditionEntity
+     * @param RuleInterface $conditionEntity
      * @return ConditionInterface
      */
-    public function getConditionFromEntity(RuleConditionInterface $conditionEntity)
+    public function getConditionFromEntity(RuleInterface $conditionEntity)
     {
         $type = $conditionEntity->getConditionType();
         if (!isset($this->conditionTypes[$type])) {
@@ -117,10 +117,10 @@ class Manager
     /**
      * Factory method: instantiate generator based on bridge interface
      *
-     * @param RuleGeneratorInterface $generatorEntity
+     * @param RuleInterface $generatorEntity
      * @return GeneratorInterface
      */
-    public function getGeneratorFromEntity(RuleGeneratorInterface $generatorEntity)
+    public function getGeneratorFromEntity(RuleInterface $generatorEntity)
     {
         $type = $generatorEntity->getGeneratorType();
         if (!isset($this->generatorTypes[$type])) {

@@ -35,8 +35,13 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
         $ruleSet = new RuleSet();
         foreach($this->getRuleCollection() as $ruleModel){
             /* @var $ruleModel Hackathon_DerivedAttributes_Model_Rule */
-            $builder = new RuleBuilder($ruleModel, $serviceManager);
-            $ruleSet->addRule($builder->build($ruleModel, $serviceManager));
+            $builder = new RuleBuilder($serviceManager);
+            $builder
+                ->setPriority($ruleModel->getPriority())
+                ->setAttribute($ruleModel->getAttribute())
+                ->setGeneratorFromEntity($ruleModel)
+                ->setConditionFromEntity($ruleModel);
+            $ruleSet->addRule($builder->build());
         }
         return $ruleSet;
     }

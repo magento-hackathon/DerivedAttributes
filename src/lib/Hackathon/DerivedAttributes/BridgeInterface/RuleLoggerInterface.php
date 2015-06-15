@@ -1,5 +1,6 @@
 <?php
 namespace Hackathon\DerivedAttributes\BridgeInterface;
+use Hackathon\DerivedAttributes\Rule;
 
 /**
  * Interface RuleLoggerInterface
@@ -9,5 +10,5 @@ interface RuleLoggerInterface
 {
     const __INTERFACE = __CLASS__;
 
-    function logAppliedRule(RuleInterface $rule, $value);
+    function logAppliedRule(Rule $rule, $value);
 }

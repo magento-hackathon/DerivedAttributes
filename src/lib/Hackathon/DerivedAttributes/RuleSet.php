@@ -55,7 +55,7 @@ class RuleSet
                 break;
             }
             if ($rule->applyToEntity($entity)) {
-                $logger->logAppliedRule($rule->getRuleEntity(), $entity->getAttributeValue($rule->getAttribute()));
+                $logger->logAppliedRule($rule, $entity->getAttributeValue($rule->getAttribute()));
                 $affectedAttributes[$code] = true;
             }
         }

@@ -4,37 +4,17 @@
  */
 
 use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
-use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Bridge-entity for rule(s).
  */
-class Hackathon_DerivedAttributes_Model_Rule 
+class Hackathon_DerivedAttributes_Model_Rule
     extends Mage_Core_Model_Abstract 
-    implements RuleInterface{
+    implements RuleInterface {
     
-	/**
-     * @SuppressWarnings(PHPMD)
-	 * @see Varien_Object::_construct()
-	 */
     protected function _construct(){
         $this->_init("derivedattributes/rule");
-    }
-
-    /**
-     * Return generator
-     *
-     * @return RuleGeneratorInterface
-     */
-    function getRuleGenerator(){
-
-        $generatorEntity = new Hackathon_DerivedAttributes_Bridge_Generator(
-            $this->getGeneratorType(),
-            $this->getGeneratorData()
-        );
-        
-        return $generatorEntity;
     }
 
     /**
@@ -75,46 +55,6 @@ class Hackathon_DerivedAttributes_Model_Rule
     }
 
     /**
-     * Return condition
-     *
-     * @return RuleConditionInterface
-     */
-    function getRuleCondition(){
-
-        $conditionType = $this->getData("condition_type");
-        $conditionData = $this->getData("condition_data");
-
-        /* @var $condition Hackathon_DerivedAttributes_Model_Rulecondition */
-        $condition = Mage::getModel("derivedattributes/rulecondition");
-        $condition->setConditionType($conditionType);
-        $condition->setConditionData($conditionData);
-
-        return $condition;
-    }
-
-    /**
-     * Return sorted array of filters
-     *
-     * @return RuleFilterInterface[]
-     */
-    function getRuleFilters(){
-
-        $filters = array();
-
-        /* @var $filterModel Hackathon_DerivedAttributes_Model_Rulefilter */
-        $filterModel = Mage::getModel("derivedattributes/rulefilter");
-
-        /* @var $filterCollection Hackathon_DerivedAttributes_Model_Resource_Rulefilter_Collection */
-        $filterCollection = $filterModel->getCollection();
-    
-        foreach($filterCollection->getIterator() as $filterModel){
-            $filters[] = $filterModel;
-        }
-
-        return $filters;
-    }
-
-    /**
      * Return rule priority (higher number = more priority)
      *
      * @return int
@@ -133,6 +73,26 @@ class Hackathon_DerivedAttributes_Model_Rule
     {
         $this->setStoreId(explode(',', $this->getStoreId()));
         return parent::_afterLoad();
+    }
+
+    /**
+     * Return the Condition type
+     *
+     * @return string
+     */
+    function getConditionType()
+    {
+        return $this->getData('condition_type');
+    }
+
+    /**
+     * Return information for instantiating the condition
+     *
+     * @return string
+     */
+    function getConditionData()
+    {
+        return $this->getData('condition_data');
     }
 
 }

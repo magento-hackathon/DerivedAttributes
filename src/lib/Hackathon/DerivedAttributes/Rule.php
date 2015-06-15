@@ -41,14 +41,13 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $filters;
 
-    function __construct(RuleInterface $ruleEntity, Manager $serviceManager)
+    function __construct($priority, Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator)
     {
-        $this->ruleEntity = $ruleEntity;
+        $this->priority = $priority;
+        $this->attribute = $attribute;
+        $this->condition = $condition;
+        $this->generator = $generator;
         //TODO add filters
-        $this->attribute = $ruleEntity->getAttribute();
-        $this->condition = $serviceManager->getConditionFromEntity($ruleEntity->getRuleCondition());
-        $this->generator = $serviceManager->getGeneratorFromEntity($ruleEntity->getRuleGenerator());
-        $this->priority = $ruleEntity->getPriority();
     }
 
     /**
@@ -98,7 +97,7 @@ class Rule implements \SGH\Comparable\Comparable
     public function applyToEntity(EntityInterface $product)
     {
         if ($this->condition->match($product, $this->ruleEntity)) {
-            $value = $this->generator->generateAttributeValue($product, $this->ruleEntity);
+            $value = $this->generator->generateAttributeValue($product);
             $product->setAttributeValue($this->getAttribute(), $value);
             return true;
         }

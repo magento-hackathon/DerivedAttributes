@@ -3,6 +3,7 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\RuleSet;
 use Hackathon\DerivedAttributes\Rule;
+use Hackathon\DerivedAttributes\RuleBuilder;
 
 class Hackathon_DerivedAttributes_Bridge_RuleLoader implements RuleLoaderInterface
 {
@@ -40,7 +41,8 @@ class Hackathon_DerivedAttributes_Bridge_RuleLoader implements RuleLoaderInterfa
         $ruleSet = new RuleSet();
         foreach($this->getRuleCollection() as $ruleModel){
             /* @var $ruleModel Hackathon_DerivedAttributes_Model_Rule */
-            $ruleSet->addRule(new Rule($ruleModel, $serviceManager));
+            $builder = new RuleBuilder($ruleModel, $serviceManager);
+            $ruleSet->addRule($builder->build($ruleModel, $serviceManager));
         }
         return $ruleSet;
     }

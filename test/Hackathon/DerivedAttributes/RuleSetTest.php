@@ -206,7 +206,8 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
                 ->method('getGeneratorFromEntity')
                 ->with($ruleGeneratorStub)
                 ->will($this->returnValue($generatorStub));
-            $rules[] = new Rule(
+            $builder = new RuleBuilder($ruleEntityStub, $managerStub);
+            $rules[] = $builder->build(
                 $ruleEntityStub, $managerStub);
         }
         return $rules;

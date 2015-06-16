@@ -1,7 +1,6 @@
 <?php
 namespace Hackathon\DerivedAttributes;
 
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
@@ -50,22 +49,14 @@ class RuleBuilder
         $this->condition = $condition;
         return $this;
     }
-    /**
-     * @param RuleInterface $generatorEntity
-     * @return $this
-     */
-    public function setGeneratorFromEntity(RuleInterface $generatorEntity)
+    public function buildCondition($conditionType, $conditionData)
     {
-        $this->generator = $this->serviceManager->getGeneratorFromEntity($generatorEntity);
+        $this->setCondition($this->serviceManager->getCondition($conditionType, $conditionData));
         return $this;
     }
-    /**
-     * @param RuleInterface $conditionEntity
-     * @return $this
-     */
-    public function setConditionFromEntity(RuleInterface $conditionEntity)
+    public function buildGenerator($generatorType, $generatorData)
     {
-        $this->condition = $this->serviceManager->getConditionFromEntity($conditionEntity);
+        $this->setGenerator($this->serviceManager->getGenerator($generatorType, $generatorData));
         return $this;
     }
     /**

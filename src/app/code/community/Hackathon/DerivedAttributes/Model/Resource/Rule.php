@@ -39,8 +39,8 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
             $builder
                 ->setPriority($ruleModel->getPriority())
                 ->setAttribute($ruleModel->getAttribute())
-                ->setGeneratorFromEntity($ruleModel)
-                ->setConditionFromEntity($ruleModel);
+                ->buildCondition($ruleModel->getConditionType(), $ruleModel->getConditionData())
+                ->buildGenerator($ruleModel->getGeneratorType(), $ruleModel->getGeneratorData());
             $ruleSet->addRule($builder->build());
         }
         return $ruleSet;

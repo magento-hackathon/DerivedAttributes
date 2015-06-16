@@ -9,7 +9,6 @@
 namespace Hackathon\DerivedAttributes;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
@@ -33,10 +32,6 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $generator;
     /**
-     * @var RuleInterface
-     */
-    private $ruleEntity;
-    /**
      * @var FilterInterface[]
      */
     private $filters;
@@ -48,14 +43,6 @@ class Rule implements \SGH\Comparable\Comparable
         $this->condition = $condition;
         $this->generator = $generator;
         //TODO add filters
-    }
-
-    /**
-     * @return RuleInterface
-     */
-    public function getRuleEntity()
-    {
-        return $this->ruleEntity;
     }
 
     /**
@@ -96,7 +83,7 @@ class Rule implements \SGH\Comparable\Comparable
      */
     public function applyToEntity(EntityInterface $product)
     {
-        if ($this->condition->match($product, $this->ruleEntity)) {
+        if ($this->condition->match($product)) {
             $value = $this->generator->generateAttributeValue($product);
             $product->setAttributeValue($this->getAttribute(), $value);
             return true;

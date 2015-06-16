@@ -11,7 +11,6 @@ namespace Hackathon\DerivedAttributes\Service;
 
 use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
@@ -51,14 +50,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldInstantiateConfiguredCondition($conditionType, $conditionData, $expectedClass)
     {
         $manager = new Manager();
-        $conditionStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
-        $conditionStub->expects($this->any())
-            ->method('getConditionType')
-            ->will($this->returnValue($conditionType));
-        $conditionStub->expects($this->any())
-            ->method('getConditionData')
-            ->will($this->returnValue($conditionData));
-        $condition = $manager->getConditionFromEntity($conditionStub);
+        $condition = $manager->getCondition($conditionType, $conditionData);
         $this->assertInstanceOf($expectedClass, $condition);
         $this->assertEquals($conditionData, $condition->getData());
     }
@@ -72,16 +64,8 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldFailConditionInstantiation($conditionType, $conditionData)
     {
-        //TODO deduplicate
         $manager = new Manager();
-        $conditionStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getConditionType', 'getConditionData', 'getChildren']);
-        $conditionStub->expects($this->any())
-            ->method('getConditionType')
-            ->will($this->returnValue($conditionType));
-        $conditionStub->expects($this->any())
-            ->method('getConditionData')
-            ->will($this->returnValue($conditionData));
-        $manager->getConditionFromEntity($conditionStub);
+        $manager->getCondition($conditionType, $conditionData);
     }
 
     /**
@@ -114,14 +98,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldInstantiateConfiguredGenerator($generatorType, $generatorData, $expectedClass)
     {
         $manager = new Manager();
-        $generatorStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
-        $generatorStub->expects($this->any())
-            ->method('getGeneratorType')
-            ->will($this->returnValue($generatorType));
-        $generatorStub->expects($this->any())
-            ->method('getGeneratorData')
-            ->will($this->returnValue($generatorData));
-        $generator = $manager->getGeneratorFromEntity($generatorStub);
+        $generator = $manager->getGenerator($generatorType, $generatorData);
         $this->assertInstanceOf($expectedClass, $generator);
         $this->assertEquals($generatorData, $generator->getData());
     }
@@ -136,14 +113,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
     public function shouldFailGeneratorInstantiation($generatorType, $generatorData)
     {
         $manager = new Manager();
-        $generatorStub = $this->getMockForAbstractClass(RuleInterface::__INTERFACE, ['getGeneratorType', 'getGeneratorData']);
-        $generatorStub->expects($this->any())
-            ->method('getGeneratorType')
-            ->will($this->returnValue($generatorType));
-        $generatorStub->expects($this->any())
-            ->method('getGeneratorData')
-            ->will($this->returnValue($generatorData));
-        $manager->getGeneratorFromEntity($generatorStub);
+        $manager->getGenerator($generatorType, $generatorData);
     }
 
     /**

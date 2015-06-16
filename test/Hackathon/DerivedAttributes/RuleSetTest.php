@@ -10,7 +10,6 @@ namespace Hackathon\DerivedAttributes;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
@@ -109,28 +108,56 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases = array();
         $testCases['single_rule'] = [
             'rules_data' => [
-                ['matches' => true, 'value' => 'foo', 'priority' => 1, 'stop' => false, 'attribute_index' => 'dummy-1'],
+                [
+                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'stop' => false, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'foo'
         ];
         $testCases['second_rule_matches'] = [
             'rules_data' => [
-                [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
+                [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'bar'
         ];
         $testCases['second_priorized_rule_matches'] = [
             'rules_data' => [
-                [ 'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
+                [
+                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'bar'
         ];
         $testCases['multiple_rules_match'] = [
             'rules_data' => [
-                [ 'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true, 'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ]
+                [
+                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => true, 'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ]
             ],
             'expected_attribute_value' => 'foo'
         ];
@@ -147,10 +174,26 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases = array();
         $testCases[] = [
             'rules_data' => [
-                'rule-1' => [ 'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2' ],
-                'rule-2' => [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                'rule-3' => [ 'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1' ],
-                'rule-4' => [ 'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
+                'rule-1' => [
+                    'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-2'
+                ],
+                'rule-2' => [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                'rule-3' => [
+                    'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                'rule-4' => [
+                    'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_values' => [ 'dummy-1' => 'baz', 'dummy-2' => 'narf'],
         ];
@@ -167,13 +210,6 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $ruleEntityStub = $this->getMock(RuleInterface::__INTERFACE);
-            $ruleEntityStub->expects($this->any())
-                ->method('getPriority')
-                ->will($this->returnValue($ruleData['priority']));
-            $ruleEntityStub->expects($this->any())
-                ->method('getAttribute')
-                ->will($this->returnValue($this->attributeStubs[$ruleData['attribute_index']]));
 
             $conditionStub = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'configure', 'getData', 'getTitle', 'getDescription' ]);
             $conditionStub->expects($this->any())
@@ -187,22 +223,21 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
                 ->with($this->productMock)
                 ->willReturn($ruleData['value']);
 
-            $managerStub = $this->getMock(Manager::__CLASS, [ 'getConditionFromEntity', 'getGeneratorFromEntity']);
+            $managerStub = $this->getMock(Manager::__CLASS, [ 'getCondition', 'getGenerator']);
             $managerStub->expects($this->any())
-                ->method('getConditionFromEntity')
-                ->with($ruleEntityStub)
+                ->method('getCondition')
+                ->with($ruleData['condition_type'], $ruleData['condition_data'])
                 ->will($this->returnValue($conditionStub));
             $managerStub->expects($this->any())
-                ->method('getGeneratorFromEntity')
-                ->with($ruleEntityStub)
+                ->method('getGenerator')
+                ->with($ruleData['generator_type'], $ruleData['generator_data'])
                 ->will($this->returnValue($generatorStub));
             $builder = new RuleBuilder($managerStub);
             $builder->setPriority($ruleData['priority'])
                 ->setAttribute($this->attributeStubs[$ruleData['attribute_index']])
-                ->setConditionFromEntity($ruleEntityStub)
-                ->setGeneratorFromEntity($ruleEntityStub);
-            $rules[] = $builder->build(
-                $ruleEntityStub, $managerStub);
+                ->buildCondition($ruleData['condition_type'], $ruleData['condition_data'])
+                ->buildGenerator($ruleData['generator_type'], $ruleData['generator_data']);
+            $rules[] = $builder->build();
         }
         return $rules;
     }

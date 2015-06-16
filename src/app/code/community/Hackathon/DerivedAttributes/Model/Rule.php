@@ -3,15 +3,13 @@
  * @author Gerrit Addiks <gerrit.addiks@brille24.de>
  */
 
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Bridge-entity for rule(s).
  */
-class Hackathon_DerivedAttributes_Model_Rule
-    extends Mage_Core_Model_Abstract 
-    implements RuleInterface {
+class Hackathon_DerivedAttributes_Model_Rule extends Mage_Core_Model_Abstract
+{
     
     protected function _construct(){
         $this->_init("derivedattributes/rule");
@@ -37,24 +35,6 @@ class Hackathon_DerivedAttributes_Model_Rule
     }
 
     /**
-     * Return the Generator type
-     *
-     * @return string
-     */
-    function getGeneratorType(){
-        return $this->getData("generator_type");
-    }
-
-    /**
-     * Return information for instantiating the generator
-     *
-     * @return string
-     */
-    function getGeneratorData(){
-        return $this->getData("generator_data");
-    }
-
-    /**
      * Return rule priority (higher number = more priority)
      *
      * @return int
@@ -73,26 +53,6 @@ class Hackathon_DerivedAttributes_Model_Rule
     {
         $this->setStoreId(explode(',', $this->getStoreId()));
         return parent::_afterLoad();
-    }
-
-    /**
-     * Return the Condition type
-     *
-     * @return string
-     */
-    function getConditionType()
-    {
-        return $this->getData('condition_type');
-    }
-
-    /**
-     * Return information for instantiating the condition
-     *
-     * @return string
-     */
-    function getConditionData()
-    {
-        return $this->getData('condition_data');
     }
 
 }

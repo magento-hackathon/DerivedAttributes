@@ -27,7 +27,7 @@ class Hackathon_DerivedAttributes_Model_Massupdater
      */
     protected function _updateStore($entityIds, $entityType, $storeId, $isDryRun)
     {
-        $updater = Mage::helper('derivedattributes')->getUpdater($storeId);
+        $updater = Mage::helper('derivedattributes')->getNewUpdater($storeId);
         $updater->setDryRun($isDryRun);
         $entityTypeInstance = Mage::getModel('eav/entity_type')->loadByCode($entityType);
         if (! $entityTypeInstance->getId()) {

@@ -9,6 +9,7 @@ eav:
       sku: test-1
       description: description.
       meta_description: meta description.
+      meta_keyword: meta keyword.
       short_description: short description.
       /stores:
         second:
@@ -22,6 +23,7 @@ eav:
       sku: test-2
       description: description.
       meta_description: meta description.
+      meta_keyword: meta keyword.
       short_description: short description.
       /stores:
         second:
@@ -35,6 +37,7 @@ eav:
       sku: test-3
       description: description.
       meta_description: meta description.
+      meta_keyword: meta keyword.
       short_description: short description.
       /stores:
         second:

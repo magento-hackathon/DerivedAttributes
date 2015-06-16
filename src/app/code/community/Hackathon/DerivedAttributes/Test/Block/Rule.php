@@ -89,6 +89,9 @@ class Hackathon_DerivedAttributes_Test_Block_Rule extends Hackathon_DerivedAttri
             '//select[@name="active"]/option[@value="1"][@selected="selected"]', 'Active',
             'Status input should be set to active');
         $this->assertResponseBodyXpathContains(
+            '//select[@name="store_id[]"]//option[@value="0"][@selected="selected"]', 'All Store Views',
+            'Store view input should be set to "All Store Views"');
+        $this->assertResponseBodyXpathContains(
             '//textarea[@name="description"]', 'This is a template generator rule for the product description',
             'Description input should be filled');
     }

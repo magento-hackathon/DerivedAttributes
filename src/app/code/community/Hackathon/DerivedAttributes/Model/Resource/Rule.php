@@ -33,15 +33,9 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
 
 
         $ruleSet = new RuleSet();
-        foreach($this->getRuleCollection() as $ruleModel){
-            /* @var $ruleModel Hackathon_DerivedAttributes_Model_Rule */
-            $builder = new RuleBuilder($serviceManager);
-            $builder
-                ->setPriority($ruleModel->getPriority())
-                ->setAttribute($ruleModel->getAttribute())
-                ->buildCondition($ruleModel->getConditionType(), $ruleModel->getConditionData())
-                ->buildGenerator($ruleModel->getGeneratorType(), $ruleModel->getGeneratorData());
-            $ruleSet->addRule($builder->build());
+        $ruleDirector = Mage::getResourceSingleton('derivedattributes/rule_director');
+        foreach($this->getRuleCollection() as $ruleData) {
+            $ruleSet->addRule($ruleDirector->createRule($ruleData));
         }
         return $ruleSet;
     }
@@ -61,6 +55,19 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
             $this->_ruleCollection = Mage::getResourceModel('derivedattributes/rule_collection');
         }
         return $this->_ruleCollection;
+    }
+
+    protected function _afterLoad(Mage_Core_Model_Abstract $object)
+    {
+        $object->setStoreId(explode(',', $object->getStoreId()));
+        return parent::_afterLoad($object);
+    }
+
+
+    protected function _beforeSave(Mage_Core_Model_Abstract $object)
+    {
+        $object->setStoreId(join(',', (array)$object->getStoreId()));
+        return parent::_beforeSave($object);
     }
 
 }

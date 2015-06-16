@@ -22,3 +22,14 @@ tables:
       condition_data: ""
       active: 1
       priority: 1
+    - rule_id: 3
+      name: Test Rule 3
+      meta_description: This is a template generator rule for the meta product keywords (multiple store views)
+      store_id: "1,2"
+      attribute_id: 83 #product meta keywords
+      generator_type: template
+      generator_data: "The meta keywords contain the #short_description#"
+      condition_type: always
+      condition_data: ""
+      active: 1
+      priority: 1

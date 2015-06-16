@@ -9,6 +9,7 @@
  */
 
 use Hackathon\DerivedAttributes\Updater;
+use Hackathon\DerivedAttributes\RuleBuilder;
 
 /**
  * Data Helper
@@ -22,7 +23,7 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int|null $storeId
      * @return Updater
      */
-    public function getUpdater($storeId = null)
+    public function getNewUpdater($storeId = null)
     {
         $ruleRepository = Mage::getResourceModel('derivedattributes/rule');
         if ($storeId !== null) {
@@ -31,5 +32,21 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
         $ruleLogger = new Hackathon_DerivedAttributes_Bridge_RuleLogger();
 
         return new Updater($ruleRepository, $ruleLogger);
+    }
+
+    /**
+     * @return \Hackathon\DerivedAttributes\Service\Manager
+     */
+    public function getServiceManager()
+    {
+        return Mage::getSingleton('derivedattributes/manager')->getRuleManager();
+    }
+
+    /**
+     * @return RuleBuilder
+     */
+    public function getNewRuleBuilder()
+    {
+        return new RuleBuilder($this->getServiceManager());
     }
 }

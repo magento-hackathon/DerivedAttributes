@@ -5,11 +5,12 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule_Director
 {
     public function createRule(Varien_Object $ruleData)
     {
-        $builder = Mage::helper('derivedattributes')->getNewRuleBuilder();
-        $builder->setPriority((int)$ruleData->getPriority())
-            ->setAttribute($this->getAttributeById($ruleData->getData('attribute_id')))
-            ->buildCondition($ruleData->getData('condition_type'), $ruleData->getData('condition_data'))
-            ->buildGenerator($ruleData->getData('generator_type'), $ruleData->getData('generator_data'));
+        $builder = Mage::helper('derivedattributes')->getNewRuleBuilder($this->getAttributeById($ruleData->getData('attribute_id')));
+        $builder->setPriority((int)$ruleData->getData('priority'))
+            ->setConditionType($ruleData->getData('condition_type'))
+            ->setConditionData($ruleData->getData('condition_data'))
+            ->setGeneratorType($ruleData->getData('generator_type'))
+            ->setGeneratorData($ruleData->getData('generator_data'));
         return $builder->build();
     }
     /**

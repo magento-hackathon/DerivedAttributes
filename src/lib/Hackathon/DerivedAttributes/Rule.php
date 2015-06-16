@@ -8,17 +8,21 @@
 
 namespace Hackathon\DerivedAttributes;
 
+use SGH\Comparable\Comparable;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
-class Rule implements \SGH\Comparable\Comparable
+class Rule implements Comparable
 {
     /**
      * @var int
      */
     private $priority;
+    /**
+     * @var bool
+     */
+    private $active;
     /**
      * @var Attribute
      */
@@ -33,16 +37,17 @@ class Rule implements \SGH\Comparable\Comparable
     private $generator;
     /**
      * @var FilterInterface[]
+     * @todo add filters
      */
-    private $filters;
+    private $filters = [];
 
-    function __construct($priority, Attribute $attribute, ConditionInterface $condition, GeneratorInterface $generator)
+    function __construct(RuleBuilder $builder)
     {
-        $this->priority = $priority;
-        $this->attribute = $attribute;
-        $this->condition = $condition;
-        $this->generator = $generator;
-        //TODO add filters
+        $this->attribute = $builder->getAttribute();
+        $this->condition = $builder->getCondition();
+        $this->generator = $builder->getGenerator();
+        $this->priority  = $builder->getPriority();
+        $this->active    = $builder->isActive();
     }
 
     /**
@@ -54,12 +59,11 @@ class Rule implements \SGH\Comparable\Comparable
     }
 
     /**
-     * @param int $priority
-     * @return void
+     * @return boolean
      */
-    public function setPriority($priority)
+    public function isActive()
     {
-        $this->priority = $priority;
+        return $this->active;
     }
 
     /**
@@ -68,6 +72,22 @@ class Rule implements \SGH\Comparable\Comparable
     public function getAttribute()
     {
         return $this->attribute;
+    }
+
+    /**
+     * @return ConditionInterface
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * @return GeneratorInterface
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
     }
 
     public function compareTo($object)

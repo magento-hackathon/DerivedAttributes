@@ -10,6 +10,7 @@
 
 use Hackathon\DerivedAttributes\Updater;
 use Hackathon\DerivedAttributes\RuleBuilder;
+use Hackathon\DerivedAttributes\Attribute;
 
 /**
  * Data Helper
@@ -45,8 +46,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      * @return RuleBuilder
      */
-    public function getNewRuleBuilder()
+    public function getNewRuleBuilder(Attribute $attribute)
     {
-        return new RuleBuilder($this->getServiceManager());
+        return new RuleBuilder($this->getServiceManager(), $attribute);
     }
 }

@@ -109,7 +109,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases['single_rule'] = [
             'rules_data' => [
                 [
-                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'stop' => false, 'attribute_index' => 'dummy-1',
+                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],
@@ -232,11 +232,13 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
                 ->method('getGenerator')
                 ->with($ruleData['generator_type'], $ruleData['generator_data'])
                 ->will($this->returnValue($generatorStub));
-            $builder = new RuleBuilder($managerStub);
-            $builder->setPriority($ruleData['priority'])
-                ->setAttribute($this->attributeStubs[$ruleData['attribute_index']])
-                ->buildCondition($ruleData['condition_type'], $ruleData['condition_data'])
-                ->buildGenerator($ruleData['generator_type'], $ruleData['generator_data']);
+            $builder = new RuleBuilder($managerStub, $this->attributeStubs[$ruleData['attribute_index']]);
+            $builder
+                ->setPriority($ruleData['priority'])
+                ->setConditionType($ruleData['condition_type'])
+                ->setConditionData($ruleData['condition_data'])
+                ->setGeneratorType($ruleData['generator_type'])
+                ->setGeneratorData($ruleData['generator_data']);
             $rules[] = $builder->build();
         }
         return $rules;

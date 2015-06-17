@@ -32,7 +32,7 @@ interface RuleRepositoryInterface
     function replaceRule(Rule $oldRule, Rule $newRule);
 
     /**
-     * @param Rule $rule
+     * @param Rule $ruleToBeDeleted
      * @return void
      */
     function deleteRule(Rule $ruleToBeDeleted);

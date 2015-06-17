@@ -7,6 +7,8 @@ use Hackathon\DerivedAttributes\Service\Manager;
 
 /**
  * Singleton model containing rule-manager.
+ *
+ * @todo instantiate Manager once, don't use singleton
  */
 class Hackathon_DerivedAttributes_Model_Manager 
     extends Mage_Core_Model_Abstract{

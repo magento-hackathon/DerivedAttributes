@@ -15,8 +15,8 @@ class Hackathon_DerivedAttributes_Model_Observer{
         $modelResource = $modelObject->getResource();
 
         if($modelResource instanceof Mage_Eav_Model_Entity_Abstract){
-            /* @var $bridgeObject Hackathon_DerivedAttributes_Bridge_Entity */
-            $bridgeObject = new Hackathon_DerivedAttributes_Bridge_Entity($modelResource->getEntityType(), $modelObject);
+            /* @var $bridgeObject Hackathon_DerivedAttributes_Model_Bridge_Entity */
+            $bridgeObject = new Hackathon_DerivedAttributes_Model_Bridge_Entity($modelResource->getEntityType(), $modelObject);
 
             $updater = Mage::helper('derivedattributes')->getNewUpdater($modelObject->getStoreId());
             $updater->update($bridgeObject);

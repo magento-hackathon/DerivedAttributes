@@ -2,7 +2,10 @@
 use Hackathon\DerivedAttributes\Attribute;
 use Hackathon\DerivedAttributes\StoreSet;
 
-class Hackathon_DerivedAttributes_Model_Resource_Rule_Director
+/**
+ * Director to instantiate Rule based on raw data
+ */
+class Hackathon_DerivedAttributes_Helper_Rule_Director
 {
     public function createRule(Varien_Object $ruleData)
     {

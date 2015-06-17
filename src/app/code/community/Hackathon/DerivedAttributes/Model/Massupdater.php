@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @todo move store logic to actual updater, instantiation into factory methods
+ */
 class Hackathon_DerivedAttributes_Model_Massupdater
 {
     /**
@@ -46,8 +50,8 @@ class Hackathon_DerivedAttributes_Model_Massupdater
          */
         $collection->addAttributeToSelect('*');
 
-        $entityModel = new Hackathon_DerivedAttributes_Bridge_Entity($entityTypeInstance, $entity);
-        $iterator = new Hackathon_DerivedAttributes_Bridge_EntityIterator($collection, $storeId);
+        $entityModel = new Hackathon_DerivedAttributes_Model_Bridge_Entity($entityTypeInstance, $entity);
+        $iterator = new Hackathon_DerivedAttributes_Model_Bridge_EntityIterator($collection, $storeId);
 
         $updater->massUpdate($iterator, $entityModel);
     }

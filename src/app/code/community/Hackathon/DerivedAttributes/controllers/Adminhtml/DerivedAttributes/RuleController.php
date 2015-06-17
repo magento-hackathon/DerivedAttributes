@@ -9,7 +9,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
 
     protected function _construct()
     {
-        $this->_repository = Mage::getResourceModel('derivedattributes/rule');
+        $this->_repository = Mage::getModel('derivedattributes/bridge_ruleRepository');
     }
 
     protected function _initAction()
@@ -181,7 +181,7 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
      */
     protected function _createRuleFromModel($model)
     {
-        $newRule = Mage::getResourceSingleton('derivedattributes/rule_director')->createRule($model);
+        $newRule = Mage::helper('derivedattributes/rule_director')->createRule($model);
         $this->_getSession()->setPageData($this->_repository->getRuleModel($newRule)->getData());
         return $newRule;
     }

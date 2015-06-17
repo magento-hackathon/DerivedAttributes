@@ -1,6 +1,6 @@
 <?php
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
-class Hackathon_DerivedAttributes_Bridge_EntityIterator implements EntityIteratorInterface
+class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityIteratorInterface
 {
     /**
      * @var Mage_Core_Model_Resource_Db_Collection_Abstract

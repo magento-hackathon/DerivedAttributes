@@ -9,7 +9,7 @@ use Hackathon\DerivedAttributes\Attribute;
 /**
  * Entity implementation of entity-bridge-interface.
  */
-class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAttributes\BridgeInterface\EntityInterface
+class Hackathon_DerivedAttributes_Model_Bridge_Entity implements \Hackathon\DerivedAttributes\BridgeInterface\EntityInterface
 {
     /**
      * @var Mage_Eav_Model_Entity_Type

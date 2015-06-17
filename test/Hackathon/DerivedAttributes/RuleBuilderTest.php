@@ -8,8 +8,10 @@ use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
 class RuleBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    const DEFAULT_PRIORITY = 0;
-    const DEFAULT_ACTIVE = true;
+    const DEFAULT_PRIORITY       = 0;
+    const DEFAULT_ACTIVE         = true;
+    const DEFAULT_NAME           = 'New Rule';
+    const DEFAULT_DESCRIPTION    = '';
     const DEFAULT_CONDITION_TYPE = 'always';
     const DEFAULT_CONDITION_DATA = '';
     const DEFAULT_GENERATOR_TYPE = 'template';
@@ -22,19 +24,22 @@ class RuleBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $conditionStub = $this->getMockForAbstractClass(ConditionInterface::__INTERFACE);
         $generatorStub = $this->getMockForAbstractClass(GeneratorInterface::__INTERFACE);
-        $attributeStub = $this->getMock(Attribute::__CLASS, null, [$ruleData['attribute_code']]);
         $managerMock = $this->getManagerMock($ruleData, $conditionStub, $generatorStub);
 
-        $builder = new RuleBuilder($managerMock, $attributeStub);
+        $attribute = new Attribute($ruleData['attribute_code']);
+        $stores = StoreSet::all();
+
+        $builder = new RuleBuilder($managerMock, $attribute);
 
         $actualRule = $builder->build();
-        $this->assertRuleData($ruleData, $attributeStub, $conditionStub, $generatorStub, $actualRule);
+        $this->assertRuleData($ruleData, $attribute, $conditionStub, $generatorStub, $stores, $actualRule);
     }
     public static function dataDefaultAttributes()
     {
         return [[
             'ruleData' => [
                 'attribute_code' => 'dummy-1',
+                'name' => self::DEFAULT_NAME, 'description' => self::DEFAULT_DESCRIPTION,
                 'active' => self::DEFAULT_ACTIVE, 'priority' => self::DEFAULT_PRIORITY,
                 'condition_type' => self::DEFAULT_CONDITION_TYPE, 'condition_data' => self::DEFAULT_CONDITION_DATA,
                 'generator_type' => self::DEFAULT_GENERATOR_TYPE, 'generator_data' => self::DEFAULT_GENERATOR_DATA
@@ -49,33 +54,40 @@ class RuleBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $conditionStub = $this->getMockForAbstractClass(ConditionInterface::__INTERFACE);
         $generatorStub = $this->getMockForAbstractClass(GeneratorInterface::__INTERFACE);
-        $attributeStub = $this->getMock(Attribute::__CLASS, null, [$ruleData['attribute_code']]);
         $managerMock = $this->getManagerMock($ruleData, $conditionStub, $generatorStub);
 
-        $builder = new RuleBuilder($managerMock, $attributeStub);
+        $attribute = new Attribute($ruleData['attribute_code']);
+        $stores = new StoreSet($ruleData['store_codes']);
+
+        $builder = new RuleBuilder($managerMock, $attribute);
         $builder
             ->setPriority($ruleData['priority'])
             ->setActive($ruleData['active'])
             ->setConditionType($ruleData['condition_type'])
             ->setConditionData($ruleData['condition_data'])
             ->setGeneratorType($ruleData['generator_type'])
-            ->setGeneratorData($ruleData['generator_data']);
+            ->setGeneratorData($ruleData['generator_data'])
+            ->setName($ruleData['name'])
+            ->setDescription($ruleData['description'])
+            ->setStores($stores);
 
         $actualRule = $builder->build();
-        $this->assertRuleData($ruleData, $attributeStub, $conditionStub, $generatorStub, $actualRule);
+        $this->assertRuleData($ruleData, $attribute, $conditionStub, $generatorStub, $stores, $actualRule);
     }
     public static function dataOptionalAttributes()
     {
         return [[
             'ruleData' => [
-                'attribute_code' => 'dummy-1',
+                'attribute_code' => 'dummy-1', 'store_codes' => ['store-1', 'store-2'],
+                'name' => 'Rule 1', 'description' => 'First Rule',
                 'active' => true, 'priority' => 1,
                 'condition_type' => 'boolean_attribute', 'condition_data' => 'dummy-attribute',
                 'generator_type' => 'template', 'generator_data' => 'dummy-template'
             ]
         ], [
             'ruleData' => [
-                'attribute_code' => 'dummy-2',
+                'attribute_code' => 'dummy-2', 'store_codes' => ['store-1', 'store-2'],
+                'name' => 'Rule 2', 'description' => 'Second Rule',
                 'active' => false, 'priority' => 2,
                 'condition_type' => 'dummy_type', 'condition_data' => 'dummy-data',
                 'generator_type' => 'dummy_type', 'generator_data' => 'dummy-data'
@@ -108,14 +120,17 @@ class RuleBuilderTest extends \PHPUnit_Framework_TestCase
      * @param $expectedAttribute
      * @param $expectedCondition
      * @param $expectedGenerator
-     * @param $actualRule
+     * @param Rule $actualRule
      */
-    private function assertRuleData($expectedRuleData, $expectedAttribute, $expectedCondition, $expectedGenerator, $actualRule)
+    private function assertRuleData($expectedRuleData, $expectedAttribute, $expectedCondition, $expectedGenerator, $expectedStores, $actualRule)
     {
         $this->assertSame($expectedAttribute, $actualRule->getAttribute());
+        $this->assertSame($expectedStores, $actualRule->getStores());
         $this->assertSame($expectedCondition, $actualRule->getCondition());
         $this->assertSame($expectedGenerator, $actualRule->getGenerator());
         $this->assertEquals($expectedRuleData['priority'], $actualRule->getPriority());
         $this->assertEquals($expectedRuleData['active'], $actualRule->isActive());
+        $this->assertEquals($expectedRuleData['name'], $actualRule->getName());
+        $this->assertEquals($expectedRuleData['description'], $actualRule->getDescription());
     }
 }

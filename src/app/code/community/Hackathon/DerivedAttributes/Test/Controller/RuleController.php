@@ -46,4 +46,24 @@ class Hackathon_DerivedAttributes_Test_Controller_RuleController
             ]]
         );
     }
+
+    /**
+     * @test
+     * @loadFixture products.yaml
+     * @singleton adminhtml/session
+     * @singleton admin/session
+     */
+    public function existingRuleShouldBeDeleted()
+    {
+        $ruleId = '1';
+
+        $this->adminSession();
+        $this->getRequest()->setParam('id', $ruleId);
+        $this->dispatch('adminhtml/derivedAttributes_rule/delete');
+        $this->assertRequestRoute('adminhtml/derivedAttributes_rule/delete');
+        $this->assertRedirectTo('adminhtml/derivedAttributes_rule/index');
+
+        $rule = Mage::getModel('derivedattributes/rule')->load($ruleId);
+        $this->assertNull($rule->getId(), 'Rule should not be loaded after delete');
+    }
 }

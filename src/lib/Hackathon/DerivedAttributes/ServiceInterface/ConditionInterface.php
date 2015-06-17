@@ -22,7 +22,6 @@ interface ConditionInterface
     function configure($data);
 
     /**
-     * @internal used to test instantiation
      * @return string
      */
     function getData();

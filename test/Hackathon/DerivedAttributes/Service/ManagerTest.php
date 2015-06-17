@@ -14,6 +14,8 @@ use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
+use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
+use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -134,5 +136,43 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         return array(
             [ 'non-existent-id', 'arbitrary data' ]
         );
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDetermineConditionType()
+    {
+        $manager = new Manager();
+        $this->assertEquals('always', $manager->getConditionType(new AlwaysCondition()));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDetermineGeneratorType()
+    {
+        $manager = new Manager();
+        $this->assertEquals('template', $manager->getGeneratorType(new TemplateGenerator()));
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function shouldFailWithInvalidConditionType()
+    {
+        $manager = new Manager();
+        $manager->getConditionType($this->getMockForAbstractClass(ConditionInterface::__INTERFACE));
+    }
+
+    /**
+     * @test
+     * @expectedException \RuntimeException
+     */
+    public function shouldFailWithInvalidGeneratorType()
+    {
+        $manager = new Manager();
+        $manager->getGeneratorType($this->getMockForAbstractClass(GeneratorInterface::__INTERFACE));
     }
 }

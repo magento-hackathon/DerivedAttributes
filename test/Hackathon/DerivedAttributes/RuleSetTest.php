@@ -20,7 +20,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Attribute[]
      */
-    private $attributeStubs;
+    private $attributes;
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface
      */
@@ -34,9 +34,9 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->productMock   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
-            [], '', true, true, true, [ 'setAttributeValue' ]);
-        $this->attributeStubs['dummy-1'] = $this->getMock(Attribute::__CLASS, null, ['dummy-1']);
-        $this->attributeStubs['dummy-2'] = $this->getMock(Attribute::__CLASS, null, ['dummy-2']);
+            [], '', true, true, true, [ 'hasAttribute', 'setAttributeValue' ]);
+        $this->attributes['dummy-1'] = new Attribute('dummy-1');
+        $this->attributes['dummy-2'] = new Attribute('dummy-2');
         $this->ruleLoggerMock = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
     }
 
@@ -48,9 +48,12 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function rulesShouldBeAppliedAccordingToConditionsAndPriority($rulesData, $expectedAttributeValue)
     {
+        $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(true);
         $this->productMock->expects($this->atLeastOnce())
             ->method('setAttributeValue')
-            ->with($this->attributeStubs['dummy-1'], $expectedAttributeValue);
+            ->with($this->attributes['dummy-1'], $expectedAttributeValue);
         $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
         foreach ($rules as $rule)
@@ -70,6 +73,9 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $actualAttributeValues = array();
         $actualLoggedRules = array();
+        $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(true);
         $this->productMock->expects($this->any())
             ->method('setAttributeValue')
             ->willReturnCallback(function(Attribute $attribute, $value) use (&$actualAttributeValues) {
@@ -232,7 +238,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
                 ->method('getGenerator')
                 ->with($ruleData['generator_type'], $ruleData['generator_data'])
                 ->will($this->returnValue($generatorStub));
-            $builder = new RuleBuilder($managerStub, $this->attributeStubs[$ruleData['attribute_index']]);
+            $builder = new RuleBuilder($managerStub, $this->attributes[$ruleData['attribute_index']]);
             $builder
                 ->setPriority($ruleData['priority'])
                 ->setConditionType($ruleData['condition_type'])

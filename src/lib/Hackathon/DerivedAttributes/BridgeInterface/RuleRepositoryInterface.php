@@ -1,5 +1,6 @@
 <?php
 namespace Hackathon\DerivedAttributes\BridgeInterface;
+use Hackathon\DerivedAttributes\Rule;
 use Hackathon\DerivedAttributes\RuleSet;
 
 /**
@@ -16,4 +17,23 @@ interface RuleRepositoryInterface
      * @return RuleSet
      */
     function findActive();
+
+    /**
+     * @param Rule $rule
+     * @return void
+     */
+    function createRule(Rule $newRule);
+
+    /**
+     * @param Rule $oldRule
+     * @param Rule $newRule
+     * @return void
+     */
+    function replaceRule(Rule $oldRule, Rule $newRule);
+
+    /**
+     * @param Rule $rule
+     * @return void
+     */
+    function deleteRule(Rule $ruleToBeDeleted);
 }

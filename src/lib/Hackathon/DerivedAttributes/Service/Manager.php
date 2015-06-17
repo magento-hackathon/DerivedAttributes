@@ -130,4 +130,36 @@ class Manager
         $generator->configure($generatorData);
         return $generator;
     }
+
+    /**
+     * Determine condition type identifier based on condition instance
+     *
+     * @param ConditionInterface $condition
+     * @return string
+     * @throws \OutOfBoundsException
+     */
+    public function getConditionType(ConditionInterface $condition)
+    {
+        $result = array_search(get_class($condition), $this->conditionTypes);
+        if ($result === false) {
+            throw new \OutOfBoundsException('Condition type not registered.');
+        }
+        return $result;
+    }
+
+    /**
+     * Determine generator type identifier based on generator instance
+     *
+     * @param GeneratorInterface $generator
+     * @return string
+     * @throws \OutOfBoundsException
+     */
+    public function getGeneratorType(GeneratorInterface $generator)
+    {
+        $result = array_search(get_class($generator), $this->generatorTypes);
+        if ($result === false) {
+            throw new \OutOfBoundsException('Generator type not registered.');
+        }
+        return $result;
+    }
 }

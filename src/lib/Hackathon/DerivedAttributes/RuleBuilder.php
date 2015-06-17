@@ -12,6 +12,8 @@ class RuleBuilder
     // default properties
     private $active        = true;
     private $priority      = 0;
+    private $name          = 'New Rule';
+    private $description   = '';
     private $conditionType = 'always';
     private $conditionData = '';
     private $generatorType = 'template';
@@ -20,6 +22,7 @@ class RuleBuilder
     private $condition;
     private $generator;
     private $attribute;
+    private $stores;
 
     /**
      * @param Manager $serviceManager
@@ -28,6 +31,7 @@ class RuleBuilder
     {
         $this->serviceManager = $serviceManager;
         $this->attribute = $attribute;
+        $this->stores = StoreSet::all();
     }
 
     /**
@@ -46,6 +50,26 @@ class RuleBuilder
     public function setPriority($priority)
     {
         $this->priority = $priority;
+        return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -139,6 +163,11 @@ class RuleBuilder
         return $this;
     }
 
+    public function setStores(StoreSet $stores)
+    {
+        $this->stores = $stores;
+    }
+
     /**
      * @return boolean
      */
@@ -153,6 +182,22 @@ class RuleBuilder
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -177,6 +222,14 @@ class RuleBuilder
     public function getAttribute()
     {
         return $this->attribute;
+    }
+
+    /**
+     * @return StoreSet
+     */
+    public function getStores()
+    {
+        return $this->stores;
     }
 
     /**

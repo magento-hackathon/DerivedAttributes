@@ -19,6 +19,14 @@ interface EntityInterface
     function isChanged();
 
     /**
+     * Returns true if entity has this kind of attribute
+     *
+     * @param Attribute $attribute
+     * @return bool
+     */
+    function hasAttribute(Attribute $attribute);
+
+    /**
      * Returns raw attribute value
      *
      * @param Attribute $attribute

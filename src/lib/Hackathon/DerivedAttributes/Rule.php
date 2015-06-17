@@ -24,6 +24,18 @@ class Rule implements Comparable
      */
     private $active;
     /**
+     * @var StoreSet
+     */
+    private $stores;
+    /**
+     * @var string
+     */
+    private $name;
+    /**
+     * @var string
+     */
+    private $description;
+    /**
      * @var Attribute
      */
     private $attribute;
@@ -43,11 +55,14 @@ class Rule implements Comparable
 
     function __construct(RuleBuilder $builder)
     {
-        $this->attribute = $builder->getAttribute();
-        $this->condition = $builder->getCondition();
-        $this->generator = $builder->getGenerator();
-        $this->priority  = $builder->getPriority();
-        $this->active    = $builder->isActive();
+        $this->attribute   = $builder->getAttribute();
+        $this->condition   = $builder->getCondition();
+        $this->generator   = $builder->getGenerator();
+        $this->priority    = $builder->getPriority();
+        $this->active      = $builder->isActive();
+        $this->name        = $builder->getName();
+        $this->description = $builder->getDescription();
+        $this->stores      = $builder->getStores();
     }
 
     /**
@@ -67,11 +82,35 @@ class Rule implements Comparable
     }
 
     /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
      * @return Attribute
      */
     public function getAttribute()
     {
         return $this->attribute;
+    }
+
+    /**
+     * @return StoreSet
+     */
+    public function getStores()
+    {
+        return $this->stores;
     }
 
     /**
@@ -98,14 +137,14 @@ class Rule implements Comparable
     /**
      * Applies attribute rule to product. Returns true if rule was applicable
      *
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return bool
      */
-    public function applyToEntity(EntityInterface $product)
+    public function applyToEntity(EntityInterface $entity)
     {
-        if ($this->condition->match($product)) {
-            $value = $this->generator->generateAttributeValue($product);
-            $product->setAttributeValue($this->getAttribute(), $value);
+        if ($entity->hasAttribute($this->attribute) && $this->condition->match($entity)) {
+            $value = $this->generator->generateAttributeValue($entity);
+            $entity->setAttributeValue($this->getAttribute(), $value);
             return true;
         }
         return false;

@@ -22,6 +22,20 @@ class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAtt
     }
 
     /**
+     * Returns true if entity has this kind of attribute
+     *
+     * @param Attribute $attribute
+     * @return bool
+     */
+    function hasAttribute(Attribute $attribute)
+    {
+        // TODO: Implement hasAttribute() method.
+        // necessary to distinguish attributes by entity type
+        return true;
+    }
+
+
+    /**
      * @return boolean
      */
     public function isChanged()

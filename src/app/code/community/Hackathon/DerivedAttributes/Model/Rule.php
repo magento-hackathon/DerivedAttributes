@@ -3,16 +3,18 @@
  * @author Gerrit Addiks <gerrit.addiks@brille24.de>
  */
 
-use Hackathon\DerivedAttributes\Attribute;
+use Hackathon\DerivedAttributes\Rule;
 
 /**
- * Bridge-entity for rule(s).
+ * Magento model for rules.
+ *
+ * Only used internally by resource model
  */
 class Hackathon_DerivedAttributes_Model_Rule extends Mage_Core_Model_Abstract
 {
-    
-    protected function _construct(){
-        $this->_init("derivedattributes/rule");
-    }
+    const ALIAS = 'derivedattributes/rule';
 
+    protected function _construct(){
+        $this->_init(self::ALIAS);
+    }
 }

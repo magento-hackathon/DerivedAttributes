@@ -2,20 +2,14 @@
 class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController extends
     Mage_Adminhtml_Controller_Action
 {
-    protected function _initRule()
+    /**
+     * @var Hackathon_DerivedAttributes_Model_Resource_Rule
+     */
+    protected $_repository;
+
+    protected function _construct()
     {
-        $this->_title($this->__('Derived Attributes'))->_title($this->__('Rules'));
-
-        Mage::register('current_derived_attribute_rule', Mage::getModel('derivedattributes/rule'));
-        $id = (int)$this->getRequest()->getParam('id');
-
-        if (!$id && $this->getRequest()->getParam('rule_id')) {
-            $id = (int)$this->getRequest()->getParam('rule_id');
-        }
-
-        if ($id) {
-            Mage::registry('current_derived_attribute_rule')->load($id);
-        }
+        $this->_repository = Mage::getResourceModel('derivedattributes/rule');
     }
 
     protected function _initAction()
@@ -43,19 +37,20 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     public function editAction()
     {
         $id = $this->getRequest()->getParam('id');
-        $model = Mage::getModel('derivedattributes/rule');
+        $model = new Varien_Object();
 
         if ($id) {
-            $model->load($id);
-            if (! $model->getRuleId()) {
-                Mage::getSingleton('adminhtml/session')->addError(
-                    $this->__('This rule no longer exists.'));
+            try {
+                $rule = $this->_repository->findById($id);
+                $model = $this->_repository->getRuleModel($rule);
+            } catch (Mage_Core_Exception $e) {
+                Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
                 $this->_redirect('*/*');
                 return;
             }
         }
 
-        $this->_title($model->getId() ? $model->getName() : $this->__('New Rule'));
+        $this->_title($model->getId() ? $rule->getName() : $this->__('New Rule'));
 
         $data = Mage::getSingleton('adminhtml/session')->getPageData(true);
         if (!empty($data)) {
@@ -81,22 +76,11 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     {
         if ($this->getRequest()->getPost()) {
             try {
-                /** @var $model Hackathon_DerivedAttributes_Model_Rule*/
-                $model = Mage::getModel('derivedattributes/rule');
                 Mage::dispatchEvent(
                     'adminhtml_controller_derivedattributes_rule_prepare_save',
                     array('request' => $this->getRequest()));
                 $data = $this->getRequest()->getPost();
-                $data = $this->_filterDates($data, array('from_date', 'to_date'));
-                $id = $this->getRequest()->getParam('rule_id');
-                if ($id) {
-                    $model->load($id);
-                    if ($id != $model->getId()) {
-                        Mage::throwException($this->__('Wrong rule specified.'));
-                    }
-                }
-
-                $session = Mage::getSingleton('adminhtml/session');
+//                $data = $this->_filterDates($data, array('from_date', 'to_date'));
 
 //                $validateResult = $model->validateData(new Varien_Object($data));
 //                if ($validateResult !== true) {
@@ -108,15 +92,23 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
 //                    return;
 //                }
 
-                $model->addData($data);
 
-                $session->setPageData($model->getData());
+                $id = $this->getRequest()->getParam('rule_id');
+                if ($id) {
+                    $oldRule = $this->_repository->findById($id);
+                    $model = $this->_repository->getRuleModel($oldRule);
+                    $model->addData($data);
+                    $newRule = $this->_createRuleFromModel($model);
+                    $this->_repository->replaceRule($oldRule, $newRule);
+                } else {
+                    $newRule = $this->_createRuleFromModel(new Varien_Object($data));
+                    $this->_repository->createRule($newRule);
+                }
 
-                $model->save();
-                $session->addSuccess($this->__('The rule has been saved.'));
-                $session->setPageData(false);
+                $this->_getSession()->addSuccess($this->__('The rule has been saved.'));
+                $this->_getSession()->setPageData(false);
                 if ($this->getRequest()->getParam('back')) {
-                    $this->_redirect('*/*/edit', array('id' => $model->getId()));
+                    $this->_redirect('*/*/edit', array('id' => $this->_repository->getRuleId($newRule)));
                     return;
                 }
                 $this->_redirect('*/*/');
@@ -147,9 +139,8 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     {
         if ($id = $this->getRequest()->getParam('id')) {
             try {
-                $model = Mage::getModel('derivedattributes/rule');
-                $model->load($id);
-                $model->delete();
+                $ruleToBeDeleted = $this->_repository->findById($id);
+                $this->_repository->deleteRule($ruleToBeDeleted);
                 Mage::getSingleton('adminhtml/session')->addSuccess(
                     $this->__('The rule has been deleted.'));
                 $this->_redirect('*/*/');
@@ -171,7 +162,8 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
 
     public function gridAction()
     {
-        $this->_initRule()->loadLayout()->renderLayout();
+        $this->_title($this->__('Derived Attributes'))->_title($this->__('Rules'));
+        $this->loadLayout()->renderLayout();
     }
 
     /**
@@ -181,6 +173,17 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     protected function _isAllowed()
     {
         return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/derived_attributes');
+    }
+
+    /**
+     * @param $model
+     * @return \Hackathon\DerivedAttributes\Rule
+     */
+    protected function _createRuleFromModel($model)
+    {
+        $newRule = Mage::getResourceSingleton('derivedattributes/rule_director')->createRule($model);
+        $this->_getSession()->setPageData($this->_repository->getRuleModel($newRule)->getData());
+        return $newRule;
     }
 
 }

@@ -68,13 +68,13 @@ class TemplateGenerator implements GeneratorInterface
     {
         $this->entity = $entity;
         $valueTemplate = $this->data;
-        $value = preg_replace_callback('~#([\w\-]+)#~', function ($matches) {
+        $value = preg_replace_callback('~#([\w\-]+)#~', function ($matches) use ($entity) {
             /*
              * getData() for multiselect attribute should be a comma separated string,
              * but something converts it to an array and we need to revert that to make
              * the frontend model work:
              */
-            $attr = new Attribute($matches[1]);
+            $attr = new Attribute($entity->getEntityTypeCode(), $matches[1]);
             if (is_array($this->entity->getLocalizedAttributeValue($attr))) {
                 $this->entity->getLocalizedAttributeValue($attr,
                     join(',', $this->entity->getLocalizedAttributeValue($attr)));

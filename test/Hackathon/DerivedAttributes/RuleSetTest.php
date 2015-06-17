@@ -35,11 +35,10 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->productMock   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
             [], '', true, true, true, [ 'hasAttribute', 'setAttributeValue' ]);
-        $this->attributes['dummy-1'] = new Attribute('dummy-1');
-        $this->attributes['dummy-2'] = new Attribute('dummy-2');
+        $this->attributes['dummy-1'] = new Attribute('dummy-entity-type', 'dummy-1');
+        $this->attributes['dummy-2'] = new Attribute('dummy-entity-type', 'dummy-2');
         $this->ruleLoggerMock = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
     }
-
     /**
      * @test
      * @dataProvider getRulesData
@@ -48,6 +47,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function rulesShouldBeAppliedAccordingToConditionsAndPriority($rulesData, $expectedAttributeValue)
     {
+        //TODO test with hasAttribute() = false
         $this->productMock->expects($this->any())
             ->method('hasAttribute')
             ->willReturn(true);

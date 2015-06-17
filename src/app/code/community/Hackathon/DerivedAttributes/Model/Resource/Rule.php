@@ -156,11 +156,9 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
      */
     private static function getAttributeId(Attribute $attribute)
     {
-        //TODO determine entity type by $attribute
-        //TODO write test for conflicting attribute code
         /* @var $magentoAttribute Mage_Eav_Model_Entity_Attribute */
         $magentoAttribute = Mage::getModel("eav/entity_attribute")
-            ->loadByCode('catalog_product', $attribute->getAttributeCode());
+            ->loadByCode($attribute->getEntityTypeCode(), $attribute->getAttributeCode());
 
         return $magentoAttribute->getId();
     }

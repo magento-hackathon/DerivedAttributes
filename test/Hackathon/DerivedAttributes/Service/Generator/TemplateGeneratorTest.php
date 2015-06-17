@@ -14,9 +14,6 @@ class TemplateGeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldMatchIfAttributeTrue($data, $value, $value2, $expected_value)
     {
-        $attribute = new Attribute('some-attribute-code');
-        $attribute2 = new Attribute('some-attribute-code2');
-
         $entityStub = $this->getMock(EntityInterface::__INTERFACE);
 
         $entityStub->expects($this->any())

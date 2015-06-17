@@ -3,43 +3,52 @@ product_1_store_0:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'meta keyword.'
+    meta_title: 'meta title.'
 product_1_store_1:
   attributes:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'The meta keywords contain the short description.'
+    meta_title: 'meta title.'
 product_1_store_2:
   attributes:
     description: 'The description contains the short description in store view'
     meta_description: 'The meta description contains the short description in store view'
     meta_keyword: 'The meta keywords contain the short description in store view'
+    meta_title: 'meta title.'
 product_2_store_0:
   attributes:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'meta keyword.'
+    meta_title: 'meta title.'
 product_2_store_1:
   attributes:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'The meta keywords contain the short description.'
+    meta_title: 'meta title.'
 product_2_store_2:
   attributes:
     description: 'The description contains the short description in store view'
     meta_description: 'The meta description contains the short description in store view'
     meta_keyword: 'The meta keywords contain the short description in store view'
+    meta_title: 'meta title.'
 product_3_store_0:
   attributes:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'meta keyword.'
+    meta_title: 'meta title.'
 product_3_store_1:
   attributes:
     description: 'The description contains the short description.'
     meta_description: 'meta description.'
     meta_keyword: 'The meta keywords contain the short description.'
+    meta_title: 'meta title.'
 product_3_store_2:
   attributes:
     description: 'The description contains the short description in store view'
     meta_description: 'The meta description contains the short description in store view'
     meta_keyword: 'The meta keywords contain the short description in store view'
+    meta_title: 'meta title.'

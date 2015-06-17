@@ -10,6 +10,7 @@ eav:
       description: description.
       meta_description: meta description.
       meta_keyword: meta keyword.
+      meta_title: meta title.
       short_description: short description.
       /stores:
         second:
@@ -24,6 +25,7 @@ eav:
       description: description.
       meta_description: meta description.
       meta_keyword: meta keyword.
+      meta_title: meta title.
       short_description: short description.
       /stores:
         second:
@@ -38,6 +40,7 @@ eav:
       description: description.
       meta_description: meta description.
       meta_keyword: meta keyword.
+      meta_title: meta title.
       short_description: short description.
       /stores:
         second:

@@ -26,7 +26,7 @@ class RuleBuilderTest extends \PHPUnit_Framework_TestCase
         $generatorStub = $this->getMockForAbstractClass(GeneratorInterface::__INTERFACE);
         $managerMock = $this->getManagerMock($ruleData, $conditionStub, $generatorStub);
 
-        $attribute = new Attribute($ruleData['attribute_code']);
+        $attribute = new Attribute('dummy-entity-type', $ruleData['attribute_code']);
         $stores = StoreSet::all();
 
         $builder = new RuleBuilder($managerMock, $attribute);
@@ -56,7 +56,7 @@ class RuleBuilderTest extends \PHPUnit_Framework_TestCase
         $generatorStub = $this->getMockForAbstractClass(GeneratorInterface::__INTERFACE);
         $managerMock = $this->getManagerMock($ruleData, $conditionStub, $generatorStub);
 
-        $attribute = new Attribute($ruleData['attribute_code']);
+        $attribute = new Attribute('dummy-entity-type', $ruleData['attribute_code']);
         $stores = new StoreSet($ruleData['store_codes']);
 
         $builder = new RuleBuilder($managerMock, $attribute);

@@ -28,9 +28,7 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule_Director
         /* @var $magentoAttribute Mage_Eav_Model_Entity_Attribute */
         $magentoAttribute = Mage::getModel("eav/entity_attribute")->load($attributeId);
 
-        $attributeCode = $magentoAttribute->getAttributeCode();
-
-        $attribute = new Attribute($attributeCode);
+        $attribute = new Attribute($magentoAttribute->getEntityType()->getEntityTypeCode(), $magentoAttribute->getAttributeCode());
 
         return $attribute;
     }

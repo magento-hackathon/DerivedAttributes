@@ -33,3 +33,14 @@ tables:
       condition_data: ""
       active: 1
       priority: 1
+    - rule_id: 4
+      name: Test Rule 4
+      meta_description: This is a rule for a category attribute with conflicting attribute code
+      store_id: 0
+      attribute_id: 46 #category meta_title
+      generator_type: template
+      generator_data: "I am a category"
+      condition_type: always
+      condition_data: ""
+      active: 1
+      priority: 1

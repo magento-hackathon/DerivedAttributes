@@ -13,13 +13,17 @@ class BooleanAttributeConditionTest extends \PHPUnit_Framework_TestCase
      */
     public function shouldMatchIfAttributeTrue($value)
     {
+        $enityTypeCode = 'some-entity-type-code';
         $attributeCode = 'some-attribute-code';
-        $attribute = new Attribute($attributeCode);
+        $attribute = new Attribute($enityTypeCode, $attributeCode);
         $entityStub = $this->getMock(EntityInterface::__INTERFACE);
         $entityStub->expects($this->any())
             ->method('getAttributeValue')
             ->with($attribute)
             ->willReturn($value);
+        $entityStub->expects($this->any())
+            ->method('getEntityTypeCode')
+            ->willReturn($enityTypeCode);
         $condition = new BooleanAttributeCondition();
         $condition->configure($attributeCode);
         $this->assertEquals((bool) $value, $condition->match($entityStub));

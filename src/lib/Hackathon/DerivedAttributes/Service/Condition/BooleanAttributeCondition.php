@@ -38,7 +38,7 @@ class BooleanAttributeCondition implements ConditionInterface
      */
     public function match(EntityInterface $entity)
     {
-        return (bool) $entity->getAttributeValue(new Attribute($this->data));
+        return (bool) $entity->getAttributeValue(new Attribute($entity->getEntityTypeCode(), $this->data));
     }
 
     /**

@@ -23,4 +23,14 @@ class StoreSetTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertFalse(current($storeCodes), 'Iterator should yield all stores.');
     }
+
+    /**
+     * @test
+     */
+    public function shouldCount()
+    {
+        $storeCodes = ['1', '2'];
+        $storeSet = new StoreSet($storeCodes);
+        $this->assertEquals(2, count($storeSet));
+    }
 }

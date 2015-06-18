@@ -3,12 +3,14 @@ namespace Hackathon\DerivedAttributes;
 use Traversable;
 use ArrayIterator;
 use IteratorAggregate;
+use Countable;
+
 /**
  * StoreSet: Value object, representing a set of Magento stores
  *
  * @package Hackathon\DerivedAttributes
  */
-class StoreSet implements IteratorAggregate
+class StoreSet implements IteratorAggregate, Countable
 {
     const __CLASS = __CLASS__;
 
@@ -60,5 +62,20 @@ class StoreSet implements IteratorAggregate
     {
         return new ArrayIterator($this->stores);
     }
+
+    /**
+     * (PHP 5 &gt;= 5.1.0)<br/>
+     * Count elements of an object
+     * @link http://php.net/manual/en/countable.count.php
+     * @return int The custom count as an integer.
+     * </p>
+     * <p>
+     * The return value is cast to an integer.
+     */
+    public function count()
+    {
+        return count($this->stores);
+    }
+
 
 }

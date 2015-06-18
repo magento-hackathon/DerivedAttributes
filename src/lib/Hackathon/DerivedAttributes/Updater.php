@@ -14,6 +14,10 @@ class Updater
      */
     private $ruleRepository;
     /**
+     * @var RuleSetsByStore
+     */
+    private $ruleSets;
+    /**
      * @var RuleLoggerInterface
      */
     private $ruleLogger;
@@ -47,11 +51,12 @@ class Updater
      * Update entity based on loaded rule set
      *
      * @param EntityInterface $entity
+     * @param Store $store
      */
-    public function update(EntityInterface $entity)
+    public function update(EntityInterface $entity, Store $store)
     {
-        $ruleSet = $this->ruleRepository->findActive();
-        $ruleSet->applyToEntity($entity, $this->ruleLogger);
+        $ruleSets = $this->getRuleSets(new StoreSet([$store]));
+        $ruleSets->getRuleSet($store)->applyToEntity($entity, $this->ruleLogger);
     }
 
     /**
@@ -60,11 +65,15 @@ class Updater
      * @param EntityIteratorInterface $iterator
      * @param EntityInterface $entityModel
      */
-    public function massUpdate(EntityIteratorInterface $iterator, EntityInterface $entityModel)
+    public function massUpdate(EntityIteratorInterface $iterator, EntityInterface $entityModel, StoreSet $stores)
     {
         $this->entityModel = $entityModel;
         $this->outputStart();
-        $iterator->walk(array($this, 'updateCurrentRow'));
+        $this->getRuleSets($stores);
+        foreach ($stores as $store) {
+            $iterator->setStore($store);
+            $iterator->walk(array($this, 'updateCurrentRow'));
+        }
         $this->outputDone();
         $this->entityModel = null;
     }
@@ -77,7 +86,7 @@ class Updater
     public function updateCurrentRow(EntityIteratorInterface $iterator)
     {
         $this->entityModel->setRawData($iterator->getRawData());
-        $this->update($this->entityModel);
+        $this->update($this->entityModel, $iterator->getStore());
         if ($this->entityModel->isChanged() && ! $this->isDryRun) {
             $this->entityModel->saveAttributes();
         }
@@ -98,5 +107,16 @@ class Updater
     private function outputDone()
     {
         //TODO implement output/log
+    }
+
+    /**
+     * @return RuleSetsByStore
+     */
+    private function getRuleSets(StoreSet $stores)
+    {
+        if ($this->ruleSets === null) {
+            $this->ruleSets = $this->ruleRepository->findRuleSetsForStores($stores);
+        }
+        return $this->ruleSets;
     }
 }

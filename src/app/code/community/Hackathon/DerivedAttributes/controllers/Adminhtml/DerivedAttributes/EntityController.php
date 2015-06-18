@@ -81,9 +81,6 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
     }
     protected function _process($pageIds, $entityType, $storeIds, $isDryRun)
     {
-        if ($storeIds == ['0']) {
-            $storeIds = array_keys(Mage::app()->getStores(true));
-        }
         Mage::getModel('derivedattributes/massupdater')->update($pageIds, $entityType, $storeIds, $isDryRun);
     }
 }

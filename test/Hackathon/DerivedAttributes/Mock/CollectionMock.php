@@ -3,6 +3,7 @@ namespace Hackathon\DerivedAttributes\Mock;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
+use Hackathon\DerivedAttributes\Store;
 
 /**
  * Dumb implementation of EntityIteratorInterface that iterates over an array of data
@@ -10,6 +11,8 @@ use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
 class CollectionMock extends \ArrayIterator implements EntityIteratorInterface
 {
     const __CLASS = __CLASS__;
+
+    private $store;
 
     /**
      * @param callable $callable
@@ -50,6 +53,16 @@ class CollectionMock extends \ArrayIterator implements EntityIteratorInterface
     function getSize()
     {
         return $this->count();
+    }
+
+    function getStore()
+    {
+        return $this->store;
+    }
+
+    function setStore(Store $store)
+    {
+        $this->store = $store;
     }
 
 }

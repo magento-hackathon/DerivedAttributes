@@ -11,18 +11,28 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @dataProvider getCollectionData
+     * @dataProvider dataForMassUpdate
+     * @param $collectionData
+     * @param StoreSet $storeSet
      */
-    public function testMassUpdate($collectionData)
+    public function testMassUpdate($collectionData, StoreSet $storeSet)
     {
         $entityCount = count($collectionData);
 
         $ruleLogger = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
         $entityModel = $this->getMockForAbstractClass(EntityInterface::__INTERFACE);
+
         $ruleSet = $this->getMock(RuleSet::__CLASS, array('applyToEntity'));
-        $ruleSet->expects($this->exactly($entityCount))->method('applyToEntity')->with($entityModel, $ruleLogger);
+        $ruleSet->expects($this->exactly($entityCount))
+            ->method('applyToEntity')
+            ->with($entityModel, $ruleLogger);
+        $ruleSetsByStore = new RuleSetsByStore();
+        $ruleSetsByStore->addRuleSet($ruleSet, $storeSet->getIterator()->current());
         $ruleRepository = $this->getMockForAbstractClass(RuleRepositoryInterface::__INTERFACE);
-        $ruleRepository->expects($this->atLeastOnce())->method('findActive')->willReturn($ruleSet);
+        $ruleRepository->expects($this->atLeastOnce())
+            ->method('findRuleSetsForStores')
+            ->with($storeSet)
+            ->willReturn($ruleSetsByStore);
 
         foreach ($collectionData as $i => $entityData) {
             $entityModel->expects($this->at($i * 4))->method('setRawData')->with($entityData);
@@ -38,23 +48,32 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
         $collectionIterator = new CollectionMock($collectionData);
 
         $updater = new Updater($ruleRepository, $ruleLogger);
-        $updater->massUpdate($collectionIterator, $entityModel);
+        $updater->massUpdate($collectionIterator, $entityModel, $storeSet);
     }
 
     /**
      * @test
-     * @dataProvider getCollectionData
+     * @dataProvider dataForMassUpdate
+     * @param $collectionData
+     * @param StoreSet $storeSet
      */
-    public function testDryRun($collectionData)
+    public function testDryRun($collectionData, StoreSet $storeSet)
     {
         $entityCount = count($collectionData);
 
         $ruleLogger = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
         $entityModel = $this->getMockForAbstractClass(EntityInterface::__INTERFACE);
         $ruleSet = $this->getMock(RuleSet::__CLASS, array('applyToEntity'));
-        $ruleSet->expects($this->exactly($entityCount))->method('applyToEntity')->with($entityModel, $ruleLogger);
+        $ruleSet->expects($this->exactly($entityCount))
+            ->method('applyToEntity')
+            ->with($entityModel, $ruleLogger);
+        $ruleSetsByStore = new RuleSetsByStore();
+        $ruleSetsByStore->addRuleSet($ruleSet, $storeSet->getIterator()->current());
         $ruleRepository = $this->getMockForAbstractClass(RuleRepositoryInterface::__INTERFACE);
-        $ruleRepository->expects($this->atLeastOnce())->method('findActive')->willReturn($ruleSet);
+        $ruleRepository->expects($this->atLeastOnce())
+            ->method('findRuleSetsForStores')
+            ->with($storeSet)
+            ->willReturn($ruleSetsByStore);
 
         foreach ($collectionData as $i => $entityData) {
             $entityModel->expects($this->at($i * 3))->method('setRawData')->with($entityData);
@@ -70,7 +89,7 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
 
         $updater = new Updater($ruleRepository, $ruleLogger);
         $updater->setDryRun(true);
-        $updater->massUpdate($collectionIterator, $entityModel);
+        $updater->massUpdate($collectionIterator, $entityModel, $storeSet);
     }
 
     /**
@@ -79,7 +98,7 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public static function getCollectionData()
+    public static function dataForMassUpdate()
     {
         return array(
             array(
@@ -89,7 +108,8 @@ class UpdaterTest extends \PHPUnit_Framework_TestCase
                     array('entity_id' => 3, 'sku' => 'test-3'),
                     array('entity_id' => 4, 'sku' => 'test-4'),
                     array('entity_id' => 5, 'sku' => 'test-5'),
-                )
+                ),
+                'storeSets' => new StoreSet(['1']) //TODO test multiple stores, adjust mock expectations
             )
         );
     }

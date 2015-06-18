@@ -2,6 +2,7 @@
 namespace Hackathon\DerivedAttributes\BridgeInterface;
 use Hackathon\DerivedAttributes\Rule;
 use Hackathon\DerivedAttributes\RuleSet;
+use Hackathon\DerivedAttributes\StoreSet;
 
 /**
  * Interface RuleLoggerInterface
@@ -16,7 +17,7 @@ interface RuleRepositoryInterface
      *
      * @return RuleSet
      */
-    function findActive();
+    function findRuleSetsForStores(StoreSet $stores);
 
     /**
      * @param Rule $rule

@@ -1,23 +1,30 @@
 <?php
 namespace Hackathon\DerivedAttributes;
-
+use Traversable;
+use ArrayIterator;
+use IteratorAggregate;
 /**
  * StoreSet: Value object, representing a set of Magento stores
  *
  * @package Hackathon\DerivedAttributes
  */
-class StoreSet
+class StoreSet implements IteratorAggregate
 {
     const __CLASS = __CLASS__;
 
-    protected $storeCodes;
+    /**
+     * @var Store[]
+     */
+    protected $stores = [];
 
     /**
      * @param string[] $storeCodes
      */
     function __construct(array $storeCodes)
     {
-        $this->storeCodes = array_map('strval', $storeCodes);
+        foreach ($storeCodes as $storeCode) {
+            $this->stores[(string) $storeCode] = new Store($storeCode);
+        }
     }
 
     /**
@@ -39,6 +46,19 @@ class StoreSet
      */
     public function getStoreCodes()
     {
-        return $this->storeCodes;
+        return array_keys($this->stores);
     }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Retrieve an external iterator
+     * @link http://php.net/manual/en/iteratoraggregate.getiterator.php
+     * @return Traversable An instance of an object implementing <b>Iterator</b> or
+     * <b>Traversable</b>
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->stores);
+    }
+
 }

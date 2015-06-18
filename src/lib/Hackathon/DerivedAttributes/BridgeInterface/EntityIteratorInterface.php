@@ -1,6 +1,8 @@
 <?php
 namespace Hackathon\DerivedAttributes\BridgeInterface;
 
+use Hackathon\DerivedAttributes\Store;
+
 interface EntityIteratorInterface
 {
 
@@ -30,4 +32,15 @@ interface EntityIteratorInterface
      * @return mixed
      */
     function getSize();
+
+    /**
+     * @return Store
+     */
+    function getStore();
+
+    /**
+     * @param Store $store
+     * @return mixed
+     */
+    function setStore(Store $store);
 }

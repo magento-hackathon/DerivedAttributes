@@ -1,15 +1,13 @@
 <?php
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
+use Hackathon\DerivedAttributes\Store;
+
 class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityIteratorInterface
 {
     /**
      * @var Mage_Core_Model_Resource_Db_Collection_Abstract
      */
     protected $_collection;
-    /**
-     * @var Mage_Core_Model_Resource_Iterator
-     */
-    protected $_iterator;
     /**
      * @var string[]
      */
@@ -19,19 +17,17 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
      */
     protected $_iteration;
     /**
-     * @var int
+     * @var Store
      */
-    protected $_storeId;
+    protected $_store;
     /**
      * @var int Iteration counter offset for chunking
      */
     protected $_iterationOffset = 0;
 
-    public function __construct(Varien_Data_Collection_Db $collection, $storeId)
+    public function __construct(Varien_Data_Collection_Db $collection)
     {
         $this->_collection = $collection;
-        $this->_storeId = $storeId;
-        $this->_iterator = Mage::getResourceModel('core/iterator');
     }
     public function getCollection()
     {
@@ -43,7 +39,9 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
      */
     public function walk(callable $callable)
     {
-        $this->_collection->load();
+        $this->_collection->clear()
+            ->setStoreId((string) $this->_store)
+            ->load();
         //TODO: load all ids, then chunk
         $this->_iteration = 0;
         foreach ($this->_collection as $entity) {
@@ -57,7 +55,7 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
     protected function _setRawData($data)
     {
         $this->_data = $data;
-        $this->_data['store_id'] = $this->_storeId;
+        $this->_data['store_id'] = (string) $this->_store;
     }
     protected function _setIteration($iteration)
     {
@@ -96,6 +94,16 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
     function getSize()
     {
         return $this->_collection->getSize();
+    }
+
+    function getStore()
+    {
+        return $this->_store;
+    }
+
+    function setStore(Store $store)
+    {
+        $this->_store = $store;
     }
 
 }

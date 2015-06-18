@@ -15,7 +15,6 @@ namespace Hackathon\DerivedAttributes;
  */
 class Attribute
 {
-    const __CLASS = __CLASS__;
 
     protected $entityTypeCode;
     protected $attributeCode;

@@ -4,13 +4,11 @@ use Hackathon\DerivedAttributes\RuleSet;
 use Hackathon\DerivedAttributes\Rule;
 use Hackathon\DerivedAttributes\Attribute;
 use Hackathon\DerivedAttributes\StoreSet;
+use Hackathon\DerivedAttributes\RuleSetsByStore;
+use Hackathon\DerivedAttributes\Store;
 
 class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRepositoryInterface
 {
-    /**
-     * @var Hackathon_DerivedAttributes_Model_Resource_Rule_Collection
-     */
-    protected $_ruleCollection;
     /**
      * @var SplObjectStorage
      */
@@ -45,13 +43,27 @@ class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRep
      *
      * @return \Hackathon\DerivedAttributes\RuleSet
      */
-    public function findActive()
+    public function findRuleSetsForStores(StoreSet $stores)
     {
-        $this->getRuleCollection()->addFieldToFilter('active', "1");
+        $ruleSetsByStore = new RuleSetsByStore();
+        foreach ($stores as $store) {
+            $ruleSetsByStore->addRuleSet($this->findRuleSetForStore($store), $store);
+        }
+        return $ruleSetsByStore;
+    }
+    private function findRuleSetForStore(Store $store)
+    {
+        $collection = $this->getRuleCollection();
+        # ... WHERE store_id IS NULL OR FIND_IN_SET(:storeId, store_id)
+        $collection->addFieldToFilter('store_id', [
+            ['eq'   => '0'],
+            ['finset' => [(string) $store]]
+        ]);
+        $collection->addFieldToFilter('active', "1");
 
         $ruleSet = new RuleSet();
         $ruleDirector = Mage::helper('derivedattributes/rule_director');
-        foreach($this->getRuleCollection() as $ruleData) {
+        foreach($collection as $ruleData) {
             $rule = $ruleDirector->createRule($ruleData);
             $this->_registerRule($ruleData->getId(), $rule);
             $ruleSet->addRule($rule);
@@ -119,23 +131,13 @@ class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRep
         return $this;
     }
 
-    public function getRuleCollection()
+    /**
+     * @return Hackathon_DerivedAttributes_Model_Resource_Rule_Collection
+     */
+    private function getRuleCollection()
     {
-        if ($this->_ruleCollection === null) {
-            $this->_ruleCollection = Mage::getResourceModel('derivedattributes/rule_collection');
-        }
-        return $this->_ruleCollection;
+        return Mage::getResourceModel('derivedattributes/rule_collection');
     }
-    //TODO move store filter logic to Updater, add StoreSet parameter to findActive()
-    public function setStoreFilter($storeId)
-    {
-        # ... WHERE store_id IS NULL OR FIND_IN_SET(:storeId, store_id)
-        $this->getRuleCollection()->addFieldToFilter('store_id', [
-            ['eq'   => '0'],
-            ['finset' => [$storeId]]
-        ]);
-    }
-
 
     public function getRuleModel(Rule $rule)
     {

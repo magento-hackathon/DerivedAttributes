@@ -9,7 +9,8 @@ class Hackathon_DerivedAttributes_Helper_Rule_Director
 {
     public function createRule(Varien_Object $ruleData)
     {
-        $builder = Mage::helper('derivedattributes')->getNewRuleBuilder($this->getAttributeById($ruleData->getData('attribute_id')));
+        $helper = Mage::helper('derivedattributes');
+        $builder = $helper->getNewRuleBuilder($this->getAttributeById($ruleData->getData('attribute_id')));
         $builder->setActive((bool) $ruleData->getData('active'))
             ->setPriority((int) $ruleData->getData('priority'))
             ->setConditionType($ruleData->getData('condition_type'))
@@ -18,7 +19,7 @@ class Hackathon_DerivedAttributes_Helper_Rule_Director
             ->setGeneratorData($ruleData->getData('generator_data'))
             ->setName($ruleData->getData('name'))
             ->setDescription($ruleData->getData('description'))
-            ->setStores($this->getStoreSet($ruleData->getData('store_id')));
+            ->setStores($helper->createStoreSet($ruleData->getData('store_id')));
         return $builder->build();
     }
     /**
@@ -36,15 +37,4 @@ class Hackathon_DerivedAttributes_Helper_Rule_Director
         return $attribute;
     }
 
-    private function getStoreSet($storeIds)
-    {
-        //TODO make consistent. ATM data from form or loaded rule model is prepared as array, from collection not
-        if (! is_array($storeIds)) {
-            $storeIds = explode(',', $storeIds);
-        }
-        if ($storeIds === ['0']) {
-            return StoreSet::all();
-        }
-        return new StoreSet($storeIds);
-    }
 }

@@ -65,7 +65,7 @@ class Hackathon_DerivedAttributes_Test_Controller_EntityController
                     'entity_ids'  => ['1', '2', '3'],
                     'entity_type' => 'catalog_product'
                 ],
-                'expectedStoreIds' => ['0', '1', '2']
+                'expectedStoreIds' => ['0']
             ],
         ];
     }

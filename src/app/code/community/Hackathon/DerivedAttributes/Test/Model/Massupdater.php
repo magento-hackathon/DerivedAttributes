@@ -17,12 +17,18 @@ class Hackathon_DerivedAttributes_Test_Model_Massupdater extends EcomDev_PHPUnit
     /**
      * @test
      * @dataProvider dataProvider
+     * @dataProviderFile testProductMassUpdateByStoreView
      * @loadExpectation attributes
+     * @helper catalog/product_flat
      * @param $entityIds
      * @param $storeIds
      */
     public function testProductMassUpdateByStoreView($entityIds, $storeIds)
     {
+        $this->setCurrentStore('admin');
+        $this->assertTrue(Mage::getStoreConfigFlag('catalog/frontend/flat_catalog_product'), 'Flat index should be enabled.');
+        $this->assertFalse(Mage::getResourceModel('catalog/product_collection')->isEnabledFlat(), 'Flat index should not be used');
+
         /** @var Hackathon_DerivedAttributes_Model_Massupdater $updater */
         $updater = Mage::getModel('derivedattributes/massupdater');
         $updater->update($entityIds, 'catalog_product', $storeIds, false);
@@ -44,7 +50,7 @@ class Hackathon_DerivedAttributes_Test_Model_Massupdater extends EcomDev_PHPUnit
         }
     }
 
-    /**
+        /**
      * @test
      * @expectedException Mage_Core_Exception
      * @expectedExceptionMessageRegExp Invalid entity type foo_bar.

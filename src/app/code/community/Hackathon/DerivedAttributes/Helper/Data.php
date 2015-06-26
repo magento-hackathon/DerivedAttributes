@@ -81,16 +81,12 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $storeIds
+     * @param array $storeIds
      * @param bool $expand Set to true if ['0'] should be expanded to all store views
      * @return StoreSet
      */
-    public function createStoreSet($storeIds, $expand = false)
+    public function createStoreSet(array $storeIds, $expand = false)
     {
-        //TODO make consistent. ATM data from form or loaded rule model is prepared as array, from collection not
-        if (! is_array($storeIds)) {
-            $storeIds = explode(',', $storeIds);
-        }
         if ($storeIds === ['0']) {
             if (! $expand) {
                 return StoreSet::all();

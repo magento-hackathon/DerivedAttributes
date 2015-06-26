@@ -9,4 +9,13 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule_Collection extends Mage_Co
     {
         $this->_init(Hackathon_DerivedAttributes_Model_Rule::ALIAS);
     }
+
+    protected function _afterLoad()
+    {
+        foreach ($this->_items as $item) {
+            $item->setStoreId(explode(',', $item->getStoreId()));
+        }
+        return parent::_afterLoad();
+    }
+
 }

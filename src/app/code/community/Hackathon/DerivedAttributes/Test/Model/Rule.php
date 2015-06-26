@@ -43,6 +43,7 @@ class Hackathon_DerivedAttributes_Test_Model_Rule extends EcomDev_PHPUnit_Test_C
      */
     public function rulesShouldBeAppliedOnModelSaveInFrontend($productId)
     {
+        $this->markTestSkipped('model cannot be saved in frontend.');
         $this->setCurrentStore('default');
         $this->assertTrue(Mage::getResourceModel('catalog/product_collection')->isEnabledFlat());
         $this->rulesShouldBeAppliedOnModelSave($productId);
@@ -57,6 +58,7 @@ class Hackathon_DerivedAttributes_Test_Model_Rule extends EcomDev_PHPUnit_Test_C
      */
     public function rulesShouldBeAppliedOnModelSaveInFrontendWithoutFlatIndex($productId)
     {
+        $this->markTestSkipped('model cannot be saved in frontend.');
         $this->setCurrentStore('default');
         $this->app()->getStore()->setConfig('catalog/frontend/flat_catalog_product', '0');
         Mage::unregister('_helper/catalog/product_flat');

@@ -16,7 +16,6 @@ class Hackathon_DerivedAttributes_Model_Resource_Rule
         return parent::_afterLoad($object);
     }
 
-
     protected function _beforeSave(Mage_Core_Model_Abstract $object)
     {
         $object->setStoreId(join(',', (array)$object->getStoreId()));

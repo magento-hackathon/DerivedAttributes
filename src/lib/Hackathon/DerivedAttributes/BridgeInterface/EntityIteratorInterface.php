@@ -3,6 +3,13 @@ namespace Hackathon\DerivedAttributes\BridgeInterface;
 
 use Hackathon\DerivedAttributes\Store;
 
+/**
+ * Interface EntityIteratorInterface
+ *
+ * @todo simplify, no need to tie it to core/iterator resource model anymore
+ *
+ * @package Hackathon\DerivedAttributes\BridgeInterface
+ */
 interface EntityIteratorInterface
 {
 

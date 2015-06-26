@@ -15,25 +15,25 @@ class RuleSetsByStore implements Iterator
 
     /**
      * @param RuleSet $ruleSet
-     * @param string $storeCode
+     * @param Store $store
      * @return void
      */
-    public function addRuleSet(RuleSet $ruleSet, $storeCode)
+    public function addRuleSet(RuleSet $ruleSet, Store $store)
     {
-        $this->ruleSets[(string) $storeCode] = $ruleSet;
-        $this->stores[(string) $storeCode] = $storeCode; //TODO expect store as parameter
+        $this->ruleSets[(string) $store] = $ruleSet;
+        $this->stores[(string) $store] = $store;
     }
 
     /**
-     * @param string $storeCode
+     * @param Store $store
      * @return RuleSet
      */
-    public function getRuleSet($storeCode)
+    public function getRuleSet(Store $store)
     {
-        if (! isset($this->ruleSets[(string) $storeCode])) { //TODO expect Store as parameter
-            throw new \OutOfBoundsException("No rule set found for store {$storeCode}");
+        if (! isset($this->ruleSets[(string) $store])) {
+            throw new \OutOfBoundsException("No rule set found for store {$store}");
         }
-        return $this->ruleSets[(string) $storeCode];
+        return $this->ruleSets[(string) $store];
     }
 
     public function current()

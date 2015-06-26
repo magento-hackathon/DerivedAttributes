@@ -73,27 +73,29 @@ class Updater
         foreach ($stores as $store) {
             $iterator->setStore($store);
             foreach ($iterator as $entityData) {
-                $this->updateCurrentRow($iterator);
+                $this->updateCurrentRow($entityData, $store);
+                $this->outputIteratorStatus($iterator);
             }
         }
         $this->outputDone();
         $this->entityModel = null;
     }
+
     /**
-     * Update current row of entity collection (used as callback for iterator->walk())
+     * Update current row of entity collection
      *
-     * @internal
-     * @param EntityIteratorInterface $iterator
+     * @param array $data
+     * @param Store $store
+     * @internal param EntityIteratorInterface $iterator
      */
-    public function updateCurrentRow(EntityIteratorInterface $iterator)
+    private function updateCurrentRow(array $data, Store $store)
     {
-        $this->entityModel->setRawData($iterator->getRawData());
-        $this->update($this->entityModel, $iterator->getStore());
+        $this->entityModel->setRawData($data);
+        $this->update($this->entityModel, $store);
         if ($this->entityModel->isChanged() && ! $this->isDryRun) {
             $this->entityModel->saveAttributes();
         }
         $this->entityModel->clearInstance();
-        $this->outputIteratorStatus($iterator);
     }
     private function outputStart()
     {

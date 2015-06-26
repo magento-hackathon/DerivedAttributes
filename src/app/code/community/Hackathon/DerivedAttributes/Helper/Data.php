@@ -12,6 +12,7 @@ use Hackathon\DerivedAttributes\Updater;
 use Hackathon\DerivedAttributes\RuleBuilder;
 use Hackathon\DerivedAttributes\Attribute;
 use Hackathon\DerivedAttributes\StoreSet;
+use Hackathon\DerivedAttributes\Service\Manager;
 
 /**
  * Data Helper
@@ -20,11 +21,22 @@ use Hackathon\DerivedAttributes\StoreSet;
 class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
 {
     /**
+     * @var Manager
+     */
+    protected $_ruleManager;
+
+    /**
      * @return \Hackathon\DerivedAttributes\Service\Manager
      */
     public function getServiceManager()
     {
-        return Mage::getSingleton('derivedattributes/manager')->getRuleManager();
+        if(is_null($this->_ruleManager)){
+            $this->_ruleManager = new Manager();
+            Mage::dispatchEvent("derivedattribute_new_rulemanager", [
+                'rule_manager'  => $this->_ruleManager
+            ]);
+        }
+        return $this->_ruleManager;
     }
 
     /**
@@ -41,6 +53,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Factory method for RuleBuilder
+     *
      * @return RuleBuilder
      */
     public function getNewRuleBuilder(Attribute $attribute)
@@ -49,6 +63,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Factory method for EntityIterator bridge
+     *
      * @param Mage_Eav_Model_Entity_Type $entityTypeInstance
      * @return Hackathon_DerivedAttributes_Model_Bridge_EntityIterator
      */
@@ -68,6 +84,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Factory method for Entity bridge
+     *
      * @param Mage_Eav_Model_Entity_Type $entityTypeInstance
      * @return Hackathon_DerivedAttributes_Model_Bridge_Entity
      */
@@ -81,6 +99,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Factory method for StoreSet
+     *
      * @param array $storeIds
      * @param bool $expand Set to true if ['0'] should be expanded to all store views
      * @return StoreSet
@@ -97,6 +117,8 @@ class Hackathon_DerivedAttributes_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
+     * Load entity type instance by code
+     *
      * @param $entityType
      * @return Mage_Eav_Model_Entity_Type
      * @throws Mage_Core_Exception

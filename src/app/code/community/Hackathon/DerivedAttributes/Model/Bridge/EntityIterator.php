@@ -9,6 +9,10 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
      */
     protected $_collection;
     /**
+     * @var Iterator
+     */
+    protected $_iterator;
+    /**
      * @var string[]
      */
     protected $_data;
@@ -36,6 +40,7 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
     /**
      * @param callable $callable
      * @return mixed
+     * @deprecated use iterator interface instead
      */
     public function walk(callable $callable)
     {
@@ -52,15 +57,19 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
         }
     }
 
+    /**
+     * @deprecated use current() of Iterator interface instead
+     * @param $data
+     */
     protected function _setRawData($data)
     {
         $this->_data = $data;
         $this->_data['store_id'] = (string) $this->_store;
     }
-    protected function _setIteration($iteration)
-    {
-        $this->_iteration = $iteration;
-    }
+
+    /**
+     * @param $offset
+     */
     public function setIterationOffset($offset)
     {
         $this->_iterationOffset = $offset;
@@ -70,6 +79,7 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
      * Returns raw data from database
      *
      * @return mixed
+     * @deprecated use current() of Iterator interface instead
      */
     function getRawData()
     {
@@ -80,6 +90,7 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
      * Returns number of iteration
      *
      * @return int
+     * @deprecated use key() of Iterator interface instead
      */
     function getIteration()
     {
@@ -104,6 +115,69 @@ class Hackathon_DerivedAttributes_Model_Bridge_EntityIterator implements EntityI
     function setStore(Store $store)
     {
         $this->_store = $store;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Return the current element
+     * @link http://php.net/manual/en/iterator.current.php
+     * @return mixed Can return any type.
+     */
+    public function current()
+    {
+        $this->_setRawData($this->_iterator->current()->getData());
+        return $this->_data;
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Move forward to next element
+     * @link http://php.net/manual/en/iterator.next.php
+     * @return void Any returned value is ignored.
+     */
+    public function next()
+    {
+        $this->_iteration++;
+        $this->_iterator->next();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Return the key of the current element
+     * @link http://php.net/manual/en/iterator.key.php
+     * @return mixed scalar on success, or null on failure.
+     */
+    public function key()
+    {
+        return $this->_iterator->key();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Checks if current position is valid
+     * @link http://php.net/manual/en/iterator.valid.php
+     * @return boolean The return value will be casted to boolean and then evaluated.
+     * Returns true on success or false on failure.
+     */
+    public function valid()
+    {
+        return $this->_iterator->valid();
+    }
+
+    /**
+     * (PHP 5 &gt;= 5.0.0)<br/>
+     * Rewind the Iterator to the first element
+     * @link http://php.net/manual/en/iterator.rewind.php
+     * @return void Any returned value is ignored.
+     */
+    public function rewind()
+    {
+        $this->_collection->clear()
+            ->setStoreId((string) $this->_store)
+            ->load();
+        //TODO: load all ids, then chunk
+        $this->_iteration = 0;
+        $this->_iterator = $this->_collection->getIterator();
     }
 
 }

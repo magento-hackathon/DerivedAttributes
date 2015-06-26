@@ -2,6 +2,7 @@
 namespace Hackathon\DerivedAttributes\BridgeInterface;
 
 use Hackathon\DerivedAttributes\Store;
+use \Iterator;
 
 /**
  * Interface EntityIteratorInterface
@@ -10,7 +11,7 @@ use Hackathon\DerivedAttributes\Store;
  *
  * @package Hackathon\DerivedAttributes\BridgeInterface
  */
-interface EntityIteratorInterface
+interface EntityIteratorInterface extends Iterator
 {
 
     /**

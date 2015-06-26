@@ -72,7 +72,9 @@ class Updater
         $this->getRuleSets($stores);
         foreach ($stores as $store) {
             $iterator->setStore($store);
-            $iterator->walk(array($this, 'updateCurrentRow'));
+            foreach ($iterator as $entityData) {
+                $this->updateCurrentRow($iterator);
+            }
         }
         $this->outputDone();
         $this->entityModel = null;

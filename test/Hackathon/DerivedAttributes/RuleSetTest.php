@@ -47,11 +47,33 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function rulesShouldBeAppliedAccordingToConditionsAndPriority($rulesData, $expectedAttributeValue)
     {
-        //TODO test with hasAttribute() = false
         $this->productMock->expects($this->any())
             ->method('hasAttribute')
             ->willReturn(true);
         $this->productMock->expects($this->atLeastOnce())
+            ->method('setAttributeValue')
+            ->with($this->attributes['dummy-1'], $expectedAttributeValue);
+        $ruleSet = new RuleSet();
+        $rules = $this->createRulesFromRulesData($rulesData);
+        foreach ($rules as $rule)
+        {
+            $ruleSet->addRule($rule);
+        }
+        $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
+    }
+
+    /**
+     * @test
+     * @dataProvider getRulesData
+     * @param $rulesData
+     * @param $expectedAttributeValue
+     */
+    public function rulesShouldNotBeAppliedIfEntityDoesNotHaveTheAttribute($rulesData, $expectedAttributeValue)
+    {
+        $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(false);
+        $this->productMock->expects($this->never())
             ->method('setAttributeValue')
             ->with($this->attributes['dummy-1'], $expectedAttributeValue);
         $ruleSet = new RuleSet();

@@ -9,17 +9,42 @@ use Hackathon\DerivedAttributes\Attribute;
 /**
  * Entity implementation of entity-bridge-interface.
  */
-class Hackathon_DerivedAttributes_Bridge_Entity implements \Hackathon\DerivedAttributes\BridgeInterface\EntityInterface
+class Hackathon_DerivedAttributes_Model_Bridge_Entity implements \Hackathon\DerivedAttributes\BridgeInterface\EntityInterface
 {
+    /**
+     * @var Mage_Eav_Model_Entity_Type
+     */
+    private $type;
     /**
      * @var Mage_Core_Model_Abstract
      */
     private $entity;
 
-    public function __construct(Mage_Core_Model_Abstract $entity)
+    public function __construct(Mage_Eav_Model_Entity_Type $type, Mage_Core_Model_Abstract $entity)
     {
+        $this->type = $type;
         $this->entity = $entity;
     }
+
+    /**
+     * Returns true if entity has this kind of attribute
+     *
+     * @param Attribute $attribute
+     * @return bool
+     */
+    function hasAttribute(Attribute $attribute)
+    {
+        return $attribute->getEntityTypeCode() == $this->getEntityTypeCode();
+    }
+
+    /**
+     * @return string
+     */
+    function getEntityTypeCode()
+    {
+        return $this->type->getEntityTypeCode();
+    }
+
 
     /**
      * @return boolean

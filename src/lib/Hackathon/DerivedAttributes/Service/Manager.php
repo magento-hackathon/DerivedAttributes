@@ -3,7 +3,6 @@ namespace Hackathon\DerivedAttributes\Service;
 
 use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
@@ -99,36 +98,68 @@ class Manager
     /**
      * Factory method: instantiate condition based on bridge interface
      *
-     * @param RuleConditionInterface $conditionEntity
+     * @param $conditionType
+     * @param $conditionData
      * @return ConditionInterface
      */
-    public function getConditionFromEntity(RuleConditionInterface $conditionEntity)
+    public function getCondition($conditionType, $conditionData)
     {
-        $type = $conditionEntity->getConditionType();
-        if (!isset($this->conditionTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Unknown condition type "%s".', $type));
+        if (!isset($this->conditionTypes[$conditionType])) {
+            throw new \InvalidArgumentException(sprintf('Unknown condition type "%s".', $conditionType));
         }
         /** @var ConditionInterface $condition */
-        $condition = new $this->conditionTypes[$type];
-        $condition->configure($conditionEntity->getConditionData());
+        $condition = new $this->conditionTypes[$conditionType];
+        $condition->configure($conditionData);
         return $condition;
     }
 
     /**
      * Factory method: instantiate generator based on bridge interface
      *
-     * @param RuleGeneratorInterface $generatorEntity
+     * @param $generatorType
+     * @param $generatorData
      * @return GeneratorInterface
      */
-    public function getGeneratorFromEntity(RuleGeneratorInterface $generatorEntity)
+    public function getGenerator($generatorType, $generatorData)
     {
-        $type = $generatorEntity->getGeneratorType();
-        if (!isset($this->generatorTypes[$type])) {
-            throw new \InvalidArgumentException(sprintf('Unknown generator type "%s".', $type));
+        if (!isset($this->generatorTypes[$generatorType])) {
+            throw new \InvalidArgumentException(sprintf('Unknown generator type "%s".', $generatorType));
         }
         /** @var GeneratorInterface $generator */
-        $generator = new $this->generatorTypes[$type];
-        $generator->configure($generatorEntity->getGeneratorData());
+        $generator = new $this->generatorTypes[$generatorType];
+        $generator->configure($generatorData);
         return $generator;
+    }
+
+    /**
+     * Determine condition type identifier based on condition instance
+     *
+     * @param ConditionInterface $condition
+     * @return string
+     * @throws \OutOfBoundsException
+     */
+    public function getConditionType(ConditionInterface $condition)
+    {
+        $result = array_search(get_class($condition), $this->conditionTypes);
+        if ($result === false) {
+            throw new \OutOfBoundsException('Condition type not registered.');
+        }
+        return $result;
+    }
+
+    /**
+     * Determine generator type identifier based on generator instance
+     *
+     * @param GeneratorInterface $generator
+     * @return string
+     * @throws \OutOfBoundsException
+     */
+    public function getGeneratorType(GeneratorInterface $generator)
+    {
+        $result = array_search(get_class($generator), $this->generatorTypes);
+        if ($result === false) {
+            throw new \OutOfBoundsException('Generator type not registered.');
+        }
+        return $result;
     }
 }

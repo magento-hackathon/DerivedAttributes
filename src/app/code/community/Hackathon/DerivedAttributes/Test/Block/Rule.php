@@ -39,6 +39,9 @@ class Hackathon_DerivedAttributes_Test_Block_Rule extends Hackathon_DerivedAttri
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
+        $this->assertResponseBodyQueryContains(
+            'h3.head-adminhtml-rule', 'New Rule',
+            'Title should be "New Rule"');
         $this->assertResponseBodyXpath(
             '//select[@name="generator_type"]/option[@value="template"]',
             'Dropdown with generator types should be present');
@@ -83,11 +86,17 @@ class Hackathon_DerivedAttributes_Test_Block_Rule extends Hackathon_DerivedAttri
         $this->assertRequestRoute('adminhtml/derivedAttributes_rule/edit');
         $this->assertLayoutHandleLoaded('adminhtml_derivedattributes_rule_edit');
         $this->assertLayoutBlockCreated('derivedattributes_rule_edit', 'Form should be instantiated');
+        $this->assertResponseBodyQueryContains(
+            'h3.head-adminhtml-rule', 'Edit Rule \'Test Rule 1\'',
+            'Title should be "Edit Rule"');
         $this->assertResponseBodyXpath(
             '//input[@name="name"][@value="Test Rule 1"]', 'Name input should be filled');
         $this->assertResponseBodyXpathContains(
             '//select[@name="active"]/option[@value="1"][@selected="selected"]', 'Active',
             'Status input should be set to active');
+        $this->assertResponseBodyXpathContains(
+            '//select[@name="store_id[]"]//option[@value="0"][@selected="selected"]', 'All Store Views',
+            'Store view input should be set to "All Store Views"');
         $this->assertResponseBodyXpathContains(
             '//textarea[@name="description"]', 'This is a template generator rule for the product description',
             'Description input should be filled');

@@ -8,18 +8,33 @@
 
 namespace Hackathon\DerivedAttributes;
 
+use SGH\Comparable\Comparable;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
-use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
-class Rule implements \SGH\Comparable\Comparable
+class Rule implements Comparable
 {
     /**
      * @var int
      */
     private $priority;
+    /**
+     * @var bool
+     */
+    private $active;
+    /**
+     * @var StoreSet
+     */
+    private $stores;
+    /**
+     * @var string
+     */
+    private $name;
+    /**
+     * @var string
+     */
+    private $description;
     /**
      * @var Attribute
      */
@@ -33,30 +48,21 @@ class Rule implements \SGH\Comparable\Comparable
      */
     private $generator;
     /**
-     * @var RuleInterface
-     */
-    private $ruleEntity;
-    /**
      * @var FilterInterface[]
+     * @todo add filters
      */
-    private $filters;
+    private $filters = [];
 
-    function __construct(RuleInterface $ruleEntity, Manager $serviceManager)
+    function __construct(RuleBuilder $builder)
     {
-        $this->ruleEntity = $ruleEntity;
-        //TODO add filters
-        $this->attribute = $ruleEntity->getAttribute();
-        $this->condition = $serviceManager->getConditionFromEntity($ruleEntity->getRuleCondition());
-        $this->generator = $serviceManager->getGeneratorFromEntity($ruleEntity->getRuleGenerator());
-        $this->priority = $ruleEntity->getPriority();
-    }
-
-    /**
-     * @return RuleInterface
-     */
-    public function getRuleEntity()
-    {
-        return $this->ruleEntity;
+        $this->attribute   = $builder->getAttribute();
+        $this->condition   = $builder->getCondition();
+        $this->generator   = $builder->getGenerator();
+        $this->priority    = $builder->getPriority();
+        $this->active      = $builder->isActive();
+        $this->name        = $builder->getName();
+        $this->description = $builder->getDescription();
+        $this->stores      = $builder->getStores();
     }
 
     /**
@@ -68,12 +74,27 @@ class Rule implements \SGH\Comparable\Comparable
     }
 
     /**
-     * @param int $priority
-     * @return void
+     * @return boolean
      */
-    public function setPriority($priority)
+    public function isActive()
     {
-        $this->priority = $priority;
+        return $this->active;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 
     /**
@@ -84,6 +105,30 @@ class Rule implements \SGH\Comparable\Comparable
         return $this->attribute;
     }
 
+    /**
+     * @return StoreSet
+     */
+    public function getStores()
+    {
+        return $this->stores;
+    }
+
+    /**
+     * @return ConditionInterface
+     */
+    public function getCondition()
+    {
+        return $this->condition;
+    }
+
+    /**
+     * @return GeneratorInterface
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
+    }
+
     public function compareTo($object)
     {
         return $this->getPriority() - $object->getPriority();
@@ -92,14 +137,14 @@ class Rule implements \SGH\Comparable\Comparable
     /**
      * Applies attribute rule to product. Returns true if rule was applicable
      *
-     * @param EntityInterface $product
+     * @param EntityInterface $entity
      * @return bool
      */
-    public function applyToEntity(EntityInterface $product)
+    public function applyToEntity(EntityInterface $entity)
     {
-        if ($this->condition->match($product, $this->ruleEntity)) {
-            $value = $this->generator->generateAttributeValue($product, $this->ruleEntity);
-            $product->setAttributeValue($this->getAttribute(), $value);
+        if ($entity->hasAttribute($this->attribute) && $this->condition->match($entity)) {
+            $value = $this->generator->generateAttributeValue($entity);
+            $entity->setAttributeValue($this->getAttribute(), $value);
             return true;
         }
         return false;

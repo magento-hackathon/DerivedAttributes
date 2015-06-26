@@ -10,9 +10,6 @@ namespace Hackathon\DerivedAttributes;
 
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
 use Hackathon\DerivedAttributes\Service\Manager;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
@@ -23,7 +20,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|Attribute[]
      */
-    private $attributeStubs;
+    private $attributes;
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|EntityInterface
      */
@@ -37,12 +34,11 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->productMock   = $this->getMockForAbstractClass(EntityInterface::__INTERFACE,
-            [], '', true, true, true, [ 'setAttributeValue' ]);
-        $this->attributeStubs['dummy-1'] = $this->getMock(Attribute::__CLASS, null, ['dummy-1']);
-        $this->attributeStubs['dummy-2'] = $this->getMock(Attribute::__CLASS, null, ['dummy-2']);
+            [], '', true, true, true, [ 'hasAttribute', 'setAttributeValue' ]);
+        $this->attributes['dummy-1'] = new Attribute('dummy-entity-type', 'dummy-1');
+        $this->attributes['dummy-2'] = new Attribute('dummy-entity-type', 'dummy-2');
         $this->ruleLoggerMock = $this->getMockForAbstractClass(RuleLoggerInterface::__INTERFACE);
     }
-
     /**
      * @test
      * @dataProvider getRulesData
@@ -51,9 +47,35 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
      */
     public function rulesShouldBeAppliedAccordingToConditionsAndPriority($rulesData, $expectedAttributeValue)
     {
+        $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(true);
         $this->productMock->expects($this->atLeastOnce())
             ->method('setAttributeValue')
-            ->with($this->attributeStubs['dummy-1'], $expectedAttributeValue);
+            ->with($this->attributes['dummy-1'], $expectedAttributeValue);
+        $ruleSet = new RuleSet();
+        $rules = $this->createRulesFromRulesData($rulesData);
+        foreach ($rules as $rule)
+        {
+            $ruleSet->addRule($rule);
+        }
+        $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
+    }
+
+    /**
+     * @test
+     * @dataProvider getRulesData
+     * @param $rulesData
+     * @param $expectedAttributeValue
+     */
+    public function rulesShouldNotBeAppliedIfEntityDoesNotHaveTheAttribute($rulesData, $expectedAttributeValue)
+    {
+        $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(false);
+        $this->productMock->expects($this->never())
+            ->method('setAttributeValue')
+            ->with($this->attributes['dummy-1'], $expectedAttributeValue);
         $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
         foreach ($rules as $rule)
@@ -74,6 +96,9 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $actualAttributeValues = array();
         $actualLoggedRules = array();
         $this->productMock->expects($this->any())
+            ->method('hasAttribute')
+            ->willReturn(true);
+        $this->productMock->expects($this->any())
             ->method('setAttributeValue')
             ->willReturnCallback(function(Attribute $attribute, $value) use (&$actualAttributeValues) {
                 $actualAttributeValues[$attribute->getAttributeCode()] = $value;
@@ -87,7 +112,7 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
             });
         $this->ruleLoggerMock->expects($this->any())
             ->method('logAppliedRule')
-            ->willReturnCallback(function(RuleInterface $rule, $value) use (&$actualLoggedRules) {
+            ->willReturnCallback(function(Rule $rule, $value) use (&$actualLoggedRules) {
                 $actualLoggedRules[$rule->getAttribute()->getAttributeCode()] = $value;
             });
         $ruleSet = new RuleSet();
@@ -111,28 +136,56 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases = array();
         $testCases['single_rule'] = [
             'rules_data' => [
-                ['matches' => true, 'value' => 'foo', 'priority' => 1, 'stop' => false, 'attribute_index' => 'dummy-1'],
+                [
+                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'foo'
         ];
         $testCases['second_rule_matches'] = [
             'rules_data' => [
-                [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
+                [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'bar'
         ];
         $testCases['second_priorized_rule_matches'] = [
             'rules_data' => [
-                [ 'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
+                [
+                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_value' => 'bar'
         ];
         $testCases['multiple_rules_match'] = [
             'rules_data' => [
-                [ 'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                [ 'matches' => true, 'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1' ]
+                [
+                    'matches' => true, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                [
+                    'matches' => true, 'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ]
             ],
             'expected_attribute_value' => 'foo'
         ];
@@ -149,10 +202,26 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases = array();
         $testCases[] = [
             'rules_data' => [
-                'rule-1' => [ 'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2' ],
-                'rule-2' => [ 'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1' ],
-                'rule-3' => [ 'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1' ],
-                'rule-4' => [ 'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1' ],
+                'rule-1' => [
+                    'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-2'
+                ],
+                'rule-2' => [
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                'rule-3' => [
+                    'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
+                'rule-4' => [
+                    'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
+                ],
             ],
             'expected_attribute_values' => [ 'dummy-1' => 'baz', 'dummy-2' => 'narf'],
         ];
@@ -169,45 +238,36 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
     {
         $rules = array();
         foreach ($rulesData as $ruleData) {
-            $ruleEntityStub = $this->getMock(RuleInterface::__INTERFACE);
-            $ruleConditionStub = $this->getMock(RuleConditionInterface::__INTERFACE);
-            $ruleGeneratorStub = $this->getMock(RuleGeneratorInterface::__INTERFACE);
-            $ruleEntityStub->expects($this->any())
-                ->method('getPriority')
-                ->will($this->returnValue($ruleData['priority']));
-            $ruleEntityStub->expects($this->any())
-                ->method('getAttribute')
-                ->will($this->returnValue($this->attributeStubs[$ruleData['attribute_index']]));
-            $ruleEntityStub->expects($this->any())
-                ->method('getRuleCondition')
-                ->will($this->returnValue($ruleConditionStub));
-            $ruleEntityStub->expects($this->any())
-                ->method('getRuleGenerator')
-                ->will($this->returnValue($ruleGeneratorStub));
 
             $conditionStub = $this->getMock(ConditionInterface::__INTERFACE, [ 'match', 'configure', 'getData', 'getTitle', 'getDescription' ]);
             $conditionStub->expects($this->any())
                 ->method('match')
-                ->with($this->productMock, $ruleEntityStub)
+                ->with($this->productMock)
                 ->willReturn($ruleData['matches']);
 
             $generatorStub = $this->getMock(GeneratorInterface::__INTERFACE, [ 'generateAttributeValue', 'configure', 'getData', 'getTitle', 'getDescription' ]);
             $generatorStub->expects($this->any())
                 ->method('generateAttributeValue')
-                ->with($this->productMock, $ruleEntityStub)
+                ->with($this->productMock)
                 ->willReturn($ruleData['value']);
 
-            $managerStub = $this->getMock(Manager::__CLASS, [ 'getConditionFromEntity', 'getGeneratorFromEntity']);
+            $managerStub = $this->getMock(Manager::__CLASS, [ 'getCondition', 'getGenerator']);
             $managerStub->expects($this->any())
-                ->method('getConditionFromEntity')
-                ->with($ruleConditionStub)
+                ->method('getCondition')
+                ->with($ruleData['condition_type'], $ruleData['condition_data'])
                 ->will($this->returnValue($conditionStub));
             $managerStub->expects($this->any())
-                ->method('getGeneratorFromEntity')
-                ->with($ruleGeneratorStub)
+                ->method('getGenerator')
+                ->with($ruleData['generator_type'], $ruleData['generator_data'])
                 ->will($this->returnValue($generatorStub));
-            $rules[] = new Rule(
-                $ruleEntityStub, $managerStub);
+            $builder = new RuleBuilder($managerStub, $this->attributes[$ruleData['attribute_index']]);
+            $builder
+                ->setPriority($ruleData['priority'])
+                ->setConditionType($ruleData['condition_type'])
+                ->setConditionData($ruleData['condition_data'])
+                ->setGeneratorType($ruleData['generator_type'])
+                ->setGeneratorData($ruleData['generator_data']);
+            $rules[] = $builder->build();
         }
         return $rules;
     }

@@ -3,16 +3,20 @@ namespace Hackathon\DerivedAttributes;
 
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityIteratorInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleLoaderInterface;
 use Hackathon\DerivedAttributes\BridgeInterface\RuleLoggerInterface;
+use Hackathon\DerivedAttributes\BridgeInterface\RuleRepositoryInterface;
 
 class Updater
 {
     const __CLASS = __CLASS__;
     /**
-     * @var RuleLoaderInterface
+     * @var RuleRepositoryInterface
      */
-    private $ruleLoader;
+    private $ruleRepository;
+    /**
+     * @var RuleSetsByStore
+     */
+    private $ruleSets;
     /**
      * @var RuleLoggerInterface
      */
@@ -27,9 +31,9 @@ class Updater
      */
     private $entityModel;
 
-    public function __construct(RuleLoaderInterface $ruleLoader, RuleLoggerInterface $ruleLogger)
+    public function __construct(RuleRepositoryInterface $ruleRepository, RuleLoggerInterface $ruleLogger)
     {
-        $this->ruleLoader = $ruleLoader;
+        $this->ruleRepository = $ruleRepository;
         $this->ruleLogger = $ruleLogger;
     }
 
@@ -47,11 +51,12 @@ class Updater
      * Update entity based on loaded rule set
      *
      * @param EntityInterface $entity
+     * @param Store $store
      */
-    public function update(EntityInterface $entity)
+    public function update(EntityInterface $entity, Store $store)
     {
-        $ruleSet = $this->ruleLoader->getRuleset();
-        $ruleSet->applyToEntity($entity, $this->ruleLogger);
+        $ruleSets = $this->getRuleSets(new StoreSet([$store]));
+        $ruleSets->getRuleSet($store)->applyToEntity($entity, $this->ruleLogger);
     }
 
     /**
@@ -60,29 +65,37 @@ class Updater
      * @param EntityIteratorInterface $iterator
      * @param EntityInterface $entityModel
      */
-    public function massUpdate(EntityIteratorInterface $iterator, EntityInterface $entityModel)
+    public function massUpdate(EntityIteratorInterface $iterator, EntityInterface $entityModel, StoreSet $stores)
     {
         $this->entityModel = $entityModel;
         $this->outputStart();
-        $iterator->walk(array($this, 'updateCurrentRow'));
+        $this->getRuleSets($stores);
+        foreach ($stores as $store) {
+            $iterator->setStore($store);
+            foreach ($iterator as $entityData) {
+                $this->updateCurrentRow($entityData, $store);
+                $this->outputIteratorStatus($iterator);
+            }
+        }
         $this->outputDone();
         $this->entityModel = null;
     }
+
     /**
-     * Update current row of entity collection (used as callback for iterator->walk())
+     * Update current row of entity collection
      *
-     * @internal
-     * @param EntityIteratorInterface $iterator
+     * @param array $data
+     * @param Store $store
+     * @internal param EntityIteratorInterface $iterator
      */
-    public function updateCurrentRow(EntityIteratorInterface $iterator)
+    private function updateCurrentRow(array $data, Store $store)
     {
-        $this->entityModel->setRawData($iterator->getRawData());
-        $this->update($this->entityModel);
+        $this->entityModel->setRawData($data);
+        $this->update($this->entityModel, $store);
         if ($this->entityModel->isChanged() && ! $this->isDryRun) {
             $this->entityModel->saveAttributes();
         }
         $this->entityModel->clearInstance();
-        $this->outputIteratorStatus($iterator);
     }
     private function outputStart()
     {
@@ -98,5 +111,16 @@ class Updater
     private function outputDone()
     {
         //TODO implement output/log
+    }
+
+    /**
+     * @return RuleSetsByStore
+     */
+    private function getRuleSets(StoreSet $stores)
+    {
+        if ($this->ruleSets === null) {
+            $this->ruleSets = $this->ruleRepository->findRuleSetsForStores($stores);
+        }
+        return $this->ruleSets;
     }
 }

@@ -37,7 +37,7 @@ class Hackathon_DerivedAttributes_Test_Model_Bridge_RuleRepository extends EcomD
     {
         $helper = Mage::helper('derivedattributes');
         return array(
-            [$helper->createStoreSet(['0'], true)],
+            [$helper->createStoreSet(['0', '1', '2'])],
             [$helper->createStoreSet(['1'])],
             [$helper->createStoreSet(['2'])]
         );

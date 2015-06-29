@@ -39,9 +39,10 @@ class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRep
     }
 
     /**
-     * Returns rule set with all active rules
+     * Returns rule sets with all active rules, grouped by store, ordered by priority
      *
-     * @return \Hackathon\DerivedAttributes\RuleSet
+     * @param StoreSet $stores
+     * @return \Hackathon\DerivedAttributes\RuleSetsByStore
      */
     public function findRuleSetsForStores(StoreSet $stores)
     {
@@ -51,6 +52,13 @@ class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRep
         }
         return $ruleSetsByStore;
     }
+
+    /**
+     * Returns rule set with all active rules for given store, ordered by priority
+     *
+     * @param Store $store
+     * @return RuleSet
+     */
     private function findRuleSetForStore(Store $store)
     {
         $collection = $this->getRuleCollection();
@@ -60,6 +68,7 @@ class Hackathon_DerivedAttributes_Model_Bridge_RuleRepository implements RuleRep
             ['finset' => [(string) $store]]
         ]);
         $collection->addFieldToFilter('active', "1");
+        $collection->setOrder('priority', Varien_Data_Collection_Db::SORT_ORDER_ASC);
 
         $ruleSet = new RuleSet();
         $ruleDirector = Mage::helper('derivedattributes/rule_director');

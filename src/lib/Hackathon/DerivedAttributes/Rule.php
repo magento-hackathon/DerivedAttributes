@@ -8,12 +8,11 @@
 
 namespace Hackathon\DerivedAttributes;
 
-use SGH\Comparable\Comparable;
 use Hackathon\DerivedAttributes\BridgeInterface\EntityInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\ConditionInterface;
 use Hackathon\DerivedAttributes\ServiceInterface\GeneratorInterface;
 
-class Rule implements Comparable
+class Rule
 {
     /**
      * @var int
@@ -127,11 +126,6 @@ class Rule implements Comparable
     public function getGenerator()
     {
         return $this->generator;
-    }
-
-    public function compareTo($object)
-    {
-        return $this->getPriority() - $object->getPriority();
     }
 
     /**

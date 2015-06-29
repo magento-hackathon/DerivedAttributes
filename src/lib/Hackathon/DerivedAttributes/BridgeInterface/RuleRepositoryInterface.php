@@ -1,7 +1,7 @@
 <?php
 namespace Hackathon\DerivedAttributes\BridgeInterface;
 use Hackathon\DerivedAttributes\Rule;
-use Hackathon\DerivedAttributes\RuleSet;
+use Hackathon\DerivedAttributes\RuleSetsByStore;
 use Hackathon\DerivedAttributes\StoreSet;
 
 /**
@@ -13,15 +13,15 @@ interface RuleRepositoryInterface
     const __INTERFACE = __CLASS__;
 
     /**
-     * Returns rule set with all active rules
+     * Returns rule sets with all active rules, grouped by store, ordered by priority
      *
-     * @return RuleSet
+     * @param StoreSet $stores
+     * @return RuleSetsByStore
      */
     function findRuleSetsForStores(StoreSet $stores);
 
     /**
-     * @param Rule $rule
-     * @return void
+     * @param Rule $newRule
      */
     function createRule(Rule $newRule);
 

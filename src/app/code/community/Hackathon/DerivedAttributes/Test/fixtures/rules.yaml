@@ -10,7 +10,7 @@ tables:
       condition_type: always
       condition_data: ""
       active: 1
-      priority: 1
+      priority: 4
     - rule_id: 2
       name: Test Rule 2
       meta_description: This is a template generator rule for the meta product description (store view based)
@@ -21,7 +21,7 @@ tables:
       condition_type: always
       condition_data: ""
       active: 1
-      priority: 1
+      priority: 3
     - rule_id: 3
       name: Test Rule 3
       meta_description: This is a template generator rule for the meta product keywords (multiple store views)
@@ -32,7 +32,7 @@ tables:
       condition_type: always
       condition_data: ""
       active: 1
-      priority: 1
+      priority: 2
     - rule_id: 4
       name: Test Rule 4
       meta_description: This is a rule for a category attribute with conflicting attribute code

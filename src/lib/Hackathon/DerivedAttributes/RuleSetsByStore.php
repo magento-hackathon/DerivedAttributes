@@ -2,13 +2,14 @@
 
 namespace Hackathon\DerivedAttributes;
 use Iterator;
+use Countable;
 
 /**
  * A set of priorized rules
  *
  * @package Hackathon\DerivedAttributes
  */
-class RuleSetsByStore implements Iterator
+class RuleSetsByStore implements Iterator, Countable
 {
     private $ruleSets = array();
     private $stores = array();
@@ -63,5 +64,9 @@ class RuleSetsByStore implements Iterator
         reset($this->stores);
     }
 
+    public function count()
+    {
+        return count($this->ruleSets);
+    }
 
 }

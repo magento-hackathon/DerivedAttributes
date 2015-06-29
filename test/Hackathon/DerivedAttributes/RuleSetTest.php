@@ -55,8 +55,11 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
             ->with($this->attributes['dummy-1'], $expectedAttributeValue);
         $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
+        $lastPriority = 0;
         foreach ($rules as $rule)
         {
+            $this->assertGreaterThanOrEqual($lastPriority, $rule->getPriority(), 'Precondition: rules should be added according to priority');
+            $lastPriority = $rule->getPriority();
             $ruleSet->addRule($rule);
         }
         $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
@@ -117,8 +120,11 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
             });
         $ruleSet = new RuleSet();
         $rules = $this->createRulesFromRulesData($rulesData);
+        $lastPriority = 0;
         foreach ($rules as $rule)
         {
+            $this->assertGreaterThanOrEqual($lastPriority, $rule->getPriority(), 'Precondition: rules should be added according to priority');
+            $lastPriority = $rule->getPriority();
             $ruleSet->addRule($rule);
         }
         $ruleSet->applyToEntity($this->productMock, $this->ruleLoggerMock);
@@ -162,12 +168,12 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases['second_priorized_rule_matches'] = [
             'rules_data' => [
                 [
-                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],
                 [
-                    'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
+                    'matches' => true,  'value' => 'bar', 'priority' => 2, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],
@@ -202,23 +208,23 @@ class RuleSetTest extends \PHPUnit_Framework_TestCase
         $testCases = array();
         $testCases[] = [
             'rules_data' => [
-                'rule-1' => [
-                    'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2',
-                    'condition_type' => 'always', 'condition_data' => '',
-                    'generator_type' => 'template', 'generator_data' => 'dummy-template-2'
-                ],
                 'rule-2' => [
                     'matches' => false, 'value' => 'foo', 'priority' => 1, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],
-                'rule-3' => [
-                    'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1',
+                'rule-4' => [
+                    'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],
-                'rule-4' => [
-                    'matches' => true,  'value' => 'baz', 'priority' => 2, 'attribute_index' => 'dummy-1',
+                'rule-1' => [
+                    'matches' => true,  'value' => 'narf', 'priority' => 3, 'attribute_index' => 'dummy-2',
+                    'condition_type' => 'always', 'condition_data' => '',
+                    'generator_type' => 'template', 'generator_data' => 'dummy-template-2'
+                ],
+                'rule-3' => [
+                    'matches' => true,  'value' => 'bar', 'priority' => 4, 'attribute_index' => 'dummy-1',
                     'condition_type' => 'always', 'condition_data' => '',
                     'generator_type' => 'template', 'generator_data' => 'dummy-template-1'
                 ],

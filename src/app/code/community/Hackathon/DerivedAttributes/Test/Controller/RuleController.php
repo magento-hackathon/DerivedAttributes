@@ -17,7 +17,6 @@ class Hackathon_DerivedAttributes_Test_Controller_RuleController
      */
     public function existingRuleShouldBeSaved(array $postData)
     {
-        $defaultData = ['priority' => '1'];
         $this->adminSession();
         $this->getRequest()->setMethod('POST');
         $this->getRequest()->setPost($postData);
@@ -26,7 +25,7 @@ class Hackathon_DerivedAttributes_Test_Controller_RuleController
         $this->assertRedirectTo('adminhtml/derivedAttributes_rule/index');
 
         $rule = Mage::getModel('derivedattributes/rule')->load($postData['rule_id']);
-        $this->assertEquals($defaultData + $postData, $rule->getData(), 'Rule data should be as posted');
+        $this->assertEquals($postData, $rule->getData(), 'Rule data should be as posted');
     }
 
     public static function dataSaveExistingRule()
@@ -34,6 +33,7 @@ class Hackathon_DerivedAttributes_Test_Controller_RuleController
         return array(
             [ 'postData' => [
                 'rule_id'        => '1',
+                'priority'       => '4',
                 'active'         => '1',
                 'name'           => 'Edited Test Rule',
                 'description'    => 'The rule has been edited',

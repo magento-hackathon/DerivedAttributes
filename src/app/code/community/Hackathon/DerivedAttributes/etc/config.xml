@@ -54,7 +54,6 @@
                 </observers>
             </model_save_before>
         </events>
-        <composer_vendor_path><![CDATA[{{root_dir}}/vendor]]></composer_vendor_path>
         <psr0_namespaces>
             <Hackathon/>
         </psr0_namespaces>

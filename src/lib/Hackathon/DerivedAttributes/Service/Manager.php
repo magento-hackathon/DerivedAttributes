@@ -51,7 +51,7 @@ class Manager
         if(is_object($class)){
             $class = get_class($class);
         }
-        $this->generatorTypes[(string)$id] = $class;
+        $this->conditionTypes[(string)$id] = $class;
     }
 
     /**

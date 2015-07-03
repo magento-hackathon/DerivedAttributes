@@ -1,8 +1,6 @@
 <?php
 namespace Hackathon\DerivedAttributes\Service;
 
-use Hackathon\DerivedAttributes\BridgeInterface\RuleConditionInterface;
-use Hackathon\DerivedAttributes\BridgeInterface\RuleGeneratorInterface;
 use Hackathon\DerivedAttributes\Service\Generator\TemplateGenerator;
 use Hackathon\DerivedAttributes\Service\Condition\BooleanAttributeCondition;
 use Hackathon\DerivedAttributes\Service\Condition\AlwaysCondition;
@@ -42,7 +40,6 @@ class Manager
         if(is_object($class)){
             $class = get_class($class);
         }
-        assert(is_subclass_of($class, RuleGeneratorInterface::__CLASS));
         $this->generatorTypes[(string)$id] = $class;
     }
 
@@ -54,7 +51,6 @@ class Manager
         if(is_object($class)){
             $class = get_class($class);
         }
-        assert(is_subclass_of($class, ConditionInterface::__CLASS));
         $this->generatorTypes[(string)$id] = $class;
     }
 

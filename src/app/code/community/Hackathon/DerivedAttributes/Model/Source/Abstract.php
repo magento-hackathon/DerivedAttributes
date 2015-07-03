@@ -8,7 +8,7 @@ abstract class Hackathon_DerivedAttributes_Model_Source_Abstract
 
     public function __construct()
     {
-        $this->_serviceManager = new \Hackathon\DerivedAttributes\Service\Manager();
+        $this->_serviceManager = Mage::helper('derivedattributes')->getServiceManager();
     }
 
     abstract public function getOptions();

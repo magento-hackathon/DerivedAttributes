@@ -69,8 +69,12 @@ class Hackathon_DerivedAttributes_Model_Bridge_Entity implements \Hackathon\Deri
      */
     public function getLocalizedAttributeValue(Attribute $attribute)
     {
-        if (($value = $this->entity->getAttributeText($attribute->getAttributeCode())) !== false ) return $value;
-        else return $this->entity->getData($attribute->getAttributeCode());
+        $value = $this->entity->getAttributeText($attribute->getAttributeCode());
+        if ($value) {
+            return $value;
+        } else {
+            return $this->entity->getData($attribute->getAttributeCode());
+        }
     }
 
     /**

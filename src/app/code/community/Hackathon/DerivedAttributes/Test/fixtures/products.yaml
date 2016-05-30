@@ -14,6 +14,7 @@ eav:
       short_description: short description.
       /stores:
         second:
+          name: Test Product 1 in store view
           description: description in store view
           meta_description: meta description in store view
           short_description: short description in store view

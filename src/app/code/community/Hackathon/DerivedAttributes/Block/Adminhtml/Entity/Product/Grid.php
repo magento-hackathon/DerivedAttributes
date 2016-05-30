@@ -13,6 +13,13 @@
  */
 class Hackathon_DerivedAttributes_Block_Adminhtml_Entity_Product_Grid extends Mage_Adminhtml_Block_Catalog_Product_Grid
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setId('productDerivedAttributesGrid');
+    }
+
+
     protected function _prepareMassaction()
     {
         $this->setMassactionIdField('entity_id');

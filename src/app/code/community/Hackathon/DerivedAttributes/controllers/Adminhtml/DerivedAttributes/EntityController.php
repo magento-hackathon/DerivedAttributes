@@ -2,6 +2,11 @@
 class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_EntityController
     extends Mage_Adminhtml_Controller_Action
 {
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/derived_attributes');
+    }
+
     protected function _initAction()
     {
         $this->loadLayout()

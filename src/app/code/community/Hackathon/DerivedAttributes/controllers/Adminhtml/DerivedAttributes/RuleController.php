@@ -2,6 +2,11 @@
 class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController extends
     Mage_Adminhtml_Controller_Action
 {
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/derived_attributes');
+    }
+
     /**
      * @var Hackathon_DerivedAttributes_Model_Resource_Rule
      */
@@ -164,15 +169,6 @@ class Hackathon_DerivedAttributes_Adminhtml_DerivedAttributes_RuleController ext
     {
         $this->_title($this->__('Derived Attributes'))->_title($this->__('Rules'));
         $this->loadLayout()->renderLayout();
-    }
-
-    /**
-     * Returns result of current user permission check on resource and privilege
-     * @return boolean
-     */
-    protected function _isAllowed()
-    {
-        return Mage::getSingleton('admin/session')->isAllowed('catalog/attributes/derived_attributes');
     }
 
     /**

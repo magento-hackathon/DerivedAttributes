@@ -26,9 +26,9 @@ env:
   - MAGENTO_VERSION=magento-mirror-1.7.0.2
 script:
   - composer require aoepeople/composer-installers:*
-  - composer install --dev
-  - phpunit --bootstrap=test/bootstrap.php test
-  - .travis/setup.sh
+  - composer install --dev --no-interaction
+  - phpunit
+  - curl -sSL https://raw.githubusercontent.com/schmengler/MageTestStand/master/setup.sh | bash
 before_deploy: .travis/bundle.sh
 deploy:
   provider: releases

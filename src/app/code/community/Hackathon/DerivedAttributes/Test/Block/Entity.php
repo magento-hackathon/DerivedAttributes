@@ -31,10 +31,10 @@ class Hackathon_DerivedAttributes_Test_Block_Entity extends Hackathon_DerivedAtt
             'Customer grid should contain mass action "dryrun".');
 
         $this->assertResponseBodyXpath(
-            '//select[@id="productGrid_massaction-select"]/option[@value="apply"]',
+            '//select[@id="productDerivedAttributesGrid_massaction-select"]/option[@value="apply"]',
             'Product grid should contain mass action "apply".');
         $this->assertResponseBodyXpath(
-            '//select[@id="productGrid_massaction-select"]/option[@value="dryrun"]',
+            '//select[@id="productDerivedAttributesGrid_massaction-select"]/option[@value="dryrun"]',
             'Product grid should contain mass action "dryrun".');
 
         $this->assertResponseBodyContains('name="entity_type"', 'Mass action block should contain hidden input with entity type');

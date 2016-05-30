@@ -3,6 +3,12 @@
   "license": "OSL-3.0",
   "type": "magento-module",
   "description": "Generate attribute values based on rules",
+  "autoload": {
+    "psr-4": {"Hackathon\\DerivedAttributes\\": "src/lib/Hackathon/DerivedAttributes"}
+  },
+  "autoload-dev": {
+    "psr-4": {"Hackathon\\DerivedAttributes\\": "test/Hackathon/DerivedAttributes"}
+  },
   "require": {
     "firegento/psr0autoloader": "*",
     "integer-net/IntegerNet_GridMassActionPager": "~1.0.0"
